@@ -13,7 +13,7 @@ func registerFlags() []cli.Flag {
 	flags = append(flags, registerPortFlag()...)
 	flags = append(flags, registerTimeoutFlag()...)
 	flags = append(flags, registerCommandFlag()...)
-	flags = append(flags, registerPlatformFlag()...)
+	flags = append(flags, registerExecPlatformFlag()...)
 	flags = append(flags, registerEnableModeFlag()...)
 	flags = append(flags, registerUsernameFlag()...)
 	flags = append(flags, registerPasswordFlag()...)
@@ -115,21 +115,21 @@ func registerCommandFlag() []cli.Flag {
 
 // Preset parameters for platform flag
 const (
-	optPlatformName  string = "platform"
-	optPlatformUsage string = "Set platform. Refer to README.md what to be set."
-	optPlatformValue string = "ios"
+	optExecPlatformName  string = "exec-platform"
+	optExecPlatformUsage string = "Set exec-platform. Refer to README.md what to be set."
+	optExecPlatformValue string = "ios"
 )
 
-var optPlatformAlias = []string{"x"}
+var optExecPlatformAlias = []string{"x"}
 
-// Declare platform flag
-func registerPlatformFlag() []cli.Flag {
+// Declare exec-platform flag
+func registerExecPlatformFlag() []cli.Flag {
 	return []cli.Flag{
 		&cli.StringFlag{
-			Name:    optPlatformName,
-			Usage:   optPlatformUsage,
-			Aliases: optPlatformAlias,
-			Value:   optPlatformValue,
+			Name:    optExecPlatformName,
+			Usage:   optExecPlatformUsage,
+			Aliases: optExecPlatformAlias,
+			Value:   optExecPlatformValue,
 		},
 	}
 }
@@ -137,7 +137,7 @@ func registerPlatformFlag() []cli.Flag {
 // Preset parameters for enable-mode flag
 const (
 	optEnableModeName  string = "enable-mode"
-	optEnableModeUsage string = "Log in to privileged EXEC mode."
+	optEnableModeUsage string = "Raise to privileged EXEC mode."
 	optEnableModeValue bool   = false
 )
 
@@ -208,7 +208,7 @@ func registerPasswordFlag() []cli.Flag {
 // Preset parameters for priv-password flag
 const (
 	optPrivPasswordName  string = "priv-password"
-	optPrivPasswordUsage string = "Set password to change to privileged EXEC mode."
+	optPrivPasswordUsage string = "Set password to raise to privileged EXEC mode."
 	optPrivPasswordValue string = domain.DefaultPrivPasswordValue
 )
 
