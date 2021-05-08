@@ -38,6 +38,9 @@ func (e *Exec) Run() {
 	if e.Config.Platform == domain.AlliedWarePlatformName {
 		data, err = e.Usecase.InvokeAlliedWareUsecase().Fetch()
 	}
+	if e.Config.Platform == domain.ScreenOSPlatformName {
+		data, err = e.Usecase.InvokeScreenOSUsecase().Fetch()
+	}
 
 	if err != nil {
 		fmt.Println(err)
