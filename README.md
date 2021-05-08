@@ -2,7 +2,7 @@
 
 telee [téli] is a **TEL**net client to **E**x**E**cute a command on remote device via authentication.
 
-You no longer need to log-in to run `show int status`, `show int description` and others!
+You no longer need to input username, passwords and exit command each time operate devices!
 
 ## Installation
 
