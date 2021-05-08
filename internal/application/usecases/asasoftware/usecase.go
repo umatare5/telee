@@ -48,7 +48,7 @@ func (u *Usecase) buildPrivilegedRequest(suffix string) []x.Batcher {
 		&x.BSnd{S: "enable\n"},
 		&x.BExp{R: "Password:"},
 		&x.BSnd{S: u.Config.PrivPassword + "\n"},
-		&x.BExp{R: u.Config.Hostname + "#"},
+		&x.BExp{R: u.Config.Hostname + suffix + "#"},
 		&x.BSnd{S: "terminal pager 0\n"},
 		&x.BExp{R: u.Config.Hostname + suffix + "#"},
 		&x.BSnd{S: u.Config.Command + "\n"},
