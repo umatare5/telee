@@ -1,6 +1,6 @@
 # telee
 
-telee [téli] is a **TEL**net client to **E**x**E**cute a command on remote device via authentication.
+telee [téli] is a telnet client to **E**x**E**cute a command on device that equip authentication.
 
 You no longer need to input username, passwords and exit command each time operate devices!
 
