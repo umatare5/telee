@@ -1,9 +1,6 @@
 package cli
 
 import (
-	"strings"
-	"telee/internal/domain"
-
 	"github.com/urfave/cli/v2"
 )
 
@@ -117,7 +114,7 @@ func registerCommandFlag() []cli.Flag {
 // Preset parameters for platform flag
 const (
 	optPlatformName  string = "platform"
-	optPlatformUsage string = "Set a platform to "
+	optPlatformUsage string = "Set platform. Refer to README.md what to be set."
 	optPlatformValue string = "ios"
 )
 
@@ -128,7 +125,7 @@ func registerPlatformFlag() []cli.Flag {
 	return []cli.Flag{
 		&cli.StringFlag{
 			Name:    optPlatformName,
-			Usage:   optPlatformUsage + strings.Join(domain.CmdPlatforms, ", ") + ".",
+			Usage:   optPlatformUsage,
 			Aliases: optPlatformAlias,
 			Value:   optPlatformValue,
 		},
