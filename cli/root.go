@@ -16,7 +16,7 @@ const (
 	cmdName      string = "telee"
 	cmdUsage     string = "One-line telnet client"
 	cmdUsageText string = "telee -H HOSTNAME -C COMMAND [options...]"
-	cmdVersion   string = "1.1.1"
+	cmdVersion   string = "1.1.2"
 )
 
 // Start executes this command
