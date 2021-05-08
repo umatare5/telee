@@ -42,7 +42,6 @@ func (u *Usecase) buildUserModeRequest() []x.Batcher {
 		&x.BExp{R: u.Config.Hostname + ">"},
 		&x.BSnd{S: u.Config.Command + "\n"},
 		&x.BExp{R: u.Config.Hostname + ">"},
-		&x.BSnd{S: "exit\n"},
 	}
 }
 
