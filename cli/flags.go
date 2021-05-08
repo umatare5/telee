@@ -1,6 +1,8 @@
 package cli
 
 import (
+	"telee/internal/domain"
+
 	"github.com/urfave/cli/v2"
 )
 
@@ -157,7 +159,7 @@ func registerEnableModeFlag() []cli.Flag {
 const (
 	optUsernameName  string = "username"
 	optUsernameUsage string = "Set username."
-	optUsernameValue string = "admin"
+	optUsernameValue string = domain.DefaultUsernameValue
 )
 
 var (
@@ -182,7 +184,7 @@ func registerUsernameFlag() []cli.Flag {
 const (
 	optPasswordName  string = "password"
 	optPasswordUsage string = "Set password."
-	optPasswordValue string = "cisco"
+	optPasswordValue string = domain.DefaultPasswordValue
 )
 
 var (
@@ -207,7 +209,7 @@ func registerPasswordFlag() []cli.Flag {
 const (
 	optPrivPasswordName  string = "priv-password"
 	optPrivPasswordUsage string = "Set password to change to privileged EXEC mode."
-	optPrivPasswordValue string = "enable"
+	optPrivPasswordValue string = domain.DefaultPrivPasswordValue
 )
 
 var (

@@ -13,6 +13,13 @@ const (
 )
 
 // Used for config validation
+const (
+	DefaultUsernameValue     string = "admin"
+	DefaultPasswordValue     string = "cisco"
+	DefaultPrivPasswordValue string = "enable"
+)
+
+// Used for config validation
 var (
 	CmdPlatforms = []string{
 		IOSPlatformName,

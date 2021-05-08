@@ -50,10 +50,10 @@ func New(ctx *cli.Context) Config {
 }
 
 func checkArguments(cfg *Config) error {
-	if cfg.Username == "" {
+	if cfg.Username == domain.DefaultUsernameValue {
 		return errors.ErrMissingUsername
 	}
-	if cfg.Password == "" {
+	if cfg.Password == domain.DefaultPasswordValue {
 		return errors.ErrMissingPassword
 	}
 	if !hasPrivPassword(cfg.EnableMode, cfg.PrivPassword) {
@@ -82,7 +82,7 @@ func isValidExpectMode(platform string) bool {
 
 func hasPrivPassword(value bool, password string) bool {
 	if value {
-		if password == "" {
+		if password == domain.DefaultPrivPasswordValue {
 			return false
 		}
 	}
