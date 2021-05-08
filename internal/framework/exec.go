@@ -35,6 +35,9 @@ func (e *Exec) Run() {
 	if e.Config.Platform == domain.AireOSPlatformName {
 		data, err = e.Usecase.InvokeAireOSUsecase().Fetch()
 	}
+	if e.Config.Platform == domain.AlliedWarePlatformName {
+		data, err = e.Usecase.InvokeAlliedWareUsecase().Fetch()
+	}
 
 	if err != nil {
 		fmt.Println(err)
