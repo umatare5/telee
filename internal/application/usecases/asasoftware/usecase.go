@@ -26,13 +26,13 @@ func (u *Usecase) Fetch() (string, error) {
 	if u.Config.EnableMode && u.HAMode {
 		expection = u.buildPrivilegedRequest(haSuffix)
 	}
-	if u.Config.EnableMode && u.HAMode {
-		expection = u.buildUserModeRequest(haSuffix)
-	}
 	if u.Config.EnableMode && !u.HAMode {
 		expection = u.buildPrivilegedRequest(noSuffix)
 	}
-	if u.Config.EnableMode && !u.HAMode {
+	if !u.Config.EnableMode && u.HAMode {
+		expection = u.buildUserModeRequest(haSuffix)
+	}
+	if !u.Config.EnableMode && !u.HAMode {
 		expection = u.buildUserModeRequest(noSuffix)
 	}
 
