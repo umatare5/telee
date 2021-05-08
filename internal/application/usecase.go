@@ -4,6 +4,7 @@ import (
 	aireosUsecase "telee/internal/application/usecases/aireos"
 	alliedwareUsecase "telee/internal/application/usecases/alliedware"
 	iosUsecase "telee/internal/application/usecases/ios"
+	ironwareUsecase "telee/internal/application/usecases/ironware"
 	screenosUsecase "telee/internal/application/usecases/screenos"
 	"telee/internal/config"
 	"telee/internal/infrastructure"
@@ -50,6 +51,14 @@ func (u *Usecase) InvokeAlliedWareUsecase() *alliedwareUsecase.Usecase {
 // InvokeScreenOSUsecase returns ScreenOSUsecase struct
 func (u *Usecase) InvokeScreenOSUsecase() *screenosUsecase.Usecase {
 	return &screenosUsecase.Usecase{
+		Config:     u.Config,
+		Repository: u.Repository,
+	}
+}
+
+// InvokeIronWareUsecase returns IronWareUsecase struct
+func (u *Usecase) InvokeIronWareUsecase() *ironwareUsecase.Usecase {
+	return &ironwareUsecase.Usecase{
 		Config:     u.Config,
 		Repository: u.Repository,
 	}
