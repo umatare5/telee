@@ -54,6 +54,16 @@ func (u *Usecase) InvokeScreenOSUsecase() *screenosUsecase.Usecase {
 	return &screenosUsecase.Usecase{
 		Config:     u.Config,
 		Repository: u.Repository,
+		HAMode:     false,
+	}
+}
+
+// InvokeScreenOSHAUsecase returns ScreenOSUsecase struct with HA
+func (u *Usecase) InvokeScreenOSHAUsecase() *screenosUsecase.Usecase {
+	return &screenosUsecase.Usecase{
+		Config:     u.Config,
+		Repository: u.Repository,
+		HAMode:     true,
 	}
 }
 
