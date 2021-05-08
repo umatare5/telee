@@ -34,13 +34,13 @@ func (u *Usecase) Fetch() (string, error) {
 func (u *Usecase) buildUserModeRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "Please Enter Login Name:"},
-		&x.BSnd{S: u.Config.Username + "\n"},
+		&x.BSnd{S: u.Config.Username + "\r\n"},
 		&x.BExp{R: "Please Enter Password:"},
-		&x.BSnd{S: u.Config.Password + "\n"},
+		&x.BSnd{S: u.Config.Password + "\r\n"},
 		&x.BExp{R: "telnet@" + u.Config.Hostname + ">"},
-		&x.BSnd{S: "skip-page-display\n"},
+		&x.BSnd{S: "skip-page-display\r\n"},
 		&x.BExp{R: "telnet@" + u.Config.Hostname + ">"},
-		&x.BSnd{S: u.Config.Command + "\n"},
+		&x.BSnd{S: u.Config.Command + "\r\n"},
 		&x.BExp{R: "telnet@" + u.Config.Hostname + ">"},
 	}
 }
@@ -49,16 +49,16 @@ func (u *Usecase) buildUserModeRequest() []x.Batcher {
 func (u *Usecase) buildPrivilegedRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "Please Enter Login Name:"},
-		&x.BSnd{S: u.Config.Username + "\n"},
+		&x.BSnd{S: u.Config.Username + "\r\n"},
 		&x.BExp{R: "Please Enter Password:"},
-		&x.BSnd{S: u.Config.Password + "\n"},
+		&x.BSnd{S: u.Config.Password + "\r\n"},
 		&x.BExp{R: "telnet@" + u.Config.Hostname + ">"},
-		&x.BSnd{S: "enable\n"},
+		&x.BSnd{S: "enable\r\n"},
 		&x.BExp{R: "Password:"},
-		&x.BSnd{S: u.Config.PrivPassword + "\n"},
-		&x.BSnd{S: "skip-page-display\n"},
+		&x.BSnd{S: u.Config.PrivPassword + "\r\n"},
+		&x.BSnd{S: "skip-page-display\r\n"},
 		&x.BExp{R: "telnet@" + u.Config.Hostname + "#"},
-		&x.BSnd{S: u.Config.Command + "\n"},
+		&x.BSnd{S: u.Config.Command + "\r\n"},
 		&x.BExp{R: "telnet@" + u.Config.Hostname + "#"},
 	}
 }
