@@ -44,6 +44,12 @@ func (e *Exec) Run() {
 	if e.Config.Platform == domain.IronWarePlatformName {
 		data, err = e.Usecase.InvokeIronWareUsecase().Fetch()
 	}
+	if e.Config.Platform == domain.ASASoftwarePlatformName {
+		data, err = e.Usecase.InvokeASASoftwareUsecase().Fetch()
+	}
+	if e.Config.Platform == domain.ASASoftwareHAPlatformName {
+		data, err = e.Usecase.InvokeASASoftwareHAUsecase().Fetch()
+	}
 
 	if err != nil {
 		fmt.Println(err)
