@@ -30,8 +30,8 @@ GLOBAL OPTIONS:
    --port value, -P value             Set port number. (default: 23)
    --timeout value, -t value          Set timeout seconds. (default: 5)
    --command value, -C value          Set a command. [$TELEE_COMMAND]
-   --platform value, -x value         Set a platform. It supports 'ios' and 'aireos'. (default: "ios")
-   --enable-mode, -e                  Log in to privileged EXEC mode. (default: false)
+   --platform value, -x value         Set a platform to ios, foundry, aireos, allied, asa, asa-ha, ssg, ssg-ha. (default: "ios")
+   --enable-mode, -e, --ena           Log in to privileged EXEC mode. (default: false)
    --username value, -u value         Set username. (default: "admin") [$TELEE_USERNAME]
    --password value, -p value         Set password. (default: "cisco") [$TELEE_PASSWORD]
    --priv-password value, --pp value  Set password to change to privileged EXEC mode. (default: "enable") [$TELEE_PRIVPASSWORD]
