@@ -3,6 +3,7 @@ package application
 import (
 	aireosUsecase "telee/internal/application/usecases/aireos"
 	alliedwareUsecase "telee/internal/application/usecases/alliedware"
+	asasoftwareUsecase "telee/internal/application/usecases/asasoftware"
 	iosUsecase "telee/internal/application/usecases/ios"
 	ironwareUsecase "telee/internal/application/usecases/ironware"
 	screenosUsecase "telee/internal/application/usecases/screenos"
@@ -61,5 +62,23 @@ func (u *Usecase) InvokeIronWareUsecase() *ironwareUsecase.Usecase {
 	return &ironwareUsecase.Usecase{
 		Config:     u.Config,
 		Repository: u.Repository,
+	}
+}
+
+// InvokeASASoftwareUsecase returns ASASoftwareUsecase struct
+func (u *Usecase) InvokeASASoftwareUsecase() *asasoftwareUsecase.Usecase {
+	return &asasoftwareUsecase.Usecase{
+		Config:     u.Config,
+		Repository: u.Repository,
+		HAMode:     false,
+	}
+}
+
+// InvokeASASoftwareHAUsecase returns ASASoftwareUsecase struct with HA
+func (u *Usecase) InvokeASASoftwareHAUsecase() *asasoftwareUsecase.Usecase {
+	return &asasoftwareUsecase.Usecase{
+		Config:     u.Config,
+		Repository: u.Repository,
+		HAMode:     true,
 	}
 }
