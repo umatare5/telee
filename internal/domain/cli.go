@@ -9,6 +9,7 @@ const (
 	ASASoftwarePlatformName   string = "asa"
 	ASASoftwareHAPlatformName string = "asa-ha"
 	ScreenOSPlatformName      string = "ssg"
+	ScreenOSHAPlatformName    string = "ssg-ha"
 )
 
 // Used for config validation
@@ -21,5 +22,6 @@ var (
 		ASASoftwarePlatformName,
 		ASASoftwareHAPlatformName,
 		ScreenOSPlatformName,
+		ScreenOSHAPlatformName,
 	}
 )
