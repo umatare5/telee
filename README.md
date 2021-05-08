@@ -41,7 +41,7 @@ GLOBAL OPTIONS:
 
 ## Usage
 
-- Set environment variables.
+- At first, set credentials into environment variables.
 
 ```bash
 export TELEE_USERNAME=telee
@@ -51,42 +51,36 @@ export TELEE_PRIVPASSWORD=Teleedev!!
 
 - Run the command with hostname.
 
+```console
+$ telee --hostname lab-cat29l-02f99-01 --command "show int descr"
+show int descr
+Load for five secs: 2%/0%; one minute: 1%; five minutes: 1%
+Time source is NTP, 23:16:54.302 JST Sat May 8 2021
+
+Interface                      Status         Protocol Description
+Vl1                            admin down     down
+Vl800                          up             up       *** LAB-MGMT ***
+Gi0/1                          up             up       CLIENT_DEVICE_LONG_DESCR
+Gi0/2                          up             up       CLIENT_DEVICE
+Gi0/3                          up             up       CLIENT_DEVICE
+Gi0/4                          up             up       CLIENT_DEVICE
+Gi0/5                          up             up       CLIENT_DEVICE
+Gi0/6                          down           down     CLIENT_DEVICE
+Gi0/7                          down           down     CLIENT_DEVICE
+Gi0/8                          up             up       GATEWAY_ROUTER
+Gi0/9                          admin down     down
+Gi0/10                         admin down     down
+lab-cat29l-02f99-01>
+```
+
+- When use on other than IOS, need to set `-x` (`--exec-platform`) option.
+
   <details><summary><code>
-  telee --hostname lab-cat29l-02f99-01 --command "show int descr"
+  telee -H 192.168.0.250 -C "show sysinfo" -x aireos
   </code></summary><p>
 
   ```console
-  $ telee --hostname lab-cat29l-02f99-01 --command "show int descr"
-  show int descr
-  Load for five secs: 2%/0%; one minute: 1%; five minutes: 1%
-  Time source is NTP, 23:16:54.302 JST Sat May 8 2021
-
-  Interface                      Status         Protocol Description
-  Vl1                            admin down     down
-  Vl800                          up             up       *** LAB-MGMT ***
-  Gi0/1                          up             up       CLIENT_DEVICE_LONG_DESCR
-  Gi0/2                          up             up       CLIENT_DEVICE
-  Gi0/3                          up             up       CLIENT_DEVICE
-  Gi0/4                          up             up       CLIENT_DEVICE
-  Gi0/5                          up             up       CLIENT_DEVICE
-  Gi0/6                          down           down     CLIENT_DEVICE
-  Gi0/7                          down           down     CLIENT_DEVICE
-  Gi0/8                          up             up       GATEWAY_ROUTER
-  Gi0/9                          admin down     down
-  Gi0/10                         admin down     down
-  lab-cat29l-02f99-01>
-  ```
-
-  </p></details>
-
-- If you execute on other than IOS, set `-x` option as below.
-
-  <details><summary><code>
-  telee --hostname 192.168.0.250 --command "show sysinfo" -x aireos
-  </code></summary><p>
-
-  ```console
-  $ telee --hostname 192.168.0.250 --command "show sysinfo" -x aireos
+  $ telee -H 192.168.0.250 -C "show sysinfo" -x aireos
   show sysinfo
 
   Manufacturer's Name.............................. Cisco Systems Inc.
@@ -96,9 +90,7 @@ export TELEE_PRIVPASSWORD=Teleedev!!
   Field Recovery Image Version..................... 7.6.101.1
   Firmware Version................................. PIC 19.0
 
-
   OUI File Last Update Time........................ Sun Sep 07 10:44:07 IST 2014
-
 
   Build Type....................................... DATA + WPS
 
@@ -107,33 +99,69 @@ export TELEE_PRIVPASSWORD=Teleedev!!
   System Contact...................................
   System ObjectID.................................. 1.3.6.1.4.1.9.1.1279
   IP Address....................................... 192.168.0.250
-  IPv6 Address..................................... ::
-  Last Reset....................................... Power on reset
-  System Up Time................................... 0 days 0 hrs 27 mins 16 secs
-  System Timezone Location......................... (GMT +9:00) Tokyo, Osaka, Sapporo
-  System Stats Realtime Interval................... 5
-  System Stats Normal Interval..................... 180
+  <snip>
+  ```
 
-  Configured Country............................... J4  - Japan 4(Q)
-  Operating Environment............................ Commercial (0 to 40 C)
-  Internal Temp Alarm Limits....................... 0 to 65 C
-  Internal Temperature............................. +37 C
-  External Temperature............................. +46 C
-  Fan Status....................................... 5200 rpm
+  </p></details>
 
-  State of 802.11b Network......................... Enabled
-  State of 802.11a Network......................... Disabled
-  Number of WLANs.................................. 6
-  Number of Active Clients......................... 0
+- When use slow response devices, recommend to extend `--timeout`.
 
-  OUI Classification Failure Count................. 0
+  <details><summary><code>
+  telee -H lab-fs909-02f-01 -C "show system" -x allied --username manager --timeout 10
+  </code></summary><p>
 
-  Burned-in MAC Address............................ E0:AC:F1:E1:BB:20
-  Maximum number of APs supported.................. 75
-  System Nas-Id.................................... lab-wlc-01f01-01a
-  WLC MIC Certificate Types........................ SHA1/SHA2
+  ```console
+  $ telee -H lab-fs909-02f-01 -C "show system" -x allied -u manager -t 10
+  show system
+  Switch System Status                     Date 2021-05-09 Time 01:04:54
+  Board     Bay      Board Name
+  ----------------------------------------------------------------------
+  Base      -        FS909M
+  ----------------------------------------------------------------------
+  Memory -  DRAM : 32768 kB  FLASH : 8192 kB   MAC : 00-1A-EB-93-1C-95
+  ----------------------------------------------------------------------
+  SysDescription  : CentreCOM FS909M Ver 1.6.14 B02
+  SysContact      :
+  SysLocation     : LAB
+  SysName         : lab-fs909-02f-01
+  SysUpTime       : 1267989237(146days, 18:11:32)
+  Release Version : 1.6.14
+  Release built   : B02 (Nov 23 2010 at 14:29:56)
+  Flash PROM      : Good
+  RAM             : Good
+  SW chip         : Good
+  <snip>
+  ```
 
-  (Cisco Controller) >
+  </p></details>
+
+- When use ASA, must set `--enable-mode`. ASA doesn't support "terminal pager 0" in user-level.
+
+  <details><summary><code>
+  telee -H lab-asa5505-02f-01 -C "show version" -x asa --enable-mode --priv-password Pswd1234#
+  </code></summary><p>
+
+  ```console
+  $ telee -H lab-asa5505-02f-01 -C "show version" -x asa -e --pp Pswd1234#
+  show version
+
+  Cisco Adaptive Security Appliance Software Version 9.0(4)
+  Device Manager Version 7.1(5)100
+
+  Compiled on Wed 04-Dec-13 08:33 by builders
+  System image file is "disk0:/asa904-k8.bin"
+  Config file at boot was "startup-config"
+
+  lab-asa5505-02f-01 up 70 days 2 hours
+
+  Hardware:   ASA5505, 512 MB RAM, CPU Geode 500 MHz,
+  Internal ATA Compact Flash, 128MB
+  BIOS Flash M50FW016 @ 0xfff00000, 2048KB
+
+  Encryption hardware device : Cisco ASA-5505 on-board accelerator (revision 0x0)
+                               Boot microcode        : CN1000-MC-BOOT-2.00
+                               SSL/IKE microcode     : CNLite-MC-SSLm-PLUS-2.03
+  <snip>
   ```
 
   </p></details>
@@ -142,16 +170,16 @@ export TELEE_PRIVPASSWORD=Teleedev!!
 
 - The following table is result of values that can be set with the `-x` option and what version verified.
 
-  | Name (`-x`) | Description                   | Verified On          |
-  | :---------- | :---------------------------- | :------------------- |
-  | aireos      | Cisco AireOS                  | ✅ 8.5.120           |
-  | allied      | AlliedTelesis AlliedWare      | ⚠ Still not verified |
-  | asa         | Cisco ASA Software            | ⚠ Still not verified |
-  | asa-ha      | Cisco ASA Software (HA)       | ⚠ Still not verified |
-  | foundry     | Brocade IronWare              | ⚠ Still not verified |
-  | ios         | Cisco IOS                     | ✅ 15.2              |
-  | ssg         | JuniperNetworks ScreenOS      | ⚠ Still not verified |
-  | ssg-ha      | JuniperNetworks ScreenOS (HA) | ⚠ Still not verified |
+  | Name (`-x`) | Description                   | Verified On     |
+  | :---------- | :---------------------------- | :-------------- |
+  | aireos      | Cisco AireOS                  | ✅ 8.5.120.0    |
+  | allied      | AlliedTelesis AlliedWare      | ✅ 1.6.14B02    |
+  | asa         | Cisco ASA Software            | ✅ 9.0(4)       |
+  | asa-ha      | Cisco ASA Software (HA)       | ✅ 9.10(1)      |
+  | foundry     | Brocade IronWare              | ✅ 07.2.02aT7e1 |
+  | ios         | Cisco IOS                     | ✅ 15.2(5c)E    |
+  | ssg         | JuniperNetworks ScreenOS      | ✅ 6.3.0r21.0   |
+  | ssg-ha      | JuniperNetworks ScreenOS (HA) | ✅ 6.3.0r22.0   |
 
 ## Development
 
