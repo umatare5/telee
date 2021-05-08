@@ -10,10 +10,19 @@ import (
 )
 
 const (
-	errTelnetSpawnFailed  = "TelnetClient was failed at spawn(). You can troubleshoot using wireshark.\n"
-	errTelnetBatchFailed  = "TelnetClient was failed at ExpectBatch(). You can troubleshoot using wireshark."
-	hintTelnetBatchFailed = "[Hint] Invalid username or password. mismatch hostnames your set and configured one.\n"
+	errTelnetSpawnFailed = "TelnetClient was failed at spawn(). You can troubleshoot using wireshark.\n"
+	errTelnetBatchFailed = "TelnetClient was failed at ExpectBatch(). You can troubleshoot using wireshark."
 )
+
+const hintTelnetBatchFailed = `
+[Hint]
+- Are your username and password correct?
+  Some environments may use local and LDAP accounts.
+- Does the set host name match the actual host name?
+  Some devices include the host name in the display.
+- Are the execution-presets you set correct?
+  Some devices have presets for HA.
+`
 
 // Telnet struct
 type Telnet struct {
