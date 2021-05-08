@@ -1,0 +1,41 @@
+# .goreleaser.yml
+
+project_name: telee
+
+env:
+  - GO111MODULE=on
+
+# Build destination
+github_urls:
+  # set to true if you use a self-signed certificate
+  skip_tls_verify: false
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - main: cmd/main.go
+    id: telee
+    binary: telee
+    targets:
+      - linux_amd64
+      - linux_arm64
+      - darwin_amd64
+      - darwin_arm64
+    ldflags:
+      - -s -w
+    env:
+      - CGO_ENABLED=0
+    flags:
+      - -trimpath
+    asmflags:
+      - all=-trimpath={{.Env.GOPATH}}
+    gcflags:
+      - all=-trimpath={{.Env.GOPATH}}
+
+archives:
+  - name_template: '{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+
+release:
+  prerelease: auto
