@@ -23,17 +23,11 @@ type Usecase struct {
 func (u *Usecase) Fetch() (string, error) {
 	var expection []x.Batcher
 
-	if u.Config.EnableMode && u.HAMode {
+	if u.HAMode {
 		expection = u.buildPrivilegedRequest(haSuffix)
 	}
-	if u.Config.EnableMode && !u.HAMode {
+	if !u.HAMode {
 		expection = u.buildPrivilegedRequest(noSuffix)
-	}
-	if !u.Config.EnableMode && u.HAMode {
-		expection = u.buildUserModeRequest(haSuffix)
-	}
-	if !u.Config.EnableMode && !u.HAMode {
-		expection = u.buildUserModeRequest(noSuffix)
 	}
 
 	data, err := u.Repository.InvokeServerRepository().Fetch(&expection)
@@ -41,21 +35,6 @@ func (u *Usecase) Fetch() (string, error) {
 		return "", err
 	}
 	return data, nil
-}
-
-// [platform: asa] buildRequest returns the expection
-func (u *Usecase) buildUserModeRequest(suffix string) []x.Batcher {
-	return []x.Batcher{
-		&x.BExp{R: "Username:"},
-		&x.BSnd{S: u.Config.Username + "\n"},
-		&x.BExp{R: "Password:"},
-		&x.BSnd{S: u.Config.Password + "\n"},
-		&x.BExp{R: u.Config.Hostname + suffix + ">"},
-		&x.BSnd{S: "terminal pager 0\n"},
-		&x.BExp{R: u.Config.Hostname + suffix + ">"},
-		&x.BSnd{S: u.Config.Command + "\n"},
-		&x.BExp{R: u.Config.Hostname + suffix + ">"},
-	}
 }
 
 // [platform: asa] buildPrivilegedRequest returns the expection

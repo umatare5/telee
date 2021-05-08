@@ -2,7 +2,7 @@ package errors
 
 import "errors"
 
-// Used for error handling
+// Used for config validation
 var (
 	ErrMissingUsername     = errors.New("TELEE_USERNAME must be set")
 	ErrMissingPassword     = errors.New("TELEE_PASSWORD must be set")
@@ -10,4 +10,9 @@ var (
 	ErrMissingHostname     = errors.New("hostname must be set")
 	ErrMissingCommand      = errors.New("command must be set")
 	ErrInvalidPlatform     = errors.New("platform is not defined")
+)
+
+// Used for useca
+var (
+	ErrTermLengthIsEnforced = errors.New("EnableMode must be set. Terminal length expansion in user-level is not supporting.") // nolint
 )

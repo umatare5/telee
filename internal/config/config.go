@@ -59,6 +59,9 @@ func checkArguments(cfg *Config) error {
 	if !hasPrivPassword(cfg.EnableMode, cfg.PrivPassword) {
 		return errors.ErrMissingPrivPassword
 	}
+	if !isAbleToExpandTermLength(cfg.EnableMode, cfg.Platform) {
+		return errors.ErrTermLengthIsEnforced
+	}
 	if cfg.Hostname == "" {
 		return errors.ErrMissingHostname
 	}
@@ -68,7 +71,18 @@ func checkArguments(cfg *Config) error {
 	if !isValidExpectMode(cfg.Platform) {
 		return errors.ErrInvalidPlatform
 	}
+
 	return nil
+}
+
+func isAbleToExpandTermLength(mode bool, platform string) bool {
+	if platform == domain.ASASoftwarePlatformName && !mode {
+		return false
+	}
+	if platform == domain.ASASoftwareHAPlatformName && !mode {
+		return false
+	}
+	return true
 }
 
 func isValidExpectMode(platform string) bool {
