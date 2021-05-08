@@ -34,13 +34,9 @@ func (u *Usecase) Fetch() (string, error) {
 func (u *Usecase) buildUserModeRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "Please Enter Login Name:"},
-		&x.BSnd{S: u.Config.Username},
-		&x.BExp{R: u.Config.Username},
-		&x.BSnd{S: "\n"},
+		&x.BSnd{S: u.Config.Username + "\n"},
 		&x.BExp{R: "Please Enter Password:"},
-		&x.BSnd{S: u.Config.Password},
-		&x.BExp{R: u.Config.Password},
-		&x.BSnd{S: "\n"},
+		&x.BSnd{S: u.Config.Password + "\n"},
 		&x.BExp{R: "telnet@" + u.Config.Hostname + ">"},
 		&x.BSnd{S: "skip-page-display\n"},
 		&x.BExp{R: "telnet@" + u.Config.Hostname + ">"},
