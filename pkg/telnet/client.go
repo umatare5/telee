@@ -19,9 +19,9 @@ const hintTelnetBatchFailed = `
 - Are your username and password correct?
   Some environments may use local and LDAP accounts.
 - Does the set host name match the actual host name?
-  Some devices include the host name in the display.
-- Are the execution-presets you set correct?
-  Some devices have presets for HA.
+  Some devices require the host name for expectation.
+- Are the exec-platform you set correct?
+  Some devices have specific exec-platform for HA.
 `
 
 // Telnet struct
