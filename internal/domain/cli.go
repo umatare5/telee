@@ -10,6 +10,7 @@ const (
 	ASASoftwareHAPlatformName string = "asa-ha"
 	ScreenOSPlatformName      string = "ssg"
 	ScreenOSHAPlatformName    string = "ssg-ha"
+	YamahaOSPlatformName      string = "yamaha"
 )
 
 // Used for config validation
@@ -30,5 +31,6 @@ var (
 		ASASoftwareHAPlatformName,
 		ScreenOSPlatformName,
 		ScreenOSHAPlatformName,
+		YamahaOSPlatformName,
 	}
 )
