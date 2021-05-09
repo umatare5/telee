@@ -130,7 +130,6 @@ func isUsableEnableMode(mode bool, platform string) bool {
 			return false
 		}
 	}
-	fmt.Println(true)
 	return true
 }
 
