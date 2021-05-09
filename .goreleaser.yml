@@ -39,4 +39,4 @@ release:
   prerelease: auto
 
 checksum:
-  name_template: "{{ .ProjectName }}_v{{ .Version }}_checksums.txt"
+  name_template: "{{ .ProjectName }}-v{{ .Version }}_checksums.txt"
