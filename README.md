@@ -1,18 +1,20 @@
 # telee
 
-telee [téli] is a **TEL**net client to **E**x**E**cute a command on networking device that equip user-authentication.
+telee [téli] is a **TEL**net client to **E**x**E**cute a command on networking device through the user authentication.
 
-It has the following advantages compared to use standard telnet.
+It has following advantages compared to use standard telnet.
 
 - Reduces login and logout operations.
 
-  No longer have to enter username and password every time!🎉
+  No longer have to enter username and password every time! 🎉
 
-- Realize centralized operation from single host.
+- Realizes centralized operation from single host.
 
-  Can get and compare a lot of status, configuration and others easily!🎉
+  Able to get and compare the status, configuration and others easily! 🎉
 
 If you use a lot of "expect" scripts and "TeraTerm Macro", telee may be a simple alternative.
+
+![](https://github.com/umatare5/telee/blob/images/promo.gif)
 
 ## Installation
 
@@ -83,28 +85,38 @@ Gi0/10                         admin down     down
 lab-cat29l-02f99-01>
 ```
 
+- Also be able to grep the stdout.
+
+```console
+$ telee --hostname lab-cat29l-02f99-01 --command "show int descr" | grep "down"
+Vl1                            admin down     down
+Gi0/1                          down           down     CLIENT_DEVICE_LONG_DESCR
+Gi0/6                          down           down     CLIENT_DEVICE
+Gi0/7                          down           down     CLIENT_DEVICE
+Gi0/9                          admin down     down
+Gi0/10                         admin down     down
+```
+
 - Also be able to redirect to file.
 
 ```console
-$ telee --hostname lab-cat29l-02f99-01 --command "show int descr" > telee.log
+$ telee --hostname lab-cat29l-02f99-01 --enable --command "show run" > telee.log
 $ head -n 10 telee.log
-show int descr
+show run
 Load for five secs: 1%/0%; one minute: 1%; five minutes: 1%
-Time source is NTP, 23:20:51.295 JST Sat May 8 2021
+Time source is NTP, 23:21:34.501 JST Sat May 8 2021
 
-Interface                      Status         Protocol Description
-Vl1                            admin down     down
-Vl800                          up             up       *** LAB-MGMT ***
-Gi0/1                          down           down     CLIENT_DEVICE_LONG_DESCR
-Gi0/2                          up             up       CLIENT_DEVICE
-Gi0/3                          up             up       CLIENT_DEVICE
+Building configuration...
+
+Current configuration : 18687 bytes
+!
+! Last configuration change at 01:30:16 JST Sun Feb 14 2021
+!
 ```
 
-- When use on other than IOS, need to set `-x` (`--exec-platform`) option.
+- When use on other than IOS, need to set `--exec-platform` (`-x`) option.
 
-  <details><summary><code>
-  telee -H 192.168.0.250 -C "show sysinfo" -x aireos
-  </code></summary><p>
+  <details><summary><u>Click to show example</u></summary><p>
 
   ```console
   $ telee -H 192.168.0.250 -C "show sysinfo" -x aireos
@@ -131,14 +143,41 @@ Gi0/3                          up             up       CLIENT_DEVICE
 
   </p></details>
 
-- When use slow response devices, recommend to extend `--timeout`.
+- When use ASA, must set `--enable-mode`. ASA doesn't support `terminal pager 0` in user-level.
 
-  <details><summary><code>
-  telee -H lab-fs909-02f-01 -C "show system" -x allied --username manager --timeout 10
-  </code></summary><p>
+  <details><summary><u>Click to show example</u></summary><p>
 
   ```console
-  $ telee -H lab-fs909-02f-01 -C "show system" -x allied -u manager -t 10
+  $ telee -H lab-asa5505-02f01-01 -C "show version" -x asa --enable-mode --pp Pswd1234#
+  show version
+
+  Cisco Adaptive Security Appliance Software Version 9.0(4)
+  Device Manager Version 7.1(5)100
+
+  Compiled on Wed 04-Dec-13 08:33 by builders
+  System image file is "disk0:/asa904-k8.bin"
+  Config file at boot was "startup-config"
+
+  lab-asa5505-02f01-01 up 70 days 2 hours
+
+  Hardware:   ASA5505, 512 MB RAM, CPU Geode 500 MHz,
+  Internal ATA Compact Flash, 128MB
+  BIOS Flash M50FW016 @ 0xfff00000, 2048KB
+
+  Encryption hardware device : Cisco ASA-5505 on-board accelerator (revision 0x0)
+                               Boot microcode        : CN1000-MC-BOOT-2.00
+                               SSL/IKE microcode     : CNLite-MC-SSLm-PLUS-2.03
+  <snip>
+  ```
+
+  </p></details>
+
+- When face the timeout, be able to extend the time using `--timeout` option.
+
+  <details><summary><u>Click to show example</u></summary><p>
+
+  ```console
+  $ telee -H lab-fs909-02f01-01 -C "show system" -x allied -u manager --timeout 10
   show system
   Switch System Status                     Date 2021-05-09 Time 01:04:54
   Board     Bay      Board Name
@@ -150,44 +189,13 @@ Gi0/3                          up             up       CLIENT_DEVICE
   SysDescription  : CentreCOM FS909M Ver 1.6.14 B02
   SysContact      :
   SysLocation     : LAB
-  SysName         : lab-fs909-02f-01
+  SysName         : lab-fs909-02f01-01
   SysUpTime       : 1267989237(146days, 18:11:32)
   Release Version : 1.6.14
   Release built   : B02 (Nov 23 2010 at 14:29:56)
   Flash PROM      : Good
   RAM             : Good
   SW chip         : Good
-  <snip>
-  ```
-
-  </p></details>
-
-- When use ASA, must set `--enable-mode`. ASA doesn't support "terminal pager 0" in user-level.
-
-  <details><summary><code>
-  telee -H lab-asa5505-02f-01 -C "show version" -x asa --enable-mode --priv-password Pswd1234#
-  </code></summary><p>
-
-  ```console
-  $ telee -H lab-asa5505-02f-01 -C "show version" -x asa -e --pp Pswd1234#
-  show version
-
-  Cisco Adaptive Security Appliance Software Version 9.0(4)
-  Device Manager Version 7.1(5)100
-
-  Compiled on Wed 04-Dec-13 08:33 by builders
-  System image file is "disk0:/asa904-k8.bin"
-  Config file at boot was "startup-config"
-
-  lab-asa5505-02f-01 up 70 days 2 hours
-
-  Hardware:   ASA5505, 512 MB RAM, CPU Geode 500 MHz,
-  Internal ATA Compact Flash, 128MB
-  BIOS Flash M50FW016 @ 0xfff00000, 2048KB
-
-  Encryption hardware device : Cisco ASA-5505 on-board accelerator (revision 0x0)
-                               Boot microcode        : CN1000-MC-BOOT-2.00
-                               SSL/IKE microcode     : CNLite-MC-SSLm-PLUS-2.03
   <snip>
   ```
 
