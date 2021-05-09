@@ -53,7 +53,7 @@ GLOBAL OPTIONS:
 
 ## Usage
 
-- Set credentials into environment variables.
+- Set credentials as environment variable.
 
 ```bash
 export TELEE_USERNAME=telee
@@ -85,10 +85,11 @@ Gi0/10                         admin down     down
 lab-cat29l-02f99-01>
 ```
 
-- Also be able to grep the stdout.
+- Be able to grep the stdout.
 
 ```console
-$ telee --hostname lab-cat29l-02f99-01 --command "show int descr" | grep "down"
+$ telee --hostname lab-cat29l-02f99-01 --command "show int descr" | grep "Interface\|down"
+Interface                      Status         Protocol Description
 Vl1                            admin down     down
 Gi0/1                          down           down     CLIENT_DEVICE_LONG_DESCR
 Gi0/6                          down           down     CLIENT_DEVICE
@@ -100,7 +101,7 @@ Gi0/10                         admin down     down
 - Also be able to redirect to file.
 
 ```console
-$ telee --hostname lab-cat29l-02f99-01 --enable --command "show run" > telee.log
+$ telee --hostname lab-cat29l-02f99-01 --command "show run" --enable > telee.log
 $ head -n 10 telee.log
 show run
 Load for five secs: 1%/0%; one minute: 1%; five minutes: 1%
