@@ -9,7 +9,7 @@ var (
 	ErrMissingPrivPassword = errors.New("TELEE_PRIVPASSWORD must be set")
 	ErrMissingHostname     = errors.New("hostname must be set")
 	ErrMissingCommand      = errors.New("command must be set")
-	ErrInvalidPlatform     = errors.New("exec-platform is not defined")
+	ErrInvalidPlatform     = errors.New("exec-platform is not supported")
 )
 
 // Used for useca

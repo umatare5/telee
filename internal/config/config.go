@@ -65,7 +65,7 @@ func checkArguments(cfg *Config) error {
 	if !hasPrivPassword(cfg.EnableMode, cfg.PrivPassword) {
 		return errors.ErrMissingPrivPassword
 	}
-	if !isAbleToExpandTermLength(cfg.EnableMode, cfg.ExecPlatform) {
+	if !isExpandableTermLength(cfg.EnableMode, cfg.ExecPlatform) {
 		return errors.ErrTermLengthIsEnforced
 	}
 	if cfg.Hostname == "" {
@@ -74,7 +74,7 @@ func checkArguments(cfg *Config) error {
 	if cfg.Command == "" {
 		return errors.ErrMissingCommand
 	}
-	if !isValidExpectMode(cfg.ExecPlatform) {
+	if !isValidExecPlatform(cfg.ExecPlatform) {
 		return errors.ErrInvalidPlatform
 	}
 	if !isUsableEnableMode(cfg.EnableMode, cfg.ExecPlatform) {
@@ -87,7 +87,7 @@ func checkArguments(cfg *Config) error {
 	return nil
 }
 
-func isAbleToExpandTermLength(mode bool, platform string) bool {
+func isExpandableTermLength(mode bool, platform string) bool {
 	if platform == domain.ASASoftwarePlatformName && !mode {
 		return false
 	}
@@ -97,7 +97,7 @@ func isAbleToExpandTermLength(mode bool, platform string) bool {
 	return true
 }
 
-func isValidExpectMode(platform string) bool {
+func isValidExecPlatform(platform string) bool {
 	for _, p := range domain.CmdPlatforms {
 		if platform == p {
 			return true
