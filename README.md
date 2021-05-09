@@ -1,8 +1,18 @@
 # telee
 
-telee [téli] is a telnet client to **E**x**E**cute a command on device that equip authentication.
+telee [téli] is a **TEL**net client to **E**x**E**cute a command on networking device that equip user-authentication.
 
-No longer need to input username, passwords and 'exit' command each time operate them!
+It has the following advantages compared to use standard telnet.
+
+- Reduces login and logout operations.
+
+  No longer have to enter username and password every time!🎉
+
+- Realize centralized operation from single host.
+
+  Can get and compare a lot of status, configuration and others easily!🎉
+
+If you use a lot of "expect" scripts and "TeraTerm Macro", telee may be a simple alternative.
 
 ## Installation
 
@@ -41,7 +51,7 @@ GLOBAL OPTIONS:
 
 ## Usage
 
-- At first, set credentials into environment variables.
+- Set credentials into environment variables.
 
 ```bash
 export TELEE_USERNAME=telee
@@ -71,6 +81,23 @@ Gi0/8                          up             up       GATEWAY_ROUTER
 Gi0/9                          admin down     down
 Gi0/10                         admin down     down
 lab-cat29l-02f99-01>
+```
+
+- Also be able to redirect to file.
+
+```console
+$ telee --hostname lab-cat29l-02f99-01 --command "show int descr" > telee.log
+$ head -n 10 telee.log
+show int descr
+Load for five secs: 1%/0%; one minute: 1%; five minutes: 1%
+Time source is NTP, 23:20:51.295 JST Sat May 8 2021
+
+Interface                      Status         Protocol Description
+Vl1                            admin down     down
+Vl800                          up             up       *** LAB-MGMT ***
+Gi0/1                          down           down     CLIENT_DEVICE_LONG_DESCR
+Gi0/2                          up             up       CLIENT_DEVICE
+Gi0/3                          up             up       CLIENT_DEVICE
 ```
 
 - When use on other than IOS, need to set `-x` (`--exec-platform`) option.
@@ -166,9 +193,10 @@ lab-cat29l-02f99-01>
 
   </p></details>
 
-## Verified Platform
+## Exec Platform
 
-- The following table is result of values that can be set with the `-x` option and what version verified.
+- telee works for several operating systems. These are called exec-platform.
+- The following table shows each exec-platform was verified on which OS version.
 
   | Name (`-x`) | Description                   | Verified On     |
   | :---------- | :---------------------------- | :-------------- |
