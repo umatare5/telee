@@ -12,7 +12,7 @@ It has following advantages compared to use standard telnet.
 
   Able to get and compare the status, configuration and others easily! 🎉
 
-If you use a lot of "expect" scripts and "TeraTerm Macro", telee may be a simple alternative.
+For those who use many "expect" scripts and "TeraTerm Macro", telee may be a simple alternative.
 
 ![](https://github.com/umatare5/telee/blob/images/promo.gif)
 
