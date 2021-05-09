@@ -7,6 +7,7 @@ import (
 	iosUsecase "telee/internal/application/usecases/ios"
 	ironwareUsecase "telee/internal/application/usecases/ironware"
 	screenosUsecase "telee/internal/application/usecases/screenos"
+	yamahaosUsecase "telee/internal/application/usecases/yamahaos"
 	"telee/internal/config"
 	"telee/internal/infrastructure"
 )
@@ -90,5 +91,13 @@ func (u *Usecase) InvokeASASoftwareHAUsecase() *asasoftwareUsecase.Usecase {
 		Config:     u.Config,
 		Repository: u.Repository,
 		HAMode:     true,
+	}
+}
+
+// InvokeYamahaOSUsecase returns YamahaOSUsecase struct
+func (u *Usecase) InvokeYamahaOSUsecase() *yamahaosUsecase.Usecase {
+	return &yamahaosUsecase.Usecase{
+		Config:     u.Config,
+		Repository: u.Repository,
 	}
 }
