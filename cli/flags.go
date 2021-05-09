@@ -141,7 +141,7 @@ const (
 	optEnableModeValue bool   = false
 )
 
-var optEnableModeAlias = []string{"e", "ena", "enable"}
+var optEnableModeAlias = []string{"e", "ena", "enable", "admin", "administrator", "priv"}
 
 // Declare enable-mode flag
 func registerEnableModeFlag() []cli.Flag {
