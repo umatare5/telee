@@ -20,7 +20,7 @@ USAGE:
    telee -H HOSTNAME -C COMMAND [options...]
 
 VERSION:
-   1.1.2
+   1.2.0
 
 COMMANDS:
    help, h  Shows a list of commands or help for one command
@@ -30,11 +30,11 @@ GLOBAL OPTIONS:
    --port value, -P value              Set port number. (default: 23)
    --timeout value, -t value           Set timeout seconds. (default: 5)
    --command value, -C value           Set a command. [$TELEE_COMMAND]
-   --platform value, -x value          Set platform. Refer to README.md what to be set. (default: "ios")
-   --enable-mode, -e, --ena, --enable  Log in to privileged EXEC mode. (default: false)
+   --exec-platform value, -x value     Set exec-platform. Refer to README.md what to be set. (default: "ios")
+   --enable-mode, -e, --ena, --enable  Raise to privileged EXEC mode. (default: false)
    --username value, -u value          Set username. (default: "admin") [$TELEE_USERNAME]
    --password value, -p value          Set password. (default: "cisco") [$TELEE_PASSWORD]
-   --priv-password value, --pp value   Set password to change to privileged EXEC mode. (default: "enable") [$TELEE_PRIVPASSWORD]
+   --priv-password value, --pp value   Set password to raise to privileged EXEC mode. (default: "enable") [$TELEE_PRIVPASSWORD]
    --help, -h                          show help (default: false)
    --version, -v                       print the version (default: false)
 ```
