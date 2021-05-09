@@ -14,7 +14,7 @@ type Config struct {
 	Hostname     string
 	Port         int
 	Timeout      int
-	Platform     string
+	ExecPlatform string
 	EnableMode   bool
 	Command      string
 	Username     string
@@ -28,7 +28,7 @@ func New(ctx *cli.Context) Config {
 		Hostname:     ctx.String("hostname"),
 		Port:         ctx.Int("port"),
 		Timeout:      ctx.Int("timeout"),
-		Platform:     ctx.String("platform"),
+		ExecPlatform: ctx.String("exec-platform"),
 		EnableMode:   ctx.Bool("enable-mode"),
 		Command:      ctx.String("command"),
 		Username:     ctx.String("username"),
@@ -59,7 +59,7 @@ func checkArguments(cfg *Config) error {
 	if !hasPrivPassword(cfg.EnableMode, cfg.PrivPassword) {
 		return errors.ErrMissingPrivPassword
 	}
-	if !isAbleToExpandTermLength(cfg.EnableMode, cfg.Platform) {
+	if !isAbleToExpandTermLength(cfg.EnableMode, cfg.ExecPlatform) {
 		return errors.ErrTermLengthIsEnforced
 	}
 	if cfg.Hostname == "" {
@@ -68,7 +68,7 @@ func checkArguments(cfg *Config) error {
 	if cfg.Command == "" {
 		return errors.ErrMissingCommand
 	}
-	if !isValidExpectMode(cfg.Platform) {
+	if !isValidExpectMode(cfg.ExecPlatform) {
 		return errors.ErrInvalidPlatform
 	}
 
