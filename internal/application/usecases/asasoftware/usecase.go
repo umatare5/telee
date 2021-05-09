@@ -21,23 +21,23 @@ type Usecase struct {
 
 // Fetch returns stdout from telnet session
 func (u *Usecase) Fetch() (string, error) {
-	var expection []x.Batcher
+	var expectation []x.Batcher
 
 	if u.HAMode {
-		expection = u.buildPrivilegedRequest(haSuffix)
+		expectation = u.buildPrivilegedRequest(haSuffix)
 	}
 	if !u.HAMode {
-		expection = u.buildPrivilegedRequest(noSuffix)
+		expectation = u.buildPrivilegedRequest(noSuffix)
 	}
 
-	data, err := u.Repository.InvokeServerRepository().Fetch(&expection)
+	data, err := u.Repository.InvokeServerRepository().Fetch(&expectation)
 	if err != nil {
 		return "", err
 	}
 	return data, nil
 }
 
-// [platform: asa] buildPrivilegedRequest returns the expection
+// [platform: asa] buildPrivilegedRequest returns the expectation
 func (u *Usecase) buildPrivilegedRequest(suffix string) []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "Username:"},

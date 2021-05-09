@@ -15,22 +15,22 @@ type Usecase struct {
 
 // Fetch returns stdout from telnet session
 func (u *Usecase) Fetch() (string, error) {
-	var expection []x.Batcher
+	var expectation []x.Batcher
 
 	if u.Config.EnableMode {
-		expection = u.buildPrivilegedRequest()
+		expectation = u.buildPrivilegedRequest()
 	} else {
-		expection = u.buildUserModeRequest()
+		expectation = u.buildUserModeRequest()
 	}
 
-	data, err := u.Repository.InvokeServerRepository().Fetch(&expection)
+	data, err := u.Repository.InvokeServerRepository().Fetch(&expectation)
 	if err != nil {
 		return "", err
 	}
 	return data, nil
 }
 
-// [platform: foundry] buildUserModeRequest returns the expection
+// [platform: foundry] buildUserModeRequest returns the expectation
 func (u *Usecase) buildUserModeRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "Please Enter Login Name:"},
@@ -45,7 +45,7 @@ func (u *Usecase) buildUserModeRequest() []x.Batcher {
 	}
 }
 
-// [platform: foundry] buildPrivilegedRequest returns the expection
+// [platform: foundry] buildPrivilegedRequest returns the expectation
 func (u *Usecase) buildPrivilegedRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "Please Enter Login Name:"},

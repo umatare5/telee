@@ -15,15 +15,15 @@ type Usecase struct {
 
 // Fetch returns stdout from telnet session
 func (u *Usecase) Fetch() (string, error) {
-	expection := u.buildRequest()
-	data, err := u.Repository.InvokeServerRepository().Fetch(&expection)
+	expectation := u.buildRequest()
+	data, err := u.Repository.InvokeServerRepository().Fetch(&expectation)
 	if err != nil {
 		return "", err
 	}
 	return data, nil
 }
 
-// [platform: allied] buildRequest returns the expection
+// [platform: allied] buildRequest returns the expectation
 func (u *Usecase) buildRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "login:"},
