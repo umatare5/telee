@@ -216,6 +216,7 @@ Current configuration : 18687 bytes
   | ios         | Cisco IOS                     | ✅ 15.2(5c)E    | Optional           |
   | ssg         | JuniperNetworks ScreenOS      | ✅ 6.3.0r21.0   | Not Available      |
   | ssg-ha      | JuniperNetworks ScreenOS (HA) | ✅ 6.3.0r22.0   | Not Available      |
+  | yamaha      | YAMAHA RT OS                  | ✅ Rev.8.03.94  | Optional           |
 
 ## Development
 

@@ -53,6 +53,9 @@ func (e *Exec) Run() {
 	if e.Config.ExecPlatform == domain.ASASoftwareHAPlatformName {
 		data, err = e.Usecase.InvokeASASoftwareHAUsecase().Fetch()
 	}
+	if e.Config.ExecPlatform == domain.YamahaOSPlatformName {
+		data, err = e.Usecase.InvokeYamahaOSUsecase().Fetch()
+	}
 
 	if err != nil {
 		fmt.Println(err)
