@@ -76,6 +76,9 @@ func checkArguments(cfg *Config) error {
 	if cfg.Command == domain.EmptyString {
 		return errors.ErrMissingCommand
 	}
+	if isUsableHAMode(cfg.HAMode, cfg.ExecPlatform) {
+		return errors.ErrUnsupportedHAMode
+	}
 	if !isValidExecPlatform(cfg.ExecPlatform) {
 		return errors.ErrInvalidPlatform
 	}
@@ -127,6 +130,18 @@ func isUsableEnableMode(mode bool, platform string) bool {
 		}
 	}
 	return true
+}
+
+func isUsableHAMode(mode bool, platform string) bool {
+	if mode {
+		if platform == domain.ASASoftwarePlatformName {
+			return true
+		}
+		if platform == domain.ScreenOSPlatformName {
+			return true
+		}
+	}
+	return false
 }
 
 func isUsableUsername(username string, platform string) bool {

@@ -10,6 +10,7 @@ var (
 	ErrMissingHostname     = errors.New("hostname must be set")
 	ErrMissingCommand      = errors.New("command must be set")
 	ErrInvalidPlatform     = errors.New("exec-platform is not supported")
+	ErrUnsupportedHAMode   = errors.New("ha-mode is not supported in this platform")
 )
 
 // Used for useca
