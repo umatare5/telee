@@ -38,16 +38,16 @@ func (r *Repository) InvokeAlliedWareRepository() *alliedwareRepository.Reposito
 	}
 }
 
-// InvokeIOSRepository returns IOSRepository struct
-func (r *Repository) InvokeIOSRepository() *iosRepository.Repository {
-	return &iosRepository.Repository{
+// InvokeASASoftwareRepository returns ASASoftwareRepository struct
+func (r *Repository) InvokeASASoftwareRepository() *asasoftwareRepository.Repository {
+	return &asasoftwareRepository.Repository{
 		Config: r.Config,
 	}
 }
 
-// InvokeASASoftwareRepository returns ASASoftwareRepository struct
-func (r *Repository) InvokeASASoftwareRepository() *asasoftwareRepository.Repository {
-	return &asasoftwareRepository.Repository{
+// InvokeIOSRepository returns IOSRepository struct
+func (r *Repository) InvokeIOSRepository() *iosRepository.Repository {
+	return &iosRepository.Repository{
 		Config: r.Config,
 	}
 }

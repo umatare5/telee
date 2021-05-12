@@ -1,7 +1,7 @@
 package domain
 
 // Defaults
-var (
+const (
 	EmptyString = ""
 	EmptyArray  = 0
 )

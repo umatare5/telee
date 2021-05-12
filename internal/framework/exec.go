@@ -29,29 +29,23 @@ func (e *Exec) Run() {
 	var err error
 	var data string
 
-	if e.Config.ExecPlatform == domain.IOSPlatformName {
-		data, err = e.Usecase.InvokeIOSUsecase().Fetch()
-	}
 	if e.Config.ExecPlatform == domain.AireOSPlatformName {
 		data, err = e.Usecase.InvokeAireOSUsecase().Fetch()
 	}
 	if e.Config.ExecPlatform == domain.AlliedWarePlatformName {
 		data, err = e.Usecase.InvokeAlliedWareUsecase().Fetch()
 	}
-	if e.Config.ExecPlatform == domain.ScreenOSPlatformName {
-		data, err = e.Usecase.InvokeScreenOSUsecase().Fetch()
+	if e.Config.ExecPlatform == domain.ASASoftwarePlatformName {
+		data, err = e.Usecase.InvokeASASoftwareUsecase().Fetch()
 	}
-	if e.Config.ExecPlatform == domain.ScreenOSHAPlatformName {
-		data, err = e.Usecase.InvokeScreenOSHAUsecase().Fetch()
+	if e.Config.ExecPlatform == domain.IOSPlatformName {
+		data, err = e.Usecase.InvokeIOSUsecase().Fetch()
 	}
 	if e.Config.ExecPlatform == domain.IronWarePlatformName {
 		data, err = e.Usecase.InvokeIronWareUsecase().Fetch()
 	}
-	if e.Config.ExecPlatform == domain.ASASoftwarePlatformName {
-		data, err = e.Usecase.InvokeASASoftwareUsecase().Fetch()
-	}
-	if e.Config.ExecPlatform == domain.ASASoftwareHAPlatformName {
-		data, err = e.Usecase.InvokeASASoftwareHAUsecase().Fetch()
+	if e.Config.ExecPlatform == domain.ScreenOSPlatformName {
+		data, err = e.Usecase.InvokeScreenOSUsecase().Fetch()
 	}
 	if e.Config.ExecPlatform == domain.YamahaOSPlatformName {
 		data, err = e.Usecase.InvokeYamahaOSUsecase().Fetch()

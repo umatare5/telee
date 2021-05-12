@@ -2,15 +2,13 @@ package domain
 
 // Used for routing in usecases
 const (
-	IOSPlatformName           string = "ios"
-	IronWarePlatformName      string = "foundry"
-	AireOSPlatformName        string = "aireos"
-	AlliedWarePlatformName    string = "allied"
-	ASASoftwarePlatformName   string = "asa"
-	ASASoftwareHAPlatformName string = "asa-ha"
-	ScreenOSPlatformName      string = "ssg"
-	ScreenOSHAPlatformName    string = "ssg-ha"
-	YamahaOSPlatformName      string = "yamaha"
+	IOSPlatformName         string = "ios"
+	IronWarePlatformName    string = "foundry"
+	AireOSPlatformName      string = "aireos"
+	AlliedWarePlatformName  string = "allied"
+	ASASoftwarePlatformName string = "asa"
+	ScreenOSPlatformName    string = "ssg"
+	YamahaOSPlatformName    string = "yamaha"
 )
 
 // Used for config validation
@@ -21,9 +19,7 @@ var (
 		AireOSPlatformName,
 		AlliedWarePlatformName,
 		ASASoftwarePlatformName,
-		ASASoftwareHAPlatformName,
 		ScreenOSPlatformName,
-		ScreenOSHAPlatformName,
 		YamahaOSPlatformName,
 	}
 )

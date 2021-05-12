@@ -26,14 +26,6 @@ func New(c *config.Config, r *infrastructure.Repository) Usecase {
 	}
 }
 
-// InvokeIOSUsecase returns IOSUsecase struct
-func (u *Usecase) InvokeIOSUsecase() *iosUsecase.Usecase {
-	return &iosUsecase.Usecase{
-		Config:     u.Config,
-		Repository: u.Repository,
-	}
-}
-
 // InvokeAireOSUsecase returns AireOSUsecase struct
 func (u *Usecase) InvokeAireOSUsecase() *aireosUsecase.Usecase {
 	return &aireosUsecase.Usecase{
@@ -50,30 +42,6 @@ func (u *Usecase) InvokeAlliedWareUsecase() *alliedwareUsecase.Usecase {
 	}
 }
 
-// InvokeScreenOSUsecase returns ScreenOSUsecase struct
-func (u *Usecase) InvokeScreenOSUsecase() *screenosUsecase.Usecase {
-	return &screenosUsecase.Usecase{
-		Config:     u.Config,
-		Repository: u.Repository,
-	}
-}
-
-// InvokeScreenOSHAUsecase returns ScreenOSUsecase struct with HA
-func (u *Usecase) InvokeScreenOSHAUsecase() *screenosUsecase.Usecase {
-	return &screenosUsecase.Usecase{
-		Config:     u.Config,
-		Repository: u.Repository,
-	}
-}
-
-// InvokeIronWareUsecase returns IronWareUsecase struct
-func (u *Usecase) InvokeIronWareUsecase() *ironwareUsecase.Usecase {
-	return &ironwareUsecase.Usecase{
-		Config:     u.Config,
-		Repository: u.Repository,
-	}
-}
-
 // InvokeASASoftwareUsecase returns ASASoftwareUsecase struct
 func (u *Usecase) InvokeASASoftwareUsecase() *asasoftwareUsecase.Usecase {
 	return &asasoftwareUsecase.Usecase{
@@ -82,9 +50,25 @@ func (u *Usecase) InvokeASASoftwareUsecase() *asasoftwareUsecase.Usecase {
 	}
 }
 
-// InvokeASASoftwareHAUsecase returns ASASoftwareUsecase struct with HA
-func (u *Usecase) InvokeASASoftwareHAUsecase() *asasoftwareUsecase.Usecase {
-	return &asasoftwareUsecase.Usecase{
+// InvokeIOSUsecase returns IOSUsecase struct
+func (u *Usecase) InvokeIOSUsecase() *iosUsecase.Usecase {
+	return &iosUsecase.Usecase{
+		Config:     u.Config,
+		Repository: u.Repository,
+	}
+}
+
+// InvokeIronWareUsecase returns IronWareUsecase
+func (u *Usecase) InvokeIronWareUsecase() *ironwareUsecase.Usecase {
+	return &ironwareUsecase.Usecase{
+		Config:     u.Config,
+		Repository: u.Repository,
+	}
+}
+
+// InvokeScreenOSUsecase returns ScreenOSUsecase struct
+func (u *Usecase) InvokeScreenOSUsecase() *screenosUsecase.Usecase {
+	return &screenosUsecase.Usecase{
 		Config:     u.Config,
 		Repository: u.Repository,
 	}

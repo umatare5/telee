@@ -207,17 +207,17 @@ Current configuration : 18687 bytes
 - telee works for several operating systems. These are called exec-platform.
 - The following table shows each exec-platform was verified on which OS version.
 
-  | Name (`-x`) | Description                   | Verified On     | Enable Mode (`-e`) |
-  | :---------- | :---------------------------- | :-------------- | ------------------ |
-  | aireos      | Cisco AireOS                  | ✅ 8.5.120.0    | Optional           |
-  | allied      | AlliedTelesis AlliedWare      | ✅ 1.6.14B02    | Not Available      |
-  | asa         | Cisco ASA Software            | ✅ 9.0(4)       | **REQUIRED**       |
-  | asa-ha      | Cisco ASA Software (HA)       | ✅ 9.10(1)      | **REQUIRED**       |
-  | foundry     | Brocade IronWare              | ✅ 07.2.02aT7e1 | Optional           |
-  | ios         | Cisco IOS                     | ✅ 15.2(5c)E    | Optional           |
-  | ssg         | JuniperNetworks ScreenOS      | ✅ 6.3.0r21.0   | Not Available      |
-  | ssg-ha      | JuniperNetworks ScreenOS (HA) | ✅ 6.3.0r22.0   | Not Available      |
-  | yamaha      | YAMAHA RT OS                  | ✅ Rev.8.03.94  | Optional           |
+  | Name (`-x`)     | Description                   | Verified On     | Enable Mode (`-e`) |
+  | :-------------- | :---------------------------- | :-------------- | ------------------ |
+  | aireos          | Cisco AireOS                  | ✅ 8.5.120.0    | Optional           |
+  | allied          | AlliedTelesis AlliedWare      | ✅ 1.6.14B02    | Not Available      |
+  | asa             | Cisco ASA Software            | ✅ 9.0(4)       | **REQUIRED**       |
+  | asa (--ha-mode) | Cisco ASA Software (HA)       | ✅ 9.10(1)      | **REQUIRED**       |
+  | foundry         | Brocade IronWare              | ✅ 07.2.02aT7e1 | Optional           |
+  | ios             | Cisco IOS                     | ✅ 15.2(5c)E    | Optional           |
+  | ssg             | JuniperNetworks ScreenOS      | ✅ 6.3.0r21.0   | Not Available      |
+  | ssg (--ha-mode) | JuniperNetworks ScreenOS (HA) | ✅ 6.3.0r22.0   | Not Available      |
+  | yamaha          | YAMAHA RT OS                  | ✅ Rev.8.03.94  | Optional           |
 
 ## Development
 
