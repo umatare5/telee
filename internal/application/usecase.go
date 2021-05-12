@@ -26,7 +26,7 @@ func New(c *config.Config, r *infrastructure.Repository) Usecase {
 	}
 }
 
-// InvokeAireOSUsecase returns AireOSUsecase struct
+// InvokeAireOSUsecase returns new AireOSUsecase
 func (u *Usecase) InvokeAireOSUsecase() *aireosUsecase.Usecase {
 	return &aireosUsecase.Usecase{
 		Config:     u.Config,
@@ -34,7 +34,7 @@ func (u *Usecase) InvokeAireOSUsecase() *aireosUsecase.Usecase {
 	}
 }
 
-// InvokeAlliedWareUsecase returns AlliedWareUsecase struct
+// InvokeAlliedWareUsecase returns new AlliedWareUsecase
 func (u *Usecase) InvokeAlliedWareUsecase() *alliedwareUsecase.Usecase {
 	return &alliedwareUsecase.Usecase{
 		Config:     u.Config,
@@ -42,7 +42,7 @@ func (u *Usecase) InvokeAlliedWareUsecase() *alliedwareUsecase.Usecase {
 	}
 }
 
-// InvokeASASoftwareUsecase returns ASASoftwareUsecase struct
+// InvokeASASoftwareUsecase returns new ASASoftwareUsecase
 func (u *Usecase) InvokeASASoftwareUsecase() *asasoftwareUsecase.Usecase {
 	return &asasoftwareUsecase.Usecase{
 		Config:     u.Config,
@@ -50,7 +50,7 @@ func (u *Usecase) InvokeASASoftwareUsecase() *asasoftwareUsecase.Usecase {
 	}
 }
 
-// InvokeIOSUsecase returns IOSUsecase struct
+// InvokeIOSUsecase returns new IOSUsecase
 func (u *Usecase) InvokeIOSUsecase() *iosUsecase.Usecase {
 	return &iosUsecase.Usecase{
 		Config:     u.Config,
@@ -58,7 +58,7 @@ func (u *Usecase) InvokeIOSUsecase() *iosUsecase.Usecase {
 	}
 }
 
-// InvokeIronWareUsecase returns IronWareUsecase
+// InvokeIronWareUsecase returns new IronWareUsecase
 func (u *Usecase) InvokeIronWareUsecase() *ironwareUsecase.Usecase {
 	return &ironwareUsecase.Usecase{
 		Config:     u.Config,
@@ -66,7 +66,7 @@ func (u *Usecase) InvokeIronWareUsecase() *ironwareUsecase.Usecase {
 	}
 }
 
-// InvokeScreenOSUsecase returns ScreenOSUsecase struct
+// InvokeScreenOSUsecase returns new ScreenOSUsecase
 func (u *Usecase) InvokeScreenOSUsecase() *screenosUsecase.Usecase {
 	return &screenosUsecase.Usecase{
 		Config:     u.Config,
@@ -74,7 +74,7 @@ func (u *Usecase) InvokeScreenOSUsecase() *screenosUsecase.Usecase {
 	}
 }
 
-// InvokeYamahaOSUsecase returns YamahaOSUsecase struct
+// InvokeYamahaOSUsecase returns new YamahaOSUsecase
 func (u *Usecase) InvokeYamahaOSUsecase() *yamahaosUsecase.Usecase {
 	return &yamahaosUsecase.Usecase{
 		Config:     u.Config,

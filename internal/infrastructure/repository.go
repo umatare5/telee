@@ -24,49 +24,49 @@ func New(c *config.Config) Repository {
 	}
 }
 
-// InvokeAireOSRepository returns AireOSRepository struct
+// InvokeAireOSRepository returns new AireOSRepository
 func (r *Repository) InvokeAireOSRepository() *aireosRepository.Repository {
 	return &aireosRepository.Repository{
 		Config: r.Config,
 	}
 }
 
-// InvokeAlliedWareRepository returns AlliedWareRepository struct
+// InvokeAlliedWareRepository returns new AlliedWareRepository
 func (r *Repository) InvokeAlliedWareRepository() *alliedwareRepository.Repository {
 	return &alliedwareRepository.Repository{
 		Config: r.Config,
 	}
 }
 
-// InvokeASASoftwareRepository returns ASASoftwareRepository struct
+// InvokeASASoftwareRepository returns new ASASoftwareRepository
 func (r *Repository) InvokeASASoftwareRepository() *asasoftwareRepository.Repository {
 	return &asasoftwareRepository.Repository{
 		Config: r.Config,
 	}
 }
 
-// InvokeIOSRepository returns IOSRepository struct
+// InvokeIOSRepository returns new IOSRepository
 func (r *Repository) InvokeIOSRepository() *iosRepository.Repository {
 	return &iosRepository.Repository{
 		Config: r.Config,
 	}
 }
 
-// InvokeIronWareRepository returns IronWareRepository struct
+// InvokeIronWareRepository returns new IronWareRepository
 func (r *Repository) InvokeIronWareRepository() *ironwareRepository.Repository {
 	return &ironwareRepository.Repository{
 		Config: r.Config,
 	}
 }
 
-// InvokeScreenOSRepository returns ScreenOSRepository struct
+// InvokeScreenOSRepository returns new ScreenOSRepository
 func (r *Repository) InvokeScreenOSRepository() *screenosRepository.Repository {
 	return &screenosRepository.Repository{
 		Config: r.Config,
 	}
 }
 
-// InvokeYamahaOSRepository returns YamahaOSRepository struct
+// InvokeYamahaOSRepository returns new YamahaOSRepository
 func (r *Repository) InvokeYamahaOSRepository() *yamahaosRepository.Repository {
 	return &yamahaosRepository.Repository{
 		Config: r.Config,
