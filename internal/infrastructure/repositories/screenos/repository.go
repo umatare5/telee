@@ -1,9 +1,7 @@
 package repository
 
 import (
-	"fmt"
 	"telee/internal/config"
-	"telee/internal/domain"
 	"telee/pkg/telnet"
 	"time"
 
@@ -39,7 +37,6 @@ func (r *Repository) Fetch() (string, error) {
 	)
 	data, err := client.Fetch(&expects)
 	if err != nil {
-		fmt.Println(domain.HintTelnetFailed)
 		return "", err
 	}
 
