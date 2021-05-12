@@ -8,5 +8,5 @@ const HintTelnetFailed = `
 - Does the set host name match the actual host name?
   Some devices require the host name for expectation.
 - Are the exec-platform you set correct?
-  Some devices have specific exec-platform for HA.
+  Some devices also needs --ha-mode option.
 `
