@@ -13,7 +13,7 @@ const (
 
 // Used for config validation
 var (
-	CmdPlatforms = []string{
+	Platforms = []string{
 		IOSPlatformName,
 		IronWarePlatformName,
 		AireOSPlatformName,

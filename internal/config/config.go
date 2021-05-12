@@ -97,7 +97,7 @@ func isExpandableTermLength(mode bool, platform string) bool {
 }
 
 func isValidExecPlatform(platform string) bool {
-	for _, p := range domain.CmdPlatforms {
+	for _, p := range domain.Platforms {
 		if platform == p {
 			return true
 		}

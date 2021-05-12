@@ -2,14 +2,11 @@ package repository
 
 import (
 	"telee/internal/config"
+	"telee/internal/domain"
 	"telee/pkg/telnet"
 	"time"
 
 	x "github.com/google/goexpect"
-)
-
-const (
-	protocol string = "tcp"
 )
 
 // Repository struct
@@ -22,7 +19,7 @@ func (r *Repository) Fetch() (string, error) {
 	expects := r.buildRequest()
 
 	client := telnet.New(
-		r.Config.Hostname, r.Config.Port, protocol, time.Duration(r.Config.Timeout)*time.Second,
+		r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
 	)
 	data, err := client.Fetch(&expects)
 	if err != nil {
