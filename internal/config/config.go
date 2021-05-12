@@ -31,15 +31,15 @@ type Config struct {
 // New returns Config struct
 func New(ctx *cli.Context) Config {
 	cfg := Config{
-		Hostname:     ctx.String("hostname"),
-		Port:         ctx.Int("port"),
-		Timeout:      ctx.Int("timeout"),
-		ExecPlatform: ctx.String("exec-platform"),
-		EnableMode:   ctx.Bool("enable-mode"),
-		Command:      ctx.String("command"),
-		Username:     ctx.String("username"),
-		Password:     ctx.String("password"),
-		PrivPassword: ctx.String("priv-password"),
+		Hostname:     ctx.String(domain.HostnameFlagName),
+		Port:         ctx.Int(domain.PortFlagName),
+		Timeout:      ctx.Int(domain.TimeoutFlagName),
+		Command:      ctx.String(domain.CommandFlagName),
+		ExecPlatform: ctx.String(domain.ExecPlatformFlagName),
+		EnableMode:   ctx.Bool(domain.EnableModeFlagName),
+		Username:     ctx.String(domain.UsernameFlagName),
+		Password:     ctx.String(domain.PasswordFlagName),
+		PrivPassword: ctx.String(domain.PrivPasswordFlagName),
 	}
 
 	err := configor.New(&configor.Config{}).Load(&cfg)
@@ -56,10 +56,10 @@ func New(ctx *cli.Context) Config {
 }
 
 func checkArguments(cfg *Config) error {
-	if cfg.Username == domain.DefaultUsernameValue {
+	if cfg.Username == domain.UsernameFlagDefaultValue {
 		return errors.ErrMissingUsername
 	}
-	if cfg.Password == domain.DefaultPasswordValue {
+	if cfg.Password == domain.PasswordFlagDefaultValue {
 		return errors.ErrMissingPassword
 	}
 	if !hasPrivPassword(cfg.EnableMode, cfg.PrivPassword) {
@@ -68,10 +68,10 @@ func checkArguments(cfg *Config) error {
 	if !isExpandableTermLength(cfg.EnableMode, cfg.ExecPlatform) {
 		return errors.ErrTermLengthIsEnforced
 	}
-	if cfg.Hostname == "" {
+	if cfg.Hostname == domain.EmptyString {
 		return errors.ErrMissingHostname
 	}
-	if cfg.Command == "" {
+	if cfg.Command == domain.EmptyString {
 		return errors.ErrMissingCommand
 	}
 	if !isValidExecPlatform(cfg.ExecPlatform) {
@@ -108,7 +108,7 @@ func isValidExecPlatform(platform string) bool {
 
 func hasPrivPassword(value bool, password string) bool {
 	if value {
-		if password == domain.DefaultPrivPasswordValue {
+		if password == domain.PrivPasswordFlagDefaultValue {
 			return false
 		}
 	}
@@ -134,7 +134,7 @@ func isUsableEnableMode(mode bool, platform string) bool {
 }
 
 func isUsableUsername(username string, platform string) bool {
-	if username != "" {
+	if username != domain.EmptyString {
 		if platform == domain.YamahaOSPlatformName {
 			return false
 		}
