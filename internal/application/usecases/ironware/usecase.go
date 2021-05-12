@@ -3,8 +3,6 @@ package usecase
 import (
 	"telee/internal/config"
 	"telee/internal/infrastructure"
-
-	x "github.com/google/goexpect"
 )
 
 // Usecase struct
@@ -15,50 +13,9 @@ type Usecase struct {
 
 // Fetch returns stdout from telnet session
 func (u *Usecase) Fetch() (string, error) {
-	var expectation []x.Batcher
-
-	if u.Config.EnableMode {
-		expectation = u.buildPrivilegedRequest()
-	} else {
-		expectation = u.buildUserModeRequest()
-	}
-
-	data, err := u.Repository.InvokeServerRepository().Fetch(&expectation)
+	data, err := u.Repository.InvokeIronWareRepository().Fetch()
 	if err != nil {
 		return "", err
 	}
 	return data, nil
-}
-
-// [platform: foundry] buildUserModeRequest returns the expectation
-func (u *Usecase) buildUserModeRequest() []x.Batcher {
-	return []x.Batcher{
-		&x.BExp{R: "Please Enter Login Name:"},
-		&x.BSnd{S: u.Config.Username + "\r\n"},
-		&x.BExp{R: "Please Enter Password:"},
-		&x.BSnd{S: u.Config.Password + "\r\n"},
-		&x.BExp{R: "telnet@" + u.Config.Hostname + ">"},
-		&x.BSnd{S: "skip-page-display\r\n"},
-		&x.BExp{R: "telnet@" + u.Config.Hostname + ">"},
-		&x.BSnd{S: u.Config.Command + "\r\n"},
-		&x.BExp{R: "telnet@" + u.Config.Hostname + ">"},
-	}
-}
-
-// [platform: foundry] buildPrivilegedRequest returns the expectation
-func (u *Usecase) buildPrivilegedRequest() []x.Batcher {
-	return []x.Batcher{
-		&x.BExp{R: "Please Enter Login Name:"},
-		&x.BSnd{S: u.Config.Username + "\r\n"},
-		&x.BExp{R: "Please Enter Password:"},
-		&x.BSnd{S: u.Config.Password + "\r\n"},
-		&x.BExp{R: "telnet@" + u.Config.Hostname + ">"},
-		&x.BSnd{S: "enable\r\n"},
-		&x.BExp{R: "Password:"},
-		&x.BSnd{S: u.Config.PrivPassword + "\r\n"},
-		&x.BSnd{S: "skip-page-display\r\n"},
-		&x.BExp{R: "telnet@" + u.Config.Hostname + "#"},
-		&x.BSnd{S: u.Config.Command + "\r\n"},
-		&x.BExp{R: "telnet@" + u.Config.Hostname + "#"},
-	}
 }

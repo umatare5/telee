@@ -15,6 +15,7 @@ func registerFlags() []cli.Flag {
 	flags = append(flags, registerCommandFlag()...)
 	flags = append(flags, registerExecPlatformFlag()...)
 	flags = append(flags, registerEnableModeFlag()...)
+	flags = append(flags, registerHAModeFlag()...)
 	flags = append(flags, registerUsernameFlag()...)
 	flags = append(flags, registerPasswordFlag()...)
 	flags = append(flags, registerPrivPasswordFlag()...)
@@ -91,6 +92,18 @@ func registerEnableModeFlag() []cli.Flag {
 			Usage:   domain.EnableModeFlagUsage,
 			Aliases: domain.EnableModeFlagAliases,
 			Value:   domain.EnableModeFlagDefaultValue,
+		},
+	}
+}
+
+// Declare ha-mode flag
+func registerHAModeFlag() []cli.Flag {
+	return []cli.Flag{
+		&cli.BoolFlag{
+			Name:    domain.HAModeFlagName,
+			Usage:   domain.HAModeFlagUsage,
+			Aliases: domain.HAModeFlagAliases,
+			Value:   domain.HAModeFlagDefaultValue,
 		},
 	}
 }

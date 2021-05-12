@@ -8,6 +8,7 @@ const (
 	CommandFlagName      string = "command"
 	ExecPlatformFlagName string = "exec-platform"
 	EnableModeFlagName   string = "enable-mode"
+	HAModeFlagName       string = "ha-mode"
 	UsernameFlagName     string = "username"
 	PasswordFlagName     string = "password"
 	PrivPasswordFlagName string = "priv-password"
@@ -21,6 +22,7 @@ const (
 	CommandFlagUsage      string = "Set a command."
 	ExecPlatformFlagUsage string = "Set exec-platform. Refer to README.md what to be set."
 	EnableModeFlagUsage   string = "Raise to privileged EXEC mode."
+	HAModeFlagUsage       string = "Use high-availability prompt mode."
 	UsernameFlagUsage     string = "Set username."
 	PasswordFlagUsage     string = "Set password."
 	PrivPasswordFlagUsage string = "Set password to raise to privileged EXEC mode."
@@ -32,6 +34,7 @@ const (
 	TimeoutFlagDefaultValue      int    = 5
 	ExecPlatformFlagDefaultValue string = "ios"
 	EnableModeFlagDefaultValue   bool   = false
+	HAModeFlagDefaultValue       bool   = false
 	UsernameFlagDefaultValue     string = "admin"
 	PasswordFlagDefaultValue     string = "cisco"
 	PrivPasswordFlagDefaultValue string = "enable"
@@ -51,6 +54,7 @@ var (
 	CommandFlagAliases      = []string{"C"}
 	ExecPlatformFlagAliases = []string{"x"}
 	EnableModeFlagAliases   = []string{"e", "ena", "enable"}
+	HAModeFlagAliases       = []string{"ha"}
 	UsernameFlagAliases     = []string{"u"}
 	PasswordFlagAliases     = []string{"p"}
 	PrivPasswordFlagAliases = []string{"pp"}

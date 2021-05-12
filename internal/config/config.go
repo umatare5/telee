@@ -22,6 +22,7 @@ type Config struct {
 	Timeout      int
 	ExecPlatform string
 	EnableMode   bool
+	HAMode       bool
 	Command      string
 	Username     string
 	Password     string
@@ -37,6 +38,7 @@ func New(ctx *cli.Context) Config {
 		Command:      ctx.String(domain.CommandFlagName),
 		ExecPlatform: ctx.String(domain.ExecPlatformFlagName),
 		EnableMode:   ctx.Bool(domain.EnableModeFlagName),
+		HAMode:       ctx.Bool(domain.HAModeFlagName),
 		Username:     ctx.String(domain.UsernameFlagName),
 		Password:     ctx.String(domain.PasswordFlagName),
 		PrivPassword: ctx.String(domain.PrivPasswordFlagName),
@@ -88,10 +90,7 @@ func checkArguments(cfg *Config) error {
 }
 
 func isExpandableTermLength(mode bool, platform string) bool {
-	if platform == domain.ASASoftwarePlatformName && !mode {
-		return false
-	}
-	if platform == domain.ASASoftwareHAPlatformName && !mode {
+	if !mode && platform == domain.ASASoftwarePlatformName {
 		return false
 	}
 	return true
@@ -124,9 +123,6 @@ func isUsableEnableMode(mode bool, platform string) bool {
 			return false
 		}
 		if platform == domain.ScreenOSPlatformName {
-			return false
-		}
-		if platform == domain.ScreenOSHAPlatformName {
 			return false
 		}
 	}

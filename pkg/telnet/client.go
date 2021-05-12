@@ -14,16 +14,6 @@ const (
 	errTelnetBatchFailed = "TelnetClient was failed at ExpectBatch(). You can troubleshoot using wireshark."
 )
 
-const hintTelnetBatchFailed = `
-[Hint]
-- Are your username and password correct?
-  Some environments may use local and LDAP accounts.
-- Does the set host name match the actual host name?
-  Some devices require the host name for expectation.
-- Are the exec-platform you set correct?
-  Some devices have specific exec-platform for HA.
-`
-
 // Telnet struct
 type Telnet struct {
 	host     string
@@ -54,7 +44,6 @@ func (t *Telnet) Fetch(x *[]x.Batcher) (string, error) {
 	stdout, err := conn.ExpectBatch(*x, t.timeout)
 	if err != nil {
 		fmt.Println(errTelnetBatchFailed)
-		fmt.Println(hintTelnetBatchFailed)
 		return "", err
 	}
 

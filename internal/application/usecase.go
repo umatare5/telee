@@ -55,7 +55,6 @@ func (u *Usecase) InvokeScreenOSUsecase() *screenosUsecase.Usecase {
 	return &screenosUsecase.Usecase{
 		Config:     u.Config,
 		Repository: u.Repository,
-		HAMode:     false,
 	}
 }
 
@@ -64,7 +63,6 @@ func (u *Usecase) InvokeScreenOSHAUsecase() *screenosUsecase.Usecase {
 	return &screenosUsecase.Usecase{
 		Config:     u.Config,
 		Repository: u.Repository,
-		HAMode:     true,
 	}
 }
 
@@ -81,7 +79,6 @@ func (u *Usecase) InvokeASASoftwareUsecase() *asasoftwareUsecase.Usecase {
 	return &asasoftwareUsecase.Usecase{
 		Config:     u.Config,
 		Repository: u.Repository,
-		HAMode:     false,
 	}
 }
 
@@ -90,7 +87,6 @@ func (u *Usecase) InvokeASASoftwareHAUsecase() *asasoftwareUsecase.Usecase {
 	return &asasoftwareUsecase.Usecase{
 		Config:     u.Config,
 		Repository: u.Repository,
-		HAMode:     true,
 	}
 }
 
