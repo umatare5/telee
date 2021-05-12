@@ -46,7 +46,7 @@ func (r *Repository) Fetch() (string, error) {
 	return data, nil
 }
 
-// [platform: ssg] buildRequest returns the expectation
+// [platform: ssg] buildRequest returns the expects
 func (r *Repository) buildRequest(suffix string) []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "login:"},

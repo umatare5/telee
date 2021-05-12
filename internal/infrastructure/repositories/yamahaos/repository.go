@@ -40,7 +40,7 @@ func (r *Repository) Fetch() (string, error) {
 	return data, nil
 }
 
-// [platform: yamaha] buildRequest returns the expectation
+// [platform: yamaha] buildRequest returns the expects
 func (r *Repository) buildUserModeRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "Password:"},
@@ -53,7 +53,7 @@ func (r *Repository) buildUserModeRequest() []x.Batcher {
 	}
 }
 
-// [platform: yamaha] buildPrivilegedRequest returns the expectation
+// [platform: yamaha] buildPrivilegedRequest returns the expects
 func (r *Repository) buildPrivilegedRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "Password:"},

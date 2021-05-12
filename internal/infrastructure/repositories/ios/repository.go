@@ -40,7 +40,7 @@ func (r *Repository) Fetch() (string, error) {
 	return data, nil
 }
 
-// [platform: ios] buildRequest returns the expectation
+// [platform: ios] buildRequest returns the expects
 func (r *Repository) buildUserModeRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "Username:"},
@@ -55,7 +55,7 @@ func (r *Repository) buildUserModeRequest() []x.Batcher {
 	}
 }
 
-// [platform: ios] buildPrivilegedRequest returns the expectation
+// [platform: ios] buildPrivilegedRequest returns the expects
 func (r *Repository) buildPrivilegedRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "Username:"},

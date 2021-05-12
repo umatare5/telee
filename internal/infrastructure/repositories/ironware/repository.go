@@ -40,7 +40,7 @@ func (r *Repository) Fetch() (string, error) {
 	return data, nil
 }
 
-// [platform: foundry] buildUserModeRequest returns the expectation
+// [platform: foundry] buildUserModeRequest returns the expects
 func (r *Repository) buildUserModeRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "Please Enter Login Name:"},
@@ -55,7 +55,7 @@ func (r *Repository) buildUserModeRequest() []x.Batcher {
 	}
 }
 
-// [platform: foundry] buildPrivilegedRequest returns the expectation
+// [platform: foundry] buildPrivilegedRequest returns the expects
 func (r *Repository) buildPrivilegedRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "Please Enter Login Name:"},

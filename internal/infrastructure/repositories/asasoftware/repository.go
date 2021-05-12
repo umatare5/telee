@@ -46,7 +46,7 @@ func (r *Repository) Fetch() (string, error) {
 	return data, nil
 }
 
-// [platform: asa] buildPrivilegedRequest returns the expectation
+// [platform: asa] buildPrivilegedRequest returns the expects
 func (r *Repository) buildPrivilegedRequest(suffix string) []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "Username:"},
