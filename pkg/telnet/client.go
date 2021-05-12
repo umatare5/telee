@@ -11,7 +11,7 @@ import (
 
 const (
 	errTelnetSpawnFailed = "TelnetClient was failed at spawn(). You can troubleshoot using wireshark.\n"
-	errTelnetBatchFailed = "TelnetClient was failed at ExpectBatch(). You can troubleshoot using wireshark."
+	errTelnetBatchFailed = "TelnetClient was failed at ExpectBatch(). You can troubleshoot using wireshark.\n"
 )
 
 // Telnet struct
