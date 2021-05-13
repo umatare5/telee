@@ -99,7 +99,7 @@ func (r *Repository) buildUserModeSecureRequest() []x.Batcher {
 	}
 }
 
-// [platform: ios] buildPrivilegedRequest returns the expects
+// [platform: ios] buildPrivilegedSecureRequest returns the expects
 func (r *Repository) buildPrivilegedSecureRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + ">"},
