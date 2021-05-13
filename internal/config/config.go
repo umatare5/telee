@@ -23,6 +23,7 @@ type Config struct {
 	ExecPlatform string
 	EnableMode   bool
 	HAMode       bool
+	SecureMode   bool
 	Command      string
 	Username     string
 	Password     string
@@ -39,6 +40,7 @@ func New(ctx *cli.Context) Config {
 		ExecPlatform: ctx.String(domain.ExecPlatformFlagName),
 		EnableMode:   ctx.Bool(domain.EnableModeFlagName),
 		HAMode:       ctx.Bool(domain.HAModeFlagName),
+		SecureMode:   ctx.Bool(domain.SecureModeFlagName),
 		Username:     ctx.String(domain.UsernameFlagName),
 		Password:     ctx.String(domain.PasswordFlagName),
 		PrivPassword: ctx.String(domain.PrivPasswordFlagName),
@@ -58,6 +60,9 @@ func New(ctx *cli.Context) Config {
 }
 
 func checkArguments(cfg *Config) error {
+	if cfg.Port == 0 {
+		completePortNumber(cfg)
+	}
 	if cfg.Username == domain.UsernameFlagDefaultValue {
 		return errors.ErrMissingUsername
 	}
@@ -90,6 +95,15 @@ func checkArguments(cfg *Config) error {
 	}
 
 	return nil
+}
+
+func completePortNumber(cfg *Config) bool {
+	if cfg.SecureMode {
+		cfg.Port = domain.SSHPort
+	} else {
+		cfg.Port = domain.TelnetPort
+	}
+	return true
 }
 
 func isExpandableTermLength(mode bool, platform string) bool {
