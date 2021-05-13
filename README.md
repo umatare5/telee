@@ -32,7 +32,7 @@ USAGE:
    telee -H HOSTNAME -C COMMAND [options...]
 
 VERSION:
-   1.3.11
+   1.3.13
 
 COMMANDS:
    help, h  Shows a list of commands or help for one command
