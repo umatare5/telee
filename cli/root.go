@@ -14,7 +14,7 @@ import (
 // Preset parameters for this command
 const (
 	cmdName      string = "telee"
-	cmdUsage     string = "One-line pseudo terminal client"
+	cmdUsage     string = "One-line pseudo terminal"
 	cmdUsageText string = "telee -H HOSTNAME -C COMMAND [options...]"
 	cmdVersion   string = "1.3.12"
 )
