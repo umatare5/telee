@@ -26,7 +26,7 @@ telee works on `linux_amd64`, `linux_arm64`, `darwin_amd64` and `darwin_arm64`.
 
 ```bash
 NAME:
-   telee - One-line pseudo terminal client
+   telee - One-line pseudo terminal
 
 USAGE:
    telee -H HOSTNAME -C COMMAND [options...]
