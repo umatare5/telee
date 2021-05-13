@@ -208,17 +208,33 @@ Current configuration : 18687 bytes
 - telee works for several operating systems. These are called exec-platform.
 - The following table shows each exec-platform was verified on which OS version.
 
-  | Name (`-x`)     | Description                   | Verified On     | Enable Mode (`-e`) |
-  | :-------------- | :---------------------------- | :-------------- | ------------------ |
-  | aireos          | Cisco AireOS                  | ✅ 8.5.120.0    | Optional           |
-  | allied          | AlliedTelesis AlliedWare      | ✅ 1.6.14B02    | Not Available      |
-  | asa             | Cisco ASA Software            | ✅ 9.0(4)       | **REQUIRED**       |
-  | asa (--ha-mode) | Cisco ASA Software (HA)       | ✅ 9.10(1)      | **REQUIRED**       |
-  | foundry         | Brocade IronWare              | ✅ 07.2.02aT7e1 | Optional           |
-  | ios             | Cisco IOS                     | ✅ 15.2(5c)E    | Optional           |
-  | ssg             | JuniperNetworks ScreenOS      | ✅ 6.3.0r21.0   | Not Available      |
-  | ssg (--ha-mode) | JuniperNetworks ScreenOS (HA) | ✅ 6.3.0r22.0   | Not Available      |
-  | yamaha          | YAMAHA RT OS                  | ✅ Rev.8.03.94  | Optional           |
+### Summary
+
+| Name (`-x`)     | Description                   | Enable Mode (`-e`) |
+| :-------------- | :---------------------------- | ------------------ |
+| aireos          | Cisco AireOS                  | Optional           |
+| allied          | AlliedTelesis AlliedWare      | Not Available      |
+| asa             | Cisco ASA Software            | **REQUIRED**       |
+| asa (--ha-mode) | Cisco ASA Software (HA)       | **REQUIRED**       |
+| foundry         | Brocade IronWare              | Optional           |
+| ios             | Cisco IOS                     | Optional           |
+| ssg             | JuniperNetworks ScreenOS      | Not Available      |
+| ssg (--ha-mode) | JuniperNetworks ScreenOS (HA) | Not Available      |
+| yamaha          | YAMAHA RT OS                  | Optional           |
+
+### Verified On
+
+| Name (`-x`)     | Telnet          | SSH (--secure)  |
+| :-------------- | :-------------- | :-------------- |
+| aireos          | ✅ 8.5.120.0    | ⚠ Not verified  |
+| allied          | ✅ 1.6.14B02    | ✅ Not verified |
+| asa             | ✅ 9.0(4)       | ⚠ Not verified  |
+| asa (--ha-mode) | ✅ 9.10(1)      | ⚠ Not verified  |
+| foundry         | ✅ 07.2.02aT7e1 | ⚠ Not verified  |
+| ios             | ✅ 15.2(5c)E    | ✅ 15.2(5c)E    |
+| ssg             | ✅ 6.3.0r21.0   | ⚠ Not verified  |
+| ssg (--ha-mode) | ✅ 6.3.0r22.0   | ⚠ Not verified  |
+| yamaha          | ✅ Rev.8.03.94  | ⚠ Not verified  |
 
 ## Development
 
