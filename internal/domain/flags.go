@@ -9,6 +9,7 @@ const (
 	ExecPlatformFlagName string = "exec-platform"
 	EnableModeFlagName   string = "enable-mode"
 	HAModeFlagName       string = "ha-mode"
+	SecureModeFlagName   string = "secure-mode"
 	UsernameFlagName     string = "username"
 	PasswordFlagName     string = "password"
 	PrivPasswordFlagName string = "priv-password"
@@ -23,6 +24,7 @@ const (
 	ExecPlatformFlagUsage string = "Set exec-platform. Refer to README.md what to be set."
 	EnableModeFlagUsage   string = "Raise to privileged EXEC mode."
 	HAModeFlagUsage       string = "Use high-availability prompt mode."
+	SecureModeFlagUsage   string = "Use ssh mode."
 	UsernameFlagUsage     string = "Set username."
 	PasswordFlagUsage     string = "Set password."
 	PrivPasswordFlagUsage string = "Set password to raise to privileged EXEC mode."
@@ -30,11 +32,12 @@ const (
 
 // Flag values
 const (
-	PortFlagDefaultValue         int    = 23
+	PortFlagDefaultValue         int    = 0
 	TimeoutFlagDefaultValue      int    = 5
 	ExecPlatformFlagDefaultValue string = "ios"
 	EnableModeFlagDefaultValue   bool   = false
 	HAModeFlagDefaultValue       bool   = false
+	SecureModeFlagDefaultValue   bool   = false
 	UsernameFlagDefaultValue     string = "admin"
 	PasswordFlagDefaultValue     string = "cisco"
 	PrivPasswordFlagDefaultValue string = "enable"
@@ -55,6 +58,7 @@ var (
 	ExecPlatformFlagAliases = []string{"x"}
 	EnableModeFlagAliases   = []string{"e", "ena", "enable"}
 	HAModeFlagAliases       = []string{"ha"}
+	SecureModeFlagAliases   = []string{"s", "sec", "secure"}
 	UsernameFlagAliases     = []string{"u"}
 	PasswordFlagAliases     = []string{"p"}
 	PrivPasswordFlagAliases = []string{"pp"}
