@@ -1,6 +1,6 @@
 # telee
 
-telee [téli] is a **TEL**net client to **E**x**E**cute a command on networking device through the user authentication.
+telee [téli] is a **TE**rmina**L** client to **E**x**E**cute a command on networking device through the user authentication.
 
 It has following advantages compared to use standard telnet.
 
@@ -145,7 +145,7 @@ Current configuration : 18687 bytes
 
   </p></details>
 
-- When use ASA, must set `--enable-mode`. ASA doesn't support `terminal pager 0` in user-level.
+- When use ASA, need to set `--enable-mode`. ASA doesn't support `terminal pager 0` in user-level.
 
   <details><summary><u>Click to show example</u></summary><p>
 
@@ -169,6 +169,35 @@ Current configuration : 18687 bytes
   Encryption hardware device : Cisco ASA-5505 on-board accelerator (revision 0x0)
                                Boot microcode        : CN1000-MC-BOOT-2.00
                                SSL/IKE microcode     : CNLite-MC-SSLm-PLUS-2.03
+  <snip>
+  ```
+
+  </p></details>
+
+- When use SSH, need to set `--secure` option.
+
+  <details><summary><u>Click to show example</u></summary><p>
+
+  ```console
+  $ telee -H lab-cat29l-02f99-01 -C "show run" --enable --secure
+  show run
+  Load for five secs: 8%/0%; one minute: 2%; five minutes: 1%
+  Time source is NTP, 02:25:22.496 JST Fri May 14 2021
+
+  Building configuration...
+
+  Current configuration : 18716 bytes
+  !
+  ! Last configuration change at 01:46:41 JST Fri May 14 2021 by raciadev
+  !
+  version 15.2
+  no service pad
+  service tcp-keepalives-in
+  service timestamps debug datetime msec localtime show-timezone
+  service timestamps log datetime msec localtime show-timezone
+  service password-encryption
+  !
+  hostname lab-cat29l-02f99-01
   <snip>
   ```
 
