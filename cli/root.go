@@ -16,7 +16,7 @@ const (
 	cmdName      string = "telee"
 	cmdUsage     string = "One-line pseudo terminal"
 	cmdUsageText string = "telee -H HOSTNAME -C COMMAND [options...]"
-	cmdVersion   string = "1.3.12"
+	cmdVersion   string = "1.3.14"
 )
 
 // Start executes this command
