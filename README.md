@@ -2,7 +2,7 @@
 
 telee [téli] is a **TE**rmina**L** client to **E**x**E**cute a command on networking device through the user authentication.
 
-It has following advantages compared to use standard telnet.
+It has following advantages compared to use standard telnet and SSH.
 
 - Reduces login and logout operations.
 
@@ -26,7 +26,7 @@ telee works on `linux_amd64`, `linux_arm64`, `darwin_amd64` and `darwin_arm64`.
 
 ```bash
 NAME:
-   telee - One-line telnet client
+   telee - One-line pseudo terminal client
 
 USAGE:
    telee -H HOSTNAME -C COMMAND [options...]
@@ -39,12 +39,13 @@ COMMANDS:
 
 GLOBAL OPTIONS:
    --hostname value, -H value          Set hostname or IP address. [$TELEE_HOSTNAME]
-   --port value, -P value              Set port number. (default: 23)
+   --port value, -P value              Set port number. (default: 0)
    --timeout value, -t value           Set timeout seconds. (default: 5)
    --command value, -C value           Set a command. [$TELEE_COMMAND]
    --exec-platform value, -x value     Set exec-platform. Refer to README.md what to be set. (default: "ios")
    --enable-mode, -e, --ena, --enable  Raise to privileged EXEC mode. (default: false)
    --ha-mode, --ha                     Use high-availability prompt mode. (default: false)
+   --secure-mode, -s, --sec, --secure  Use ssh mode. (default: false)
    --username value, -u value          Set username. (default: "admin") [$TELEE_USERNAME]
    --password value, -p value          Set password. (default: "cisco") [$TELEE_PASSWORD]
    --priv-password value, --pp value   Set password to raise to privileged EXEC mode. (default: "enable") [$TELEE_PRIVPASSWORD]

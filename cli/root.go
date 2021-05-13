@@ -14,9 +14,9 @@ import (
 // Preset parameters for this command
 const (
 	cmdName      string = "telee"
-	cmdUsage     string = "One-line telnet client"
+	cmdUsage     string = "One-line pseudo terminal client"
 	cmdUsageText string = "telee -H HOSTNAME -C COMMAND [options...]"
-	cmdVersion   string = "1.3.11"
+	cmdVersion   string = "1.3.12"
 )
 
 // Start executes this command
