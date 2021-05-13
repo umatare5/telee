@@ -146,9 +146,7 @@ Current configuration : 18687 bytes
 
   </p></details>
 
-- When use ASA, need to set `--enable-mode` option.
-
-  - ASA doesn't support `terminal pager 0` in user-level.
+- When use ASA, need to set `--enable-mode` option. It doesn't support `ter pag 0` in user-level.
 
   <details><summary><u>Click to show example</u></summary><p>
 
