@@ -10,7 +10,7 @@ const (
 	EnableModeFlagName      string = "enable-mode"
 	HAModeFlagName          string = "ha-mode"
 	SecureModeFlagName      string = "secure-mode"
-	DefaultPrivModeFlagName string = "default-privileged-mode"
+	DefaultPrivModeFlagName string = "default-privilege-mode"
 	UsernameFlagName        string = "username"
 	PasswordFlagName        string = "password"
 	PrivPasswordFlagName    string = "priv-password"

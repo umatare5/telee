@@ -34,7 +34,7 @@ USAGE:
    telee -H HOSTNAME -C COMMAND [options...]
 
 VERSION:
-   1.6.3
+   1.6.4
 
 COMMANDS:
    help, h  Shows a list of commands or help for one command
@@ -48,7 +48,7 @@ GLOBAL OPTIONS:
    --enable-mode, -e, --ena, --enable  Raise to privileged EXEC mode. (default: false)
    --ha-mode, --ha                     Use high-availability prompt mode. (default: false)
    --secure-mode, -s, --sec, --secure  Use ssh mode. (default: false)
-   --default-privileged-mode, -d       Use default privileged mode assinged by RADIUS attribute. (default: false)
+   --default-privilege-mode, -d        Use default privilege mode assinged by RADIUS attribute. (default: false)
    --username value, -u value          Set username. (default: "admin") [$TELEE_USERNAME]
    --password value, -p value          Set password. (default: "cisco") [$TELEE_PASSWORD]
    --priv-password value, --pp value   Set password to raise to privileged EXEC mode. (default: "enable") [$TELEE_PRIVPASSWORD]
@@ -207,7 +207,7 @@ Current configuration : 18687 bytes
 
   </p></details>
 
-- When use RADIUS to raise the privilege, need to set `--default-privileged-mode` option.
+- When use RADIUS to raise the privilege, need to set `--default-privilege-mode` option.
 
   <details><summary><u>Click to show example</u></summary><p>
 

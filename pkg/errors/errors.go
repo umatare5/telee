@@ -13,7 +13,7 @@ var (
 	ErrUnsupportedHAMode          = errors.New("ha-mode is not supported in this platform")
 	ErrUnsupportedModeSet         = errors.New("enable-mode and default-priv-mode cannot use at once")
 	ErrUnsupportedSecureMode      = errors.New("secure-mode is not supported in this platform")
-	ErrUnsupportedDefaultPrivMode = errors.New("default-privileged-mode is not supported in this platform")
+	ErrUnsupportedDefaultPrivMode = errors.New("default-privilege-mode is not supported in this platform")
 	ErrUnsupportedUnsecureMode    = errors.New("non secure-mode is not supported in this platform")
 )
 
