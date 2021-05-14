@@ -17,6 +17,7 @@ func registerFlags() []cli.Flag {
 	flags = append(flags, registerEnableModeFlag()...)
 	flags = append(flags, registerHAModeFlag()...)
 	flags = append(flags, registerSecureModeFlag()...)
+	flags = append(flags, registerPrivModeFlag()...)
 	flags = append(flags, registerUsernameFlag()...)
 	flags = append(flags, registerPasswordFlag()...)
 	flags = append(flags, registerPrivPasswordFlag()...)
