@@ -254,18 +254,18 @@ Current configuration : 18687 bytes
 
 ### Verified On
 
-| Name (`-x`)     | Telnet          | SSH (--secure) |
-| :-------------- | :-------------- | :------------- |
-| aireos          | ✅ 8.5.120.0    | Not Supported  |
-| allied          | ✅ 1.6.14B02    | Not Supported  |
-| asa             | ✅ 9.0(4)       | Not Supported  |
-| asa (--ha-mode) | ✅ 9.10(1)      | Not Supported  |
-| foundry         | ✅ 07.2.02aT7e1 | Not Supported  |
-| ios             | ✅ 15.2(5c)E    | ✅ 15.2(5c)E   |
-| srx             | Not Supported   | ⚠ Not verified |
-| ssg             | ✅ 6.3.0r21.0   | Not Supported  |
-| ssg (--ha-mode) | ✅ 6.3.0r22.0   | Not Supported  |
-| yamaha          | ✅ Rev.8.03.94  | Not Supported  |
+| Name (`-x`)     | Telnet          | SSH (--secure)   |
+| :-------------- | :-------------- | :--------------- |
+| aireos          | ✅ 8.5.120.0    | Not Supported    |
+| allied          | ✅ 1.6.14B02    | Not Supported    |
+| asa             | ✅ 9.0(4)       | Not Supported    |
+| asa (--ha-mode) | ✅ 9.10(1)      | Not Supported    |
+| foundry         | ✅ 07.2.02aT7e1 | Not Supported    |
+| ios             | ✅ 15.2(5c)E    | ✅ 15.2(5c)E     |
+| srx             | Not Supported   | ✅ 15.1X49-D90.7 |
+| ssg             | ✅ 6.3.0r21.0   | Not Supported    |
+| ssg (--ha-mode) | ✅ 6.3.0r22.0   | Not Supported    |
+| yamaha          | ✅ Rev.8.03.94  | Not Supported    |
 
 ## Development
 
