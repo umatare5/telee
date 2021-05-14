@@ -212,25 +212,27 @@ Current configuration : 18687 bytes
   <details><summary><u>Click to show example</u></summary><p>
 
   ```console
-  $ telee -H lab-cat29l-02f99-01 -C "show run" --enable --secure
-  show run
-  Load for five secs: 8%/0%; one minute: 2%; five minutes: 1%
-  Time source is NTP, 02:25:22.496 JST Fri May 14 2021
+  $ telee -H lab-nx70-02f01-01 -C "show version" -x nxos --default-privilege-mode
+  show version
+  Cisco Nexus Operating System (NX-OS) Software
+  TAC support: http://www.cisco.com/tac
+  Documents: http://www.cisco.com/en/US/products/ps9372/tsd_products_support_series_home.html
+  Copyright (c) 2002-2015, Cisco Systems, Inc. All rights reserved.
+  The copyrights to certain works contained in this software are
+  owned by other third parties and used and distributed under
+  license. Certain components of this software are licensed under
+  the GNU General Public License (GPL) version 2.0 or the GNU
+  Lesser General Public License (LGPL) Version 2.1. A copy of each
+  such license is available at
+  http://www.opensource.org/licenses/gpl-2.0.php and
+  http://www.opensource.org/licenses/lgpl-2.1.php
 
-  Building configuration...
-
-  Current configuration : 18716 bytes
-  !
-  ! Last configuration change at 01:46:41 JST Fri May 14 2021 by raciadev
-  !
-  version 15.2
-  no service pad
-  service tcp-keepalives-in
-  service timestamps debug datetime msec localtime show-timezone
-  service timestamps log datetime msec localtime show-timezone
-  service password-encryption
-  !
-  hostname lab-cat29l-02f99-01
+  Software
+  BIOS:      version N/A
+  kickstart: version 6.2(14)
+  system:    version 6.2(14)
+  BIOS compile time:
+  kickstart image file is: bootflash:///n7000-s1-kickstart.6.2.14.bin
   <snip>
   ```
 
@@ -269,39 +271,38 @@ Current configuration : 18687 bytes
 
 - telee works for several operating systems. These are called exec-platform.
 - The following table shows each exec-platform was verified on which OS version.
-- "⚠ Not Verified" means implemented but not checked. I'm waiting your report! 💓
 
 ### Matrix
 
-| Name (`-x`)     | Description                   | Enable Mode (`-e`) |
-| :-------------- | :---------------------------- | ------------------ |
-| aireos          | Cisco AireOS                  | Optional           |
-| allied          | AlliedTelesis AlliedWare      | Not Available      |
-| asa             | Cisco ASA Software            | **REQUIRED**       |
-| asa (--ha-mode) | Cisco ASA Software (HA)       | **REQUIRED**       |
-| foundry         | Brocade IronWare              | Optional           |
-| ios             | Cisco IOS, IOS-XE             | Optional           |
-| nxos            | Cisco NX-OS                   | Optional           |
-| srx             | JuniperNetworks JunOS         | Not Available      |
-| ssg             | JuniperNetworks ScreenOS      | Not Available      |
-| ssg (--ha-mode) | JuniperNetworks ScreenOS (HA) | Not Available      |
-| yamaha          | YAMAHA RT OS                  | Optional           |
+| Name (`-x`) | Description              | Enable Mode (`-e`) | HA Mode (`--ha`) |
+| :---------- | :----------------------- | ------------------ | ---------------- |
+| aireos      | Cisco AireOS             | Optional           | Not Available    |
+| allied      | AlliedTelesis AlliedWare | Not Available      | Not Available    |
+| asa         | Cisco ASA Software       | **REQUIRED**       | Optional         |
+| foundry     | Brocade IronWare         | Optional           | Not Available    |
+| ios         | Cisco IOS, IOS-XE        | Optional           | Not Available    |
+| nxos        | Cisco NX-OS              | Optional           | Not Available    |
+| srx         | JuniperNetworks JunOS    | Not Available      | Not Available    |
+| ssg         | JuniperNetworks ScreenOS | Not Available      | Optional         |
+| yamaha      | YAMAHA RT OS             | Optional           | Not Available    |
 
 ### Verified On
 
-| Name (`-x`)     | Telnet           | SSH (--secure)   | Default PrivMode (`-d`) |
-| :-------------- | :--------------- | :--------------- | ----------------------- |
-| aireos          | ✅ 8.5.120.0     | ✅ 8.5.120.0     | 🚫 Not Supported        |
-| allied          | ✅ 1.6.14B02     | 🚫 Not Supported | 🚫 Not Supported        |
-| asa             | ✅ 9.0(4)        | ⚠ Not Verified   | ⚠ Not Verified          |
-| asa (--ha-mode) | ✅ 9.10(1)       | ⚠ Not Verified   | ⚠ Not Verified          |
-| foundry         | ✅ 07.2.02aT7e1  | 🚫 Not Supported | 🚫 Not Supported        |
-| ios             | ✅ 15.2(5c)E     | ✅ 15.2(5c)E     | ✅ 15.2(5c)E            |
-| nxos            | ✅ 6.2(14)       | ⚠ Not Verified   | ✅ 6.2(14)              |
-| srx             | 🚫 Not Supported | ✅ 15.1X49-D90.7 | 🚫 Not Supported        |
-| ssg             | ✅ 6.3.0r21.0    | ⚠ Not Verified   | 🚫 Not Supported        |
-| ssg (--ha-mode) | ✅ 6.3.0r22.0    | ⚠ Not Verified   | 🚫 Not Supported        |
-| yamaha          | ✅ Rev.8.03.94   | 🚫 Not Supported | 🚫 Not Supported        |
+- "⚠ Not Verified" means "implemented but not checked". I'm waiting your report! 💓
+
+| Name (`-x`)   | Telnet           | SSH (--secure)   | Default PrivMode (`-d`) |
+| :------------ | :--------------- | :--------------- | ----------------------- |
+| aireos        | ✅ 8.5.120.0     | ✅ 8.5.120.0     | 🚫 Not Supported        |
+| allied        | ✅ 1.6.14B02     | 🚫 Not Supported | 🚫 Not Supported        |
+| asa           | ✅ 9.0(4)        | ⚠ Not Verified   | ⚠ Not Verified          |
+| asa (ha-mode) | ✅ 9.10(1)       | ⚠ Not Verified   | ⚠ Not Verified          |
+| foundry       | ✅ 07.2.02aT7e1  | 🚫 Not Supported | 🚫 Not Supported        |
+| ios           | ✅ 15.2(5c)E     | ✅ 15.2(5c)E     | ✅ 15.2(5c)E            |
+| nxos          | ✅ 6.2(14)       | ⚠ Not Verified   | ✅ 6.2(14)              |
+| srx           | 🚫 Not Supported | ✅ 15.1X49-D90.7 | 🚫 Not Supported        |
+| ssg           | ✅ 6.3.0r21.0    | ⚠ Not Verified   | 🚫 Not Supported        |
+| ssg (ha-mode) | ✅ 6.3.0r22.0    | ⚠ Not Verified   | 🚫 Not Supported        |
+| yamaha        | ✅ Rev.8.03.94   | 🚫 Not Supported | 🚫 Not Supported        |
 
 ## Development
 
