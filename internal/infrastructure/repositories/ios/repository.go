@@ -21,14 +21,6 @@ func (r *Repository) Fetch() (string, error) {
 	var data string
 	var err error
 
-	telnetClient := telnet.New(
-		r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
-	)
-	sshClient := ssh.New(
-		r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
-	)
-
-	// ssh
 	if r.Config.SecureMode && r.Config.EnableMode {
 		expects = r.buildPrivilegedSecureRequest()
 	}
@@ -43,9 +35,13 @@ func (r *Repository) Fetch() (string, error) {
 	}
 
 	if r.Config.SecureMode {
-		data, err = sshClient.Fetch(&expects, ssh.GenerateClientConfig(r.Config.Username, r.Config.Password))
+		data, err = ssh.New(
+			r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
+		).Fetch(&expects, ssh.GenerateClientConfig(r.Config.Username, r.Config.Password))
 	} else {
-		data, err = telnetClient.Fetch(&expects)
+		data, err = telnet.New(
+			r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
+		).Fetch(&expects)
 	}
 
 	if err != nil {

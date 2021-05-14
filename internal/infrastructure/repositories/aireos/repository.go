@@ -18,10 +18,10 @@ type Repository struct {
 func (r *Repository) Fetch() (string, error) {
 	expects := r.buildRequest()
 
-	client := telnet.New(
+	data, err := telnet.New(
 		r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
-	)
-	data, err := client.Fetch(&expects)
+	).Fetch(&expects)
+
 	if err != nil {
 		return "", err
 	}

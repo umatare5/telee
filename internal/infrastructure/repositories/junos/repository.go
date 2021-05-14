@@ -18,10 +18,10 @@ type Repository struct {
 func (r *Repository) Fetch() (string, error) {
 	expects := r.buildUserModeSecureRequest()
 
-	client := ssh.New(
+	data, err := ssh.New(
 		r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
-	)
-	data, err := client.Fetch(&expects, ssh.GenerateClientConfig(r.Config.Username, r.Config.Password))
+	).Fetch(&expects, ssh.GenerateClientConfig(r.Config.Username, r.Config.Password))
+
 	if err != nil {
 		return "", err
 	}
