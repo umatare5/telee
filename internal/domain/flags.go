@@ -29,7 +29,7 @@ const (
 	DefaultPrivModeFlagUsage string = "Use default privileged mode assinged by RADIUS attribute."
 	UsernameFlagUsage        string = "Set username."
 	PasswordFlagUsage        string = "Set password."
-	PrivPasswordFlagUsage    string = "Set password to raise to privileged EXEC mode."
+	PrivPasswordFlagUsage    string = "Set password to change to privileged EXEC mode."
 )
 
 // Flag values
