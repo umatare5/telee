@@ -240,6 +240,7 @@ Current configuration : 18687 bytes
 
 - telee works for several operating systems. These are called exec-platform.
 - The following table shows each exec-platform was verified on which OS version.
+- "⚠ Not Verified" means implemented but not checked. I welcome your report.
 
 ### Summary
 
@@ -250,8 +251,8 @@ Current configuration : 18687 bytes
 | asa             | Cisco ASA Software            | **REQUIRED**       | Not Supported    |
 | asa (--ha-mode) | Cisco ASA Software (HA)       | **REQUIRED**       | Not Supported    |
 | foundry         | Brocade IronWare              | Optional           | Not Supported    |
-| ios             | Cisco IOS, IOS-XE             | Optional           | Supported        |
-| nxos            | Cisco NX-OS                   | Optional           | Supported        |
+| ios             | Cisco IOS, IOS-XE             | Optional           | ✅ Supported     |
+| nxos            | Cisco NX-OS                   | Optional           | ⚠ Not Verified   |
 | srx             | JuniperNetworks JunOS         | Not Available      | Not Supported    |
 | ssg             | JuniperNetworks ScreenOS      | Not Available      | Not Supported    |
 | ssg (--ha-mode) | JuniperNetworks ScreenOS (HA) | Not Available      | Not Supported    |
