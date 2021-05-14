@@ -84,6 +84,12 @@ func checkArguments(cfg *Config) error {
 	if isUsableHAMode(cfg.HAMode, cfg.ExecPlatform) {
 		return errors.ErrUnsupportedHAMode
 	}
+	if cfg.SecureMode && !isUsableSecureMode(cfg.ExecPlatform) {
+		return errors.ErrUnsupportedSecureMode
+	}
+	if !cfg.SecureMode && !isUsableUnsecureMode(cfg.ExecPlatform) {
+		return errors.ErrUnsupportedUnsecureMode
+	}
 	if !isValidExecPlatform(cfg.ExecPlatform) {
 		return errors.ErrInvalidPlatform
 	}
@@ -144,6 +150,20 @@ func isUsableEnableMode(mode bool, platform string) bool {
 		}
 	}
 	return true
+}
+
+func isUsableSecureMode(platform string) bool {
+	if platform == domain.IOSPlatformName {
+		return true
+	}
+	if platform == domain.JunOSPlatformName {
+		return true
+	}
+	return false
+}
+
+func isUsableUnsecureMode(platform string) bool {
+	return platform != domain.JunOSPlatformName
 }
 
 func isUsableHAMode(mode bool, platform string) bool {
