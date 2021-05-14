@@ -48,7 +48,7 @@ GLOBAL OPTIONS:
    --enable-mode, -e, --ena, --enable  Raise to privileged EXEC mode. (default: false)
    --ha-mode, --ha                     Use high-availability prompt mode. (default: false)
    --secure-mode, -s, --sec, --secure  Use ssh mode. (default: false)
-   --priv-mode, -r                     Use defaul priviledged mode assinged by RADIUS attribute. (default: false)
+   --default-priv-mode, -d             Use defaul priviledged mode assinged by RADIUS attribute. (default: false)
    --username value, -u value          Set username. (default: "admin") [$TELEE_USERNAME]
    --password value, -p value          Set password. (default: "cisco") [$TELEE_PASSWORD]
    --priv-password value, --pp value   Set password to raise to privileged EXEC mode. (default: "enable") [$TELEE_PRIVPASSWORD]
@@ -243,19 +243,19 @@ Current configuration : 18687 bytes
 
 ### Summary
 
-| Name (`-x`)     | Description                   | Enable Mode (`-e`) |
-| :-------------- | :---------------------------- | ------------------ |
-| aireos          | Cisco AireOS                  | Optional           |
-| allied          | AlliedTelesis AlliedWare      | Not Available      |
-| asa             | Cisco ASA Software            | **REQUIRED**       |
-| asa (--ha-mode) | Cisco ASA Software (HA)       | **REQUIRED**       |
-| foundry         | Brocade IronWare              | Optional           |
-| ios             | Cisco IOS, IOS-XE             | Optional           |
-| nxos            | Cisco NX-OS                   | Optional           |
-| srx             | JuniperNetworks JunOS         | Not Available      |
-| ssg             | JuniperNetworks ScreenOS      | Not Available      |
-| ssg (--ha-mode) | JuniperNetworks ScreenOS (HA) | Not Available      |
-| yamaha          | YAMAHA RT OS                  | Optional           |
+| Name (`-x`)     | Description                   | Enable Mode (`-e`) | Priv Mode (`-d`) |
+| :-------------- | :---------------------------- | ------------------ | ---------------- |
+| aireos          | Cisco AireOS                  | Optional           | Not Supported    |
+| allied          | AlliedTelesis AlliedWare      | Not Available      | Not Supported    |
+| asa             | Cisco ASA Software            | **REQUIRED**       | Not Supported    |
+| asa (--ha-mode) | Cisco ASA Software (HA)       | **REQUIRED**       | Not Supported    |
+| foundry         | Brocade IronWare              | Optional           | Not Supported    |
+| ios             | Cisco IOS, IOS-XE             | Optional           | Supported        |
+| nxos            | Cisco NX-OS                   | Optional           | Supported        |
+| srx             | JuniperNetworks JunOS         | Not Available      | Not Supported    |
+| ssg             | JuniperNetworks ScreenOS      | Not Available      | Not Supported    |
+| ssg (--ha-mode) | JuniperNetworks ScreenOS (HA) | Not Available      | Not Supported    |
+| yamaha          | YAMAHA RT OS                  | Optional           | Not Supported    |
 
 ### Verified On
 

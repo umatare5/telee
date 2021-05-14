@@ -18,7 +18,7 @@ type Repository struct {
 func (r *Repository) Fetch() (string, error) {
 	var expects []x.Batcher
 
-	if r.Config.PrivMode {
+	if r.Config.DefaultPrivMode {
 		expects = r.buildDefaultPrivilegedRequest()
 	}
 	if r.Config.EnableMode {

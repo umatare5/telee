@@ -2,48 +2,48 @@ package domain
 
 // Flag names
 const (
-	HostnameFlagName     string = "hostname"
-	PortFlagName         string = "port"
-	TimeoutFlagName      string = "timeout"
-	CommandFlagName      string = "command"
-	ExecPlatformFlagName string = "exec-platform"
-	EnableModeFlagName   string = "enable-mode"
-	HAModeFlagName       string = "ha-mode"
-	SecureModeFlagName   string = "secure-mode"
-	PrivModeFlagName     string = "priv-mode"
-	UsernameFlagName     string = "username"
-	PasswordFlagName     string = "password"
-	PrivPasswordFlagName string = "priv-password"
+	HostnameFlagName        string = "hostname"
+	PortFlagName            string = "port"
+	TimeoutFlagName         string = "timeout"
+	CommandFlagName         string = "command"
+	ExecPlatformFlagName    string = "exec-platform"
+	EnableModeFlagName      string = "enable-mode"
+	HAModeFlagName          string = "ha-mode"
+	SecureModeFlagName      string = "secure-mode"
+	DefaultPrivModeFlagName string = "default-priv-mode"
+	UsernameFlagName        string = "username"
+	PasswordFlagName        string = "password"
+	PrivPasswordFlagName    string = "priv-password"
 )
 
 // Flag usages
 const (
-	HostnameFlagUsage     string = "Set hostname or IP address."
-	PortFlagUsage         string = "Set port number."
-	TimeoutFlagUsage      string = "Set timeout seconds."
-	CommandFlagUsage      string = "Set a command."
-	ExecPlatformFlagUsage string = "Set exec-platform. Refer to README.md what to be set."
-	EnableModeFlagUsage   string = "Raise to privileged EXEC mode."
-	HAModeFlagUsage       string = "Use high-availability prompt mode."
-	SecureModeFlagUsage   string = "Use ssh mode."
-	PrivModeFlagUsage     string = "Use default priviledged mode assinged by RADIUS attribute."
-	UsernameFlagUsage     string = "Set username."
-	PasswordFlagUsage     string = "Set password."
-	PrivPasswordFlagUsage string = "Set password to raise to privileged EXEC mode."
+	HostnameFlagUsage        string = "Set hostname or IP address."
+	PortFlagUsage            string = "Set port number."
+	TimeoutFlagUsage         string = "Set timeout seconds."
+	CommandFlagUsage         string = "Set a command."
+	ExecPlatformFlagUsage    string = "Set exec-platform. Refer to README.md what to be set."
+	EnableModeFlagUsage      string = "Raise to privileged EXEC mode."
+	HAModeFlagUsage          string = "Use high-availability prompt mode."
+	SecureModeFlagUsage      string = "Use ssh mode."
+	DefaultPrivModeFlagUsage string = "Use default priviledged mode assinged by RADIUS attribute."
+	UsernameFlagUsage        string = "Set username."
+	PasswordFlagUsage        string = "Set password."
+	PrivPasswordFlagUsage    string = "Set password to raise to privileged EXEC mode."
 )
 
 // Flag values
 const (
-	PortFlagDefaultValue         int    = 0
-	TimeoutFlagDefaultValue      int    = 5
-	ExecPlatformFlagDefaultValue string = "ios"
-	EnableModeFlagDefaultValue   bool   = false
-	HAModeFlagDefaultValue       bool   = false
-	SecureModeFlagDefaultValue   bool   = false
-	PrivModeFlagDefaultValue     bool   = false
-	UsernameFlagDefaultValue     string = "admin"
-	PasswordFlagDefaultValue     string = "cisco"
-	PrivPasswordFlagDefaultValue string = "enable"
+	PortFlagDefaultValue            int    = 0
+	TimeoutFlagDefaultValue         int    = 5
+	ExecPlatformFlagDefaultValue    string = "ios"
+	EnableModeFlagDefaultValue      bool   = false
+	HAModeFlagDefaultValue          bool   = false
+	SecureModeFlagDefaultValue      bool   = false
+	DefaultPrivModeFlagDefaultValue bool   = false
+	UsernameFlagDefaultValue        string = "admin"
+	PasswordFlagDefaultValue        string = "cisco"
+	PrivPasswordFlagDefaultValue    string = "enable"
 )
 
 // Flag requireds
@@ -54,18 +54,18 @@ const (
 
 // Flag aliases
 var (
-	HostnameFlagAliases     = []string{"H"}
-	PortFlagAliases         = []string{"P"}
-	TimeoutFlagAliases      = []string{"t"}
-	CommandFlagAliases      = []string{"C"}
-	ExecPlatformFlagAliases = []string{"x"}
-	EnableModeFlagAliases   = []string{"e", "ena", "enable"}
-	HAModeFlagAliases       = []string{"ha"}
-	PrivModeFlagAliases     = []string{"r"}
-	SecureModeFlagAliases   = []string{"s", "sec", "secure"}
-	UsernameFlagAliases     = []string{"u"}
-	PasswordFlagAliases     = []string{"p"}
-	PrivPasswordFlagAliases = []string{"pp"}
+	HostnameFlagAliases        = []string{"H"}
+	PortFlagAliases            = []string{"P"}
+	TimeoutFlagAliases         = []string{"t"}
+	CommandFlagAliases         = []string{"C"}
+	ExecPlatformFlagAliases    = []string{"x"}
+	EnableModeFlagAliases      = []string{"e", "ena", "enable"}
+	HAModeFlagAliases          = []string{"ha"}
+	DefaultPrivModeFlagAliases = []string{"d"}
+	SecureModeFlagAliases      = []string{"s", "sec", "secure"}
+	UsernameFlagAliases        = []string{"u"}
+	PasswordFlagAliases        = []string{"p"}
+	PrivPasswordFlagAliases    = []string{"pp"}
 )
 
 // Flag envvars

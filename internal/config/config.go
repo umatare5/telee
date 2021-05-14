@@ -17,35 +17,35 @@ const (
 
 // Config struct
 type Config struct {
-	Hostname     string
-	Port         int
-	Timeout      int
-	ExecPlatform string
-	EnableMode   bool
-	HAMode       bool
-	SecureMode   bool
-	PrivMode     bool
-	Command      string
-	Username     string
-	Password     string
-	PrivPassword string
+	Hostname        string
+	Port            int
+	Timeout         int
+	ExecPlatform    string
+	EnableMode      bool
+	HAMode          bool
+	SecureMode      bool
+	DefaultPrivMode bool
+	Command         string
+	Username        string
+	Password        string
+	PrivPassword    string
 }
 
 // New returns Config struct
 func New(ctx *cli.Context) Config {
 	cfg := Config{
-		Hostname:     ctx.String(domain.HostnameFlagName),
-		Port:         ctx.Int(domain.PortFlagName),
-		Timeout:      ctx.Int(domain.TimeoutFlagName),
-		Command:      ctx.String(domain.CommandFlagName),
-		ExecPlatform: ctx.String(domain.ExecPlatformFlagName),
-		EnableMode:   ctx.Bool(domain.EnableModeFlagName),
-		HAMode:       ctx.Bool(domain.HAModeFlagName),
-		PrivMode:     ctx.Bool(domain.PrivModeFlagName),
-		SecureMode:   ctx.Bool(domain.SecureModeFlagName),
-		Username:     ctx.String(domain.UsernameFlagName),
-		Password:     ctx.String(domain.PasswordFlagName),
-		PrivPassword: ctx.String(domain.PrivPasswordFlagName),
+		Hostname:        ctx.String(domain.HostnameFlagName),
+		Port:            ctx.Int(domain.PortFlagName),
+		Timeout:         ctx.Int(domain.TimeoutFlagName),
+		Command:         ctx.String(domain.CommandFlagName),
+		ExecPlatform:    ctx.String(domain.ExecPlatformFlagName),
+		EnableMode:      ctx.Bool(domain.EnableModeFlagName),
+		HAMode:          ctx.Bool(domain.HAModeFlagName),
+		DefaultPrivMode: ctx.Bool(domain.DefaultPrivModeFlagName),
+		SecureMode:      ctx.Bool(domain.SecureModeFlagName),
+		Username:        ctx.String(domain.UsernameFlagName),
+		Password:        ctx.String(domain.PasswordFlagName),
+		PrivPassword:    ctx.String(domain.PrivPasswordFlagName),
 	}
 
 	err := configor.New(&configor.Config{}).Load(&cfg)
@@ -83,7 +83,7 @@ func checkArguments(cfg *Config) error {
 	if cfg.Command == domain.EmptyString {
 		return errors.ErrMissingCommand
 	}
-	if cfg.EnableMode && cfg.PrivMode {
+	if cfg.EnableMode && cfg.DefaultPrivMode {
 		return errors.ErrUnsupportedModeSet
 	}
 	if cfg.HAMode && !isUsableHAMode(cfg.ExecPlatform) {

@@ -17,7 +17,7 @@ func registerFlags() []cli.Flag {
 	flags = append(flags, registerEnableModeFlag()...)
 	flags = append(flags, registerHAModeFlag()...)
 	flags = append(flags, registerSecureModeFlag()...)
-	flags = append(flags, registerPrivModeFlag()...)
+	flags = append(flags, registerDefaultPrivModeFlag()...)
 	flags = append(flags, registerUsernameFlag()...)
 	flags = append(flags, registerPasswordFlag()...)
 	flags = append(flags, registerPrivPasswordFlag()...)
@@ -123,13 +123,13 @@ func registerSecureModeFlag() []cli.Flag {
 }
 
 // Declare priv-mode flag
-func registerPrivModeFlag() []cli.Flag {
+func registerDefaultPrivModeFlag() []cli.Flag {
 	return []cli.Flag{
 		&cli.BoolFlag{
-			Name:    domain.PrivModeFlagName,
-			Usage:   domain.PrivModeFlagUsage,
-			Aliases: domain.PrivModeFlagAliases,
-			Value:   domain.PrivModeFlagDefaultValue,
+			Name:    domain.DefaultPrivModeFlagName,
+			Usage:   domain.DefaultPrivModeFlagUsage,
+			Aliases: domain.DefaultPrivModeFlagAliases,
+			Value:   domain.DefaultPrivModeFlagDefaultValue,
 		},
 	}
 }
