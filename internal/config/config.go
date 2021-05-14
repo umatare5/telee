@@ -80,8 +80,8 @@ func checkArguments(cfg *Config) error {
 	if !cfg.SecureMode && !isUsableUnsecureMode(cfg.ExecPlatform) {
 		return errors.ErrUnsupportedUnsecureMode
 	}
-	if cfg.SecureMode && !isUsableDefaultPrivMode(cfg.ExecPlatform) {
-		return errors.ErrUnsupportedSecureMode
+	if cfg.DefaultPrivMode && !isUsableDefaultPrivMode(cfg.ExecPlatform) {
+		return errors.ErrUnsupportedDefaultPrivMode
 	}
 	if !cfg.EnableMode && !isExpandableTermLength(cfg.ExecPlatform) {
 		return errors.ErrTermLengthIsEnforced
