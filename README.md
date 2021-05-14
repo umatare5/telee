@@ -252,7 +252,7 @@ Current configuration : 18687 bytes
 | asa (--ha-mode) | Cisco ASA Software (HA)       | **REQUIRED**       | Not Supported    |
 | foundry         | Brocade IronWare              | Optional           | Not Supported    |
 | ios             | Cisco IOS, IOS-XE             | Optional           | ✅ Supported     |
-| nxos            | Cisco NX-OS                   | Optional           | ⚠ Not Verified   |
+| nxos            | Cisco NX-OS                   | Optional           | ✅ Supported     |
 | srx             | JuniperNetworks JunOS         | Not Available      | Not Supported    |
 | ssg             | JuniperNetworks ScreenOS      | Not Available      | Not Supported    |
 | ssg (--ha-mode) | JuniperNetworks ScreenOS (HA) | Not Available      | Not Supported    |
@@ -268,7 +268,7 @@ Current configuration : 18687 bytes
 | asa (--ha-mode) | ✅ 9.10(1)      | Not Supported    |
 | foundry         | ✅ 07.2.02aT7e1 | Not Supported    |
 | ios             | ✅ 15.2(5c)E    | ✅ 15.2(5c)E     |
-| nxos            | ⚠ Not Verified  | Not Supported    |
+| nxos            | ✅ 6.2(14)      | Not Supported    |
 | srx             | Not Supported   | ✅ 15.1X49-D90.7 |
 | ssg             | ✅ 6.3.0r21.0   | Not Supported    |
 | ssg (--ha-mode) | ✅ 6.3.0r22.0   | Not Supported    |
