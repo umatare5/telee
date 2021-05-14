@@ -26,9 +26,16 @@ func (r *Repository) Fetch() (string, error) {
 	var data string
 	var err error
 
-	if r.Config.HAMode {
+	if r.Config.SecureMode && r.Config.HAMode {
+		expects = r.buildSecureRequest(haSuffix)
+	}
+	if r.Config.SecureMode && !r.Config.HAMode {
+		expects = r.buildSecureRequest(noSuffix)
+	}
+	if !r.Config.SecureMode && r.Config.HAMode {
 		expects = r.buildRequest(haSuffix)
-	} else {
+	}
+	if !r.Config.SecureMode && !r.Config.HAMode {
 		expects = r.buildRequest(noSuffix)
 	}
 
@@ -55,6 +62,17 @@ func (r *Repository) buildRequest(suffix string) []x.Batcher {
 		&x.BSnd{S: r.Config.Username + "\n"},
 		&x.BExp{R: "password:"},
 		&x.BSnd{S: r.Config.Password + "\n"},
+		&x.BExp{R: r.Config.Hostname + suffix + "->"},
+		&x.BSnd{S: "set console page 0\n"},
+		&x.BExp{R: r.Config.Hostname + suffix + "->"},
+		&x.BSnd{S: r.Config.Command + "\n"},
+		&x.BExp{R: r.Config.Hostname + suffix + "->"},
+	}
+}
+
+// [platform: ssg] buildSecureRequest returns the expects
+func (r *Repository) buildSecureRequest(suffix string) []x.Batcher {
+	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + suffix + "->"},
 		&x.BSnd{S: "set console page 0\n"},
 		&x.BExp{R: r.Config.Hostname + suffix + "->"},

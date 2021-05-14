@@ -242,7 +242,7 @@ Current configuration : 18687 bytes
 - The following table shows each exec-platform was verified on which OS version.
 - "⚠ Not Verified" means implemented but not checked. I welcome your report.
 
-### Summary
+### Matrix
 
 | Name (`-x`)     | Description                   | Enable Mode (`-e`) | Priv Mode (`-d`) |
 | :-------------- | :---------------------------- | ------------------ | ---------------- |
@@ -264,14 +264,14 @@ Current configuration : 18687 bytes
 | :-------------- | :-------------- | :--------------- |
 | aireos          | ✅ 8.5.120.0    | Not Supported    |
 | allied          | ✅ 1.6.14B02    | Not Supported    |
-| asa             | ✅ 9.0(4)       | Not Supported    |
-| asa (--ha-mode) | ✅ 9.10(1)      | Not Supported    |
+| asa             | ✅ 9.0(4)       | ⚠ Not Verified   |
+| asa (--ha-mode) | ✅ 9.10(1)      | ⚠ Not Verified   |
 | foundry         | ✅ 07.2.02aT7e1 | Not Supported    |
 | ios             | ✅ 15.2(5c)E    | ✅ 15.2(5c)E     |
-| nxos            | ✅ 6.2(14)      | Not Supported    |
+| nxos            | ✅ 6.2(14)      | ⚠ Not Verified   |
 | srx             | Not Supported   | ✅ 15.1X49-D90.7 |
-| ssg             | ✅ 6.3.0r21.0   | Not Supported    |
-| ssg (--ha-mode) | ✅ 6.3.0r22.0   | Not Supported    |
+| ssg             | ✅ 6.3.0r21.0   | ⚠ Not Verified   |
+| ssg (--ha-mode) | ✅ 6.3.0r22.0   | ⚠ Not Verified   |
 | yamaha          | ✅ Rev.8.03.94  | Not Supported    |
 
 ## Development
