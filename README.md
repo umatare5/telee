@@ -14,6 +14,8 @@ It has following advantages compared to use standard telnet and SSH.
 
 For those who use many "expect" scripts and "TeraTerm Macro", telee may be a simple alternative.
 
+In additional, the execution performance of telee is 10 times faster than [napalm](https://github.com/napalm-automation/napalm)'s one-liner! 🚀
+
 ![](https://github.com/umatare5/telee/blob/images/promo.gif)
 
 ## Installation
@@ -247,7 +249,8 @@ Current configuration : 18687 bytes
 | asa             | Cisco ASA Software            | **REQUIRED**       |
 | asa (--ha-mode) | Cisco ASA Software (HA)       | **REQUIRED**       |
 | foundry         | Brocade IronWare              | Optional           |
-| ios             | Cisco IOS                     | Optional           |
+| ios             | Cisco IOS, IOS-XE, NX-OS      | Optional           |
+| srx             | JuniperNetworks JunOS         | Not Available      |
 | ssg             | JuniperNetworks ScreenOS      | Not Available      |
 | ssg (--ha-mode) | JuniperNetworks ScreenOS (HA) | Not Available      |
 | yamaha          | YAMAHA RT OS                  | Optional           |
