@@ -3,6 +3,7 @@ package domain
 // Used for routing in usecases
 const (
 	IOSPlatformName         string = "ios"
+	NXOSPlatformName        string = "nxos"
 	IronWarePlatformName    string = "foundry"
 	AireOSPlatformName      string = "aireos"
 	AlliedWarePlatformName  string = "allied"
@@ -16,6 +17,7 @@ const (
 var (
 	Platforms = []string{
 		IOSPlatformName,
+		NXOSPlatformName,
 		IronWarePlatformName,
 		AireOSPlatformName,
 		AlliedWarePlatformName,
