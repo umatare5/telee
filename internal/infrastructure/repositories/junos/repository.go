@@ -21,6 +21,8 @@ func (r *Repository) Fetch() (string, error) {
 	var data string
 	var err error
 
+	expects = r.buildUserModeSecureRequest()
+
 	if r.Config.SecureMode {
 		data, err = ssh.New(
 			r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
