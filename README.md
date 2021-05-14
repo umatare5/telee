@@ -207,6 +207,35 @@ Current configuration : 18687 bytes
 
   </p></details>
 
+- When use RADIUS to raise the privilege, need to set `--default-privileged-mode` option.
+
+  <details><summary><u>Click to show example</u></summary><p>
+
+  ```console
+  $ telee -H lab-cat29l-02f99-01 -C "show run" --enable --secure
+  show run
+  Load for five secs: 8%/0%; one minute: 2%; five minutes: 1%
+  Time source is NTP, 02:25:22.496 JST Fri May 14 2021
+
+  Building configuration...
+
+  Current configuration : 18716 bytes
+  !
+  ! Last configuration change at 01:46:41 JST Fri May 14 2021 by raciadev
+  !
+  version 15.2
+  no service pad
+  service tcp-keepalives-in
+  service timestamps debug datetime msec localtime show-timezone
+  service timestamps log datetime msec localtime show-timezone
+  service password-encryption
+  !
+  hostname lab-cat29l-02f99-01
+  <snip>
+  ```
+
+  </p></details>
+
 - When face the timeout, be able to extend the time using `--timeout` option.
 
   <details><summary><u>Click to show example</u></summary><p>
