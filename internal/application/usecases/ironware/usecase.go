@@ -11,7 +11,7 @@ type Usecase struct {
 	Repository *infrastructure.Repository
 }
 
-// Fetch returns stdout from telnet session
+// Fetch returns stdout from the session
 func (u *Usecase) Fetch() (string, error) {
 	data, err := u.Repository.InvokeIronWareRepository().Fetch()
 	if err != nil {
