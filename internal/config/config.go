@@ -80,6 +80,9 @@ func checkArguments(cfg *Config) error {
 	if !cfg.SecureMode && !isUsableUnsecureMode(cfg.ExecPlatform) {
 		return errors.ErrUnsupportedUnsecureMode
 	}
+	if cfg.SecureMode && !isUsableDefaultPrivMode(cfg.ExecPlatform) {
+		return errors.ErrUnsupportedSecureMode
+	}
 	if !cfg.EnableMode && !isExpandableTermLength(cfg.ExecPlatform) {
 		return errors.ErrTermLengthIsEnforced
 	}
@@ -126,11 +129,14 @@ func isValidExecPlatform(platform string) bool {
 	return false
 }
 
-func isUsableHAMode(platform string) bool {
+func isUsableDefaultPrivMode(platform string) bool {
 	if platform == domain.ASASoftwarePlatformName {
 		return true
 	}
-	if platform == domain.ScreenOSPlatformName {
+	if platform == domain.IOSPlatformName {
+		return true
+	}
+	if platform == domain.NXOSPlatformName {
 		return true
 	}
 	return false
@@ -160,6 +166,16 @@ func isUsableSecureMode(platform string) bool {
 
 func isUsableUnsecureMode(platform string) bool {
 	return platform != domain.JunOSPlatformName
+}
+
+func isUsableHAMode(platform string) bool {
+	if platform == domain.ASASoftwarePlatformName {
+		return true
+	}
+	if platform == domain.ScreenOSPlatformName {
+		return true
+	}
+	return false
 }
 
 func isExpandableTermLength(platform string) bool {
