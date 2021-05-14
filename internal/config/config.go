@@ -65,23 +65,8 @@ func checkArguments(cfg *Config) error {
 	if cfg.Port == 0 {
 		completePortNumber(cfg)
 	}
-	if cfg.Username == domain.UsernameFlagDefaultValue {
-		return errors.ErrMissingUsername
-	}
-	if cfg.Password == domain.PasswordFlagDefaultValue {
-		return errors.ErrMissingPassword
-	}
-	if !hasPrivPassword(cfg.EnableMode, cfg.PrivPassword) {
-		return errors.ErrMissingPrivPassword
-	}
-	if !isExpandableTermLength(cfg.EnableMode, cfg.ExecPlatform) {
-		return errors.ErrTermLengthIsEnforced
-	}
-	if cfg.Hostname == domain.EmptyString {
-		return errors.ErrMissingHostname
-	}
-	if cfg.Command == domain.EmptyString {
-		return errors.ErrMissingCommand
+	if !isValidExecPlatform(cfg.ExecPlatform) {
+		return errors.ErrInvalidPlatform
 	}
 	if cfg.EnableMode && cfg.DefaultPrivMode {
 		return errors.ErrUnsupportedModeSet
@@ -95,13 +80,28 @@ func checkArguments(cfg *Config) error {
 	if !cfg.SecureMode && !isUsableUnsecureMode(cfg.ExecPlatform) {
 		return errors.ErrUnsupportedUnsecureMode
 	}
-	if !isValidExecPlatform(cfg.ExecPlatform) {
-		return errors.ErrInvalidPlatform
+	if !cfg.EnableMode && !isExpandableTermLength(cfg.ExecPlatform) {
+		return errors.ErrTermLengthIsEnforced
 	}
-	if !isUsableEnableMode(cfg.EnableMode, cfg.ExecPlatform) {
+	if cfg.Hostname == domain.EmptyString {
+		return errors.ErrMissingHostname
+	}
+	if cfg.Command == domain.EmptyString {
+		return errors.ErrMissingCommand
+	}
+	if cfg.Username == domain.UsernameFlagDefaultValue {
+		return errors.ErrMissingUsername
+	}
+	if cfg.Password == domain.PasswordFlagDefaultValue {
+		return errors.ErrMissingPassword
+	}
+	if cfg.EnableMode && !hasPrivPassword(cfg.PrivPassword) {
+		return errors.ErrMissingPrivPassword
+	}
+	if cfg.EnableMode && !isUsableEnableMode(cfg.ExecPlatform) {
 		fmt.Println(infoEnableModeIgnored)
 	}
-	if !isUsableUsername(cfg.Username, cfg.ExecPlatform) {
+	if cfg.Username != domain.EmptyString && !isUsableUsername(cfg.ExecPlatform) {
 		fmt.Println(infoUserameIgnored)
 	}
 
@@ -117,13 +117,6 @@ func completePortNumber(cfg *Config) bool {
 	return true
 }
 
-func isExpandableTermLength(mode bool, platform string) bool {
-	if !mode && platform == domain.ASASoftwarePlatformName {
-		return false
-	}
-	return true
-}
-
 func isValidExecPlatform(platform string) bool {
 	for _, p := range domain.Platforms {
 		if platform == p {
@@ -133,28 +126,14 @@ func isValidExecPlatform(platform string) bool {
 	return false
 }
 
-func hasPrivPassword(value bool, password string) bool {
-	if value {
-		if password == domain.PrivPasswordFlagDefaultValue {
-			return false
-		}
+func isUsableHAMode(platform string) bool {
+	if platform == domain.ASASoftwarePlatformName {
+		return true
 	}
-	return true
-}
-
-func isUsableEnableMode(mode bool, platform string) bool {
-	if mode {
-		if platform == domain.AireOSPlatformName {
-			return false
-		}
-		if platform == domain.AlliedWarePlatformName {
-			return false
-		}
-		if platform == domain.ScreenOSPlatformName {
-			return false
-		}
+	if platform == domain.ScreenOSPlatformName {
+		return true
 	}
-	return true
+	return false
 }
 
 func isUsableSecureMode(platform string) bool {
@@ -171,21 +150,27 @@ func isUsableUnsecureMode(platform string) bool {
 	return platform != domain.JunOSPlatformName
 }
 
-func isUsableHAMode(platform string) bool {
-	if platform == domain.ASASoftwarePlatformName {
-		return true
-	}
-	if platform == domain.ScreenOSPlatformName {
-		return true
-	}
-	return false
+func isExpandableTermLength(platform string) bool {
+	return platform != domain.ASASoftwarePlatformName
 }
 
-func isUsableUsername(username string, platform string) bool {
-	if username != domain.EmptyString {
-		if platform == domain.YamahaOSPlatformName {
-			return false
-		}
+func hasPrivPassword(password string) bool {
+	return password != domain.PrivPasswordFlagDefaultValue
+}
+
+func isUsableEnableMode(platform string) bool {
+	if platform == domain.AireOSPlatformName {
+		return false
+	}
+	if platform == domain.AlliedWarePlatformName {
+		return false
+	}
+	if platform == domain.ScreenOSPlatformName {
+		return false
 	}
 	return true
+}
+
+func isUsableUsername(platform string) bool {
+	return platform != domain.YamahaOSPlatformName
 }
