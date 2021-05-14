@@ -21,9 +21,10 @@ func (r *Repository) Fetch() (string, error) {
 	if r.Config.DefaultPrivMode {
 		expects = r.buildDefaultPrivilegedRequest()
 	}
-	if r.Config.EnableMode {
+	if !r.Config.DefaultPrivMode && r.Config.EnableMode {
 		expects = r.buildPrivilegedRequest()
-	} else {
+	}
+	if !r.Config.DefaultPrivMode && !r.Config.EnableMode {
 		expects = r.buildUserModeRequest()
 	}
 
@@ -44,11 +45,11 @@ func (r *Repository) buildUserModeRequest() []x.Batcher {
 		&x.BSnd{S: r.Config.Username + "\n"},
 		&x.BExp{R: "Password:"},
 		&x.BSnd{S: r.Config.Password + "\n"},
-		&x.BExp{R: r.Config.Hostname + ">"},
+		&x.BExp{R: r.Config.Hostname + "> "},
 		&x.BSnd{S: "terminal length 0\n"},
-		&x.BExp{R: r.Config.Hostname + ">"},
+		&x.BExp{R: r.Config.Hostname + "> "},
 		&x.BSnd{S: r.Config.Command + "\n"},
-		&x.BExp{R: r.Config.Hostname + ">"},
+		&x.BExp{R: r.Config.Hostname + "> "},
 	}
 }
 
@@ -59,15 +60,15 @@ func (r *Repository) buildPrivilegedRequest() []x.Batcher {
 		&x.BSnd{S: r.Config.Username + "\n"},
 		&x.BExp{R: "Password:"},
 		&x.BSnd{S: r.Config.Password + "\n"},
-		&x.BExp{R: r.Config.Hostname + ">"},
+		&x.BExp{R: r.Config.Hostname + "> "},
 		&x.BSnd{S: "enable\n"},
 		&x.BExp{R: "Password:"},
 		&x.BSnd{S: r.Config.PrivPassword + "\n"},
-		&x.BExp{R: r.Config.Hostname + "#"},
+		&x.BExp{R: r.Config.Hostname + "# "},
 		&x.BSnd{S: "terminal length 0\n"},
-		&x.BExp{R: r.Config.Hostname + "#"},
+		&x.BExp{R: r.Config.Hostname + "# "},
 		&x.BSnd{S: r.Config.Command + "\n"},
-		&x.BExp{R: r.Config.Hostname + "#"},
+		&x.BExp{R: r.Config.Hostname + "# "},
 	}
 }
 
@@ -78,10 +79,10 @@ func (r *Repository) buildDefaultPrivilegedRequest() []x.Batcher {
 		&x.BSnd{S: r.Config.Username + "\n"},
 		&x.BExp{R: "Password:"},
 		&x.BSnd{S: r.Config.Password + "\n"},
-		&x.BExp{R: r.Config.Hostname + "#"},
+		&x.BExp{R: r.Config.Hostname + "# "},
 		&x.BSnd{S: "terminal length 0\n"},
-		&x.BExp{R: r.Config.Hostname + "#"},
+		&x.BExp{R: r.Config.Hostname + "# "},
 		&x.BSnd{S: r.Config.Command + "\n"},
-		&x.BExp{R: r.Config.Hostname + "#"},
+		&x.BExp{R: r.Config.Hostname + "# "},
 	}
 }
