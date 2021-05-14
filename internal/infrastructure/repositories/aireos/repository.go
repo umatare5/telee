@@ -21,6 +21,7 @@ func (r *Repository) Fetch() (string, error) {
 	var data string
 	var err error
 
+	// AireOS needs the interactive authentication when also use SSH
 	expects = r.buildRequest()
 
 	if r.Config.SecureMode {
