@@ -137,6 +137,9 @@ func isUsableHAMode(platform string) bool {
 }
 
 func isUsableSecureMode(platform string) bool {
+	if platform == domain.ASASoftwarePlatformName {
+		return true
+	}
 	if platform == domain.IOSPlatformName {
 		return true
 	}
@@ -144,6 +147,9 @@ func isUsableSecureMode(platform string) bool {
 		return true
 	}
 	if platform == domain.JunOSPlatformName {
+		return true
+	}
+	if platform == domain.ScreenOSPlatformName {
 		return true
 	}
 	return false

@@ -26,11 +26,17 @@ func (r *Repository) Fetch() (string, error) {
 	var data string
 	var err error
 
-	if r.Config.HAMode {
+	if r.Config.SecureMode && r.Config.DefaultPrivMode && r.Config.HAMode {
+		expects = r.buildDefaultPrivilegedRequest(haSuffix)
+	}
+	if r.Config.SecureMode && r.Config.HAMode {
 		expects = r.buildPrivilegedRequest(haSuffix)
 	}
-	if !r.Config.HAMode {
-		expects = r.buildPrivilegedRequest(noSuffix)
+	if !r.Config.SecureMode && r.Config.DefaultPrivMode && !r.Config.HAMode {
+		expects = r.buildDefaultPrivilegedSecureRequest(noSuffix)
+	}
+	if !r.Config.SecureMode && !r.Config.HAMode {
+		expects = r.buildPrivilegedSecureRequest(noSuffix)
 	}
 
 	if r.Config.SecureMode {
@@ -60,6 +66,47 @@ func (r *Repository) buildPrivilegedRequest(suffix string) []x.Batcher {
 		&x.BSnd{S: "enable\n"},
 		&x.BExp{R: "Password:"},
 		&x.BSnd{S: r.Config.PrivPassword + "\n"},
+		&x.BExp{R: r.Config.Hostname + suffix + "#"},
+		&x.BSnd{S: "terminal pager 0\n"},
+		&x.BExp{R: r.Config.Hostname + suffix + "#"},
+		&x.BSnd{S: r.Config.Command + "\n"},
+		&x.BExp{R: r.Config.Hostname + suffix + "#"},
+	}
+}
+
+// [platform: asa] buildDefaultPrivilegedRequest returns the expects
+func (r *Repository) buildDefaultPrivilegedRequest(suffix string) []x.Batcher {
+	return []x.Batcher{
+		&x.BExp{R: "Username:"},
+		&x.BSnd{S: r.Config.Username + "\n"},
+		&x.BExp{R: "Password:"},
+		&x.BSnd{S: r.Config.Password + "\n"},
+		&x.BExp{R: r.Config.Hostname + suffix + "#"},
+		&x.BSnd{S: "terminal pager 0\n"},
+		&x.BExp{R: r.Config.Hostname + suffix + "#"},
+		&x.BSnd{S: r.Config.Command + "\n"},
+		&x.BExp{R: r.Config.Hostname + suffix + "#"},
+	}
+}
+
+// [platform: asa] buildPrivilegedSecureRequest returns the expects
+func (r *Repository) buildPrivilegedSecureRequest(suffix string) []x.Batcher {
+	return []x.Batcher{
+		&x.BExp{R: r.Config.Hostname + suffix + ">"},
+		&x.BSnd{S: "enable\n"},
+		&x.BExp{R: "Password:"},
+		&x.BSnd{S: r.Config.PrivPassword + "\n"},
+		&x.BExp{R: r.Config.Hostname + suffix + "#"},
+		&x.BSnd{S: "terminal pager 0\n"},
+		&x.BExp{R: r.Config.Hostname + suffix + "#"},
+		&x.BSnd{S: r.Config.Command + "\n"},
+		&x.BExp{R: r.Config.Hostname + suffix + "#"},
+	}
+}
+
+// [platform: asa] buildDefaultPrivilegedSecureRequest returns the expects
+func (r *Repository) buildDefaultPrivilegedSecureRequest(suffix string) []x.Batcher {
+	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + suffix + "#"},
 		&x.BSnd{S: "terminal pager 0\n"},
 		&x.BExp{R: r.Config.Hostname + suffix + "#"},
