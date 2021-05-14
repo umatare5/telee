@@ -50,6 +50,9 @@ func (e *Exec) Run() {
 	if e.Config.ExecPlatform == domain.ScreenOSPlatformName {
 		data, err = e.Usecase.InvokeScreenOSUsecase().Fetch()
 	}
+	if e.Config.ExecPlatform == domain.NXOSPlatformName {
+		data, err = e.Usecase.InvokeNXOSUsecase().Fetch()
+	}
 	if e.Config.ExecPlatform == domain.YamahaOSPlatformName {
 		data, err = e.Usecase.InvokeYamahaOSUsecase().Fetch()
 	}

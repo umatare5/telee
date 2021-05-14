@@ -9,6 +9,7 @@ import (
 	iosRepository "telee/internal/infrastructure/repositories/ios"
 	ironwareRepository "telee/internal/infrastructure/repositories/ironware"
 	junosRepository "telee/internal/infrastructure/repositories/junos"
+	nxosRepository "telee/internal/infrastructure/repositories/nxos"
 	screenosRepository "telee/internal/infrastructure/repositories/screenos"
 	yamahaosRepository "telee/internal/infrastructure/repositories/yamahaos"
 )
@@ -63,6 +64,13 @@ func (r *Repository) InvokeIronWareRepository() *ironwareRepository.Repository {
 // InvokeJunOSRepository returns new JunOSRepository
 func (r *Repository) InvokeJunOSRepository() *junosRepository.Repository {
 	return &junosRepository.Repository{
+		Config: r.Config,
+	}
+}
+
+// InvokeNXOSRepository returns new NXOSRepository
+func (r *Repository) InvokeNXOSRepository() *nxosRepository.Repository {
+	return &nxosRepository.Repository{
 		Config: r.Config,
 	}
 }

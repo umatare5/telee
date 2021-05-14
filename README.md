@@ -265,6 +265,7 @@ Current configuration : 18687 bytes
 | asa (--ha-mode) | ✅ 9.10(1)      | Not Supported    |
 | foundry         | ✅ 07.2.02aT7e1 | Not Supported    |
 | ios             | ✅ 15.2(5c)E    | ✅ 15.2(5c)E     |
+| nxos            | ⚠ Not Verified  | Not Supported    |
 | srx             | Not Supported   | ✅ 15.1X49-D90.7 |
 | ssg             | ✅ 6.3.0r21.0   | Not Supported    |
 | ssg (--ha-mode) | ✅ 6.3.0r22.0   | Not Supported    |
