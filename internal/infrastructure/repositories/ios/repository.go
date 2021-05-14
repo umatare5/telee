@@ -27,7 +27,7 @@ func (r *Repository) Fetch() (string, error) {
 	if r.Config.SecureMode && r.Config.EnableMode {
 		expects = r.buildPrivilegedSecureRequest()
 	}
-	if r.Config.SecureMode && !r.Config.EnableMode {
+	if r.Config.SecureMode && !r.Config.DefaultPrivMode && !r.Config.EnableMode {
 		expects = r.buildUserModeSecureRequest()
 	}
 	if !r.Config.SecureMode && r.Config.DefaultPrivMode {
@@ -36,7 +36,7 @@ func (r *Repository) Fetch() (string, error) {
 	if !r.Config.SecureMode && r.Config.EnableMode {
 		expects = r.buildPrivilegedRequest()
 	}
-	if !r.Config.SecureMode && !r.Config.EnableMode {
+	if !r.Config.SecureMode && !r.Config.DefaultPrivMode && !r.Config.EnableMode {
 		expects = r.buildUserModeRequest()
 	}
 
