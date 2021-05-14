@@ -26,7 +26,7 @@ const (
 	EnableModeFlagUsage   string = "Raise to privileged EXEC mode."
 	HAModeFlagUsage       string = "Use high-availability prompt mode."
 	SecureModeFlagUsage   string = "Use ssh mode."
-	PrivModeFlagUsage     string = "Use priviledged mode assinged by RADIUS attribute."
+	PrivModeFlagUsage     string = "Use default priviledged mode assinged by RADIUS attribute."
 	UsernameFlagUsage     string = "Set username."
 	PasswordFlagUsage     string = "Set password."
 	PrivPasswordFlagUsage string = "Set password to raise to privileged EXEC mode."

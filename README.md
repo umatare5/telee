@@ -48,7 +48,7 @@ GLOBAL OPTIONS:
    --enable-mode, -e, --ena, --enable  Raise to privileged EXEC mode. (default: false)
    --ha-mode, --ha                     Use high-availability prompt mode. (default: false)
    --secure-mode, -s, --sec, --secure  Use ssh mode. (default: false)
-   --priv-mode, -r                     Use priviledged mode assinged by RADIUS attribute. (default: false)
+   --priv-mode, -r                     Use defaul priviledged mode assinged by RADIUS attribute. (default: false)
    --username value, -u value          Set username. (default: "admin") [$TELEE_USERNAME]
    --password value, -p value          Set password. (default: "cisco") [$TELEE_PASSWORD]
    --priv-password value, --pp value   Set password to raise to privileged EXEC mode. (default: "enable") [$TELEE_PRIVPASSWORD]
