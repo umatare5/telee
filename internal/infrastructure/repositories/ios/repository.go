@@ -21,11 +21,17 @@ func (r *Repository) Fetch() (string, error) {
 	var data string
 	var err error
 
+	if r.Config.SecureMode && r.Config.DefaultPrivMode {
+		expects = r.buildDefaultPrivilegedSecureRequest()
+	}
 	if r.Config.SecureMode && r.Config.EnableMode {
 		expects = r.buildPrivilegedSecureRequest()
 	}
 	if r.Config.SecureMode && !r.Config.EnableMode {
 		expects = r.buildUserModeSecureRequest()
+	}
+	if !r.Config.SecureMode && r.Config.DefaultPrivMode {
+		expects = r.buildDefaultPrivilegedRequest()
 	}
 	if !r.Config.SecureMode && r.Config.EnableMode {
 		expects = r.buildPrivilegedRequest()
@@ -84,6 +90,21 @@ func (r *Repository) buildPrivilegedRequest() []x.Batcher {
 	}
 }
 
+// [platform: ios] buildDefaultPrivilegedRequest returns the expects
+func (r *Repository) buildDefaultPrivilegedRequest() []x.Batcher {
+	return []x.Batcher{
+		&x.BExp{R: "Username:"},
+		&x.BSnd{S: r.Config.Username + "\n"},
+		&x.BExp{R: "Password:"},
+		&x.BSnd{S: r.Config.Password + "\n"},
+		&x.BExp{R: r.Config.Hostname + "#"},
+		&x.BSnd{S: "terminal length 0\n"},
+		&x.BExp{R: r.Config.Hostname + "#"},
+		&x.BSnd{S: r.Config.Command + "\n"},
+		&x.BExp{R: r.Config.Hostname + "#"},
+	}
+}
+
 // [platform: ios] buildUserModeSecureRequest returns the expects
 func (r *Repository) buildUserModeSecureRequest() []x.Batcher {
 	return []x.Batcher{
@@ -102,6 +123,17 @@ func (r *Repository) buildPrivilegedSecureRequest() []x.Batcher {
 		&x.BSnd{S: "enable\n"},
 		&x.BExp{R: "Password:"},
 		&x.BSnd{S: r.Config.PrivPassword + "\n"},
+		&x.BExp{R: r.Config.Hostname + "#"},
+		&x.BSnd{S: "terminal length 0\n"},
+		&x.BExp{R: r.Config.Hostname + "#"},
+		&x.BSnd{S: r.Config.Command + "\n"},
+		&x.BExp{R: r.Config.Hostname + "#"},
+	}
+}
+
+// [platform: ios] buildDefaultPrivilegedSecureRequest returns the expects
+func (r *Repository) buildDefaultPrivilegedSecureRequest() []x.Batcher {
+	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + "#"},
 		&x.BSnd{S: "terminal length 0\n"},
 		&x.BExp{R: r.Config.Hostname + "#"},

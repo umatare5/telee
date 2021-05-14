@@ -3,6 +3,7 @@ package repository
 import (
 	"telee/internal/config"
 	"telee/internal/domain"
+	"telee/pkg/ssh"
 	"telee/pkg/telnet"
 	"time"
 
@@ -16,11 +17,21 @@ type Repository struct {
 
 // Fetch returns stdout from telnet session
 func (r *Repository) Fetch() (string, error) {
-	expects := r.buildRequest()
+	var expects []x.Batcher
+	var data string
+	var err error
 
-	data, err := telnet.New(
-		r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
-	).Fetch(&expects)
+	expects = r.buildRequest()
+
+	if r.Config.SecureMode {
+		data, err = ssh.New(
+			r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
+		).Fetch(&expects, ssh.GenerateClientConfig(r.Config.Username, r.Config.Password))
+	} else {
+		data, err = telnet.New(
+			r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
+		).Fetch(&expects)
+	}
 
 	if err != nil {
 		return "", err
