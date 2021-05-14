@@ -44,6 +44,9 @@ func (e *Exec) Run() {
 	if e.Config.ExecPlatform == domain.IronWarePlatformName {
 		data, err = e.Usecase.InvokeIronWareUsecase().Fetch()
 	}
+	if e.Config.ExecPlatform == domain.JunOSPlatformName {
+		data, err = e.Usecase.InvokeJunOSUsecase().Fetch()
+	}
 	if e.Config.ExecPlatform == domain.ScreenOSPlatformName {
 		data, err = e.Usecase.InvokeScreenOSUsecase().Fetch()
 	}
