@@ -6,6 +6,7 @@ import (
 	asasoftwareUsecase "telee/internal/application/usecases/asasoftware"
 	iosUsecase "telee/internal/application/usecases/ios"
 	ironwareUsecase "telee/internal/application/usecases/ironware"
+	junosUsecase "telee/internal/application/usecases/junos"
 	screenosUsecase "telee/internal/application/usecases/screenos"
 	yamahaosUsecase "telee/internal/application/usecases/yamahaos"
 	"telee/internal/config"
@@ -61,6 +62,14 @@ func (u *Usecase) InvokeIOSUsecase() *iosUsecase.Usecase {
 // InvokeIronWareUsecase returns new IronWareUsecase
 func (u *Usecase) InvokeIronWareUsecase() *ironwareUsecase.Usecase {
 	return &ironwareUsecase.Usecase{
+		Config:     u.Config,
+		Repository: u.Repository,
+	}
+}
+
+// InvokeJunOSUsecase returns new JunOSUsecase
+func (u *Usecase) InvokeJunOSUsecase() *junosUsecase.Usecase {
+	return &junosUsecase.Usecase{
 		Config:     u.Config,
 		Repository: u.Repository,
 	}

@@ -8,6 +8,7 @@ const (
 	AlliedWarePlatformName  string = "allied"
 	ASASoftwarePlatformName string = "asa"
 	ScreenOSPlatformName    string = "ssg"
+	JunOSPlatformName       string = "srx"
 	YamahaOSPlatformName    string = "yamaha"
 )
 
