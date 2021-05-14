@@ -78,10 +78,10 @@ func (r *Repository) buildDefaultPrivilegedRequest() []x.Batcher {
 		&x.BSnd{S: r.Config.Username + "\n"},
 		&x.BExp{R: "Password:"},
 		&x.BSnd{S: r.Config.Password + "\n"},
-		&x.BExp{R: r.Config.Hostname + "#"},
+		&x.BExp{R: "." + r.Config.Hostname + "#"},
 		&x.BSnd{S: "terminal length 0\n"},
-		&x.BExp{R: r.Config.Hostname + "#"},
+		&x.BExp{R: "." + r.Config.Hostname + "#"},
 		&x.BSnd{S: r.Config.Command + "\n"},
-		&x.BExp{R: r.Config.Hostname + "#"},
+		&x.BExp{R: "." + r.Config.Hostname + "#"},
 	}
 }
