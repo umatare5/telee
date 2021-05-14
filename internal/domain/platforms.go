@@ -7,8 +7,8 @@ const (
 	AireOSPlatformName      string = "aireos"
 	AlliedWarePlatformName  string = "allied"
 	ASASoftwarePlatformName string = "asa"
-	ScreenOSPlatformName    string = "ssg"
 	JunOSPlatformName       string = "srx"
+	ScreenOSPlatformName    string = "ssg"
 	YamahaOSPlatformName    string = "yamaha"
 )
 
@@ -20,6 +20,7 @@ var (
 		AireOSPlatformName,
 		AlliedWarePlatformName,
 		ASASoftwarePlatformName,
+		JunOSPlatformName,
 		ScreenOSPlatformName,
 		YamahaOSPlatformName,
 	}
