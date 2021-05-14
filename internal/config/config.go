@@ -81,7 +81,7 @@ func checkArguments(cfg *Config) error {
 	if cfg.Command == domain.EmptyString {
 		return errors.ErrMissingCommand
 	}
-	if isUsableHAMode(cfg.HAMode, cfg.ExecPlatform) {
+	if cfg.HAMode && isUsableHAMode(cfg.ExecPlatform) {
 		return errors.ErrUnsupportedHAMode
 	}
 	if cfg.SecureMode && !isUsableSecureMode(cfg.ExecPlatform) {
@@ -166,14 +166,12 @@ func isUsableUnsecureMode(platform string) bool {
 	return platform != domain.JunOSPlatformName
 }
 
-func isUsableHAMode(mode bool, platform string) bool {
-	if mode {
-		if platform == domain.ASASoftwarePlatformName {
-			return true
-		}
-		if platform == domain.ScreenOSPlatformName {
-			return true
-		}
+func isUsableHAMode(platform string) bool {
+	if platform == domain.ASASoftwarePlatformName {
+		return true
+	}
+	if platform == domain.ScreenOSPlatformName {
+		return true
 	}
 	return false
 }
