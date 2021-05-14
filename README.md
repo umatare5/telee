@@ -250,7 +250,8 @@ Current configuration : 18687 bytes
 | asa             | Cisco ASA Software            | **REQUIRED**       |
 | asa (--ha-mode) | Cisco ASA Software (HA)       | **REQUIRED**       |
 | foundry         | Brocade IronWare              | Optional           |
-| ios             | Cisco IOS, IOS-XE, NX-OS      | Optional           |
+| ios             | Cisco IOS, IOS-XE             | Optional           |
+| nxos            | Cisco NX-OS                   | Optional           |
 | srx             | JuniperNetworks JunOS         | Not Available      |
 | ssg             | JuniperNetworks ScreenOS      | Not Available      |
 | ssg (--ha-mode) | JuniperNetworks ScreenOS (HA) | Not Available      |
