@@ -121,6 +121,18 @@ func registerSecureModeFlag() []cli.Flag {
 	}
 }
 
+// Declare priv-mode flag
+func registerPrivModeFlag() []cli.Flag {
+	return []cli.Flag{
+		&cli.BoolFlag{
+			Name:    domain.PrivModeFlagName,
+			Usage:   domain.PrivModeFlagUsage,
+			Aliases: domain.PrivModeFlagAliases,
+			Value:   domain.PrivModeFlagDefaultValue,
+		},
+	}
+}
+
 // Declare username flag
 func registerUsernameFlag() []cli.Flag {
 	return []cli.Flag{

@@ -10,6 +10,7 @@ const (
 	EnableModeFlagName   string = "enable-mode"
 	HAModeFlagName       string = "ha-mode"
 	SecureModeFlagName   string = "secure-mode"
+	PrivModeFlagName     string = "priv-mode"
 	UsernameFlagName     string = "username"
 	PasswordFlagName     string = "password"
 	PrivPasswordFlagName string = "priv-password"
@@ -25,6 +26,7 @@ const (
 	EnableModeFlagUsage   string = "Raise to privileged EXEC mode."
 	HAModeFlagUsage       string = "Use high-availability prompt mode."
 	SecureModeFlagUsage   string = "Use ssh mode."
+	PrivModeFlagUsage     string = "Use priviledged mode assinged by RADIUS attribute."
 	UsernameFlagUsage     string = "Set username."
 	PasswordFlagUsage     string = "Set password."
 	PrivPasswordFlagUsage string = "Set password to raise to privileged EXEC mode."
@@ -38,6 +40,7 @@ const (
 	EnableModeFlagDefaultValue   bool   = false
 	HAModeFlagDefaultValue       bool   = false
 	SecureModeFlagDefaultValue   bool   = false
+	PrivModeFlagDefaultValue     bool   = false
 	UsernameFlagDefaultValue     string = "admin"
 	PasswordFlagDefaultValue     string = "cisco"
 	PrivPasswordFlagDefaultValue string = "enable"
@@ -58,6 +61,7 @@ var (
 	ExecPlatformFlagAliases = []string{"x"}
 	EnableModeFlagAliases   = []string{"e", "ena", "enable"}
 	HAModeFlagAliases       = []string{"ha"}
+	PrivModeFlagAliases     = []string{"r"}
 	SecureModeFlagAliases   = []string{"s", "sec", "secure"}
 	UsernameFlagAliases     = []string{"u"}
 	PasswordFlagAliases     = []string{"p"}

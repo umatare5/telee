@@ -24,6 +24,7 @@ type Config struct {
 	EnableMode   bool
 	HAMode       bool
 	SecureMode   bool
+	PrivMode     bool
 	Command      string
 	Username     string
 	Password     string
@@ -40,6 +41,7 @@ func New(ctx *cli.Context) Config {
 		ExecPlatform: ctx.String(domain.ExecPlatformFlagName),
 		EnableMode:   ctx.Bool(domain.EnableModeFlagName),
 		HAMode:       ctx.Bool(domain.HAModeFlagName),
+		PrivMode:     ctx.Bool(domain.PrivModeFlagName),
 		SecureMode:   ctx.Bool(domain.SecureModeFlagName),
 		Username:     ctx.String(domain.UsernameFlagName),
 		Password:     ctx.String(domain.PasswordFlagName),
@@ -80,6 +82,9 @@ func checkArguments(cfg *Config) error {
 	}
 	if cfg.Command == domain.EmptyString {
 		return errors.ErrMissingCommand
+	}
+	if cfg.EnableMode && cfg.PrivMode {
+		return errors.ErrUnsupportedModeSet
 	}
 	if cfg.HAMode && !isUsableHAMode(cfg.ExecPlatform) {
 		return errors.ErrUnsupportedHAMode
