@@ -140,6 +140,9 @@ func isUsableSecureMode(platform string) bool {
 	if platform == domain.IOSPlatformName {
 		return true
 	}
+	if platform == domain.NXOSPlatformName {
+		return true
+	}
 	if platform == domain.JunOSPlatformName {
 		return true
 	}
