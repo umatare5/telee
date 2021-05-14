@@ -262,7 +262,7 @@ Current configuration : 18687 bytes
 
 | Name (`-x`)     | Telnet          | SSH (--secure)   |
 | :-------------- | :-------------- | :--------------- |
-| aireos          | ✅ 8.5.120.0    | Not Supported    |
+| aireos          | ✅ 8.5.120.0    | ✅ 8.5.120.0     |
 | allied          | ✅ 1.6.14B02    | Not Supported    |
 | asa             | ✅ 9.0(4)       | ⚠ Not Verified   |
 | asa (--ha-mode) | ✅ 9.10(1)      | ⚠ Not Verified   |
