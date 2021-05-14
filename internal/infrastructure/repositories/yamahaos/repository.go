@@ -3,7 +3,6 @@ package repository
 import (
 	"telee/internal/config"
 	"telee/internal/domain"
-	"telee/pkg/ssh"
 	"telee/pkg/telnet"
 	"time"
 
@@ -27,15 +26,10 @@ func (r *Repository) Fetch() (string, error) {
 		expects = r.buildUserModeRequest()
 	}
 
-	if r.Config.SecureMode {
-		data, err = ssh.New(
-			r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
-		).Fetch(&expects, ssh.GenerateClientConfig(r.Config.Username, r.Config.Password))
-	} else {
-		data, err = telnet.New(
-			r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
-		).Fetch(&expects)
-	}
+	// Yamaha OS is not supporting SSH
+	data, err = telnet.New(
+		r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
+	).Fetch(&expects)
 
 	if err != nil {
 		return "", err
