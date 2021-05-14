@@ -26,17 +26,32 @@ func (r *Repository) Fetch() (string, error) {
 	var data string
 	var err error
 
-	if r.Config.SecureMode && r.Config.DefaultPrivMode && r.Config.HAMode {
-		expects = r.buildDefaultPrivilegedRequest(haSuffix)
-	}
-	if r.Config.SecureMode && r.Config.HAMode {
-		expects = r.buildPrivilegedRequest(haSuffix)
-	}
-	if !r.Config.SecureMode && r.Config.DefaultPrivMode && !r.Config.HAMode {
-		expects = r.buildDefaultPrivilegedSecureRequest(noSuffix)
-	}
-	if !r.Config.SecureMode && !r.Config.HAMode {
-		expects = r.buildPrivilegedSecureRequest(noSuffix)
+	if r.Config.SecureMode {
+		if r.Config.DefaultPrivMode && r.Config.HAMode {
+			expects = r.buildDefaultPrivilegedSecureRequest(haSuffix)
+		}
+		if !r.Config.DefaultPrivMode && r.Config.HAMode {
+			expects = r.buildPrivilegedSecureRequest(haSuffix)
+		}
+		if r.Config.DefaultPrivMode && !r.Config.HAMode {
+			expects = r.buildDefaultPrivilegedSecureRequest(noSuffix)
+		}
+		if !r.Config.DefaultPrivMode && !r.Config.HAMode {
+			expects = r.buildPrivilegedSecureRequest(noSuffix)
+		}
+	} else {
+		if r.Config.DefaultPrivMode && r.Config.HAMode {
+			expects = r.buildDefaultPrivilegedRequest(haSuffix)
+		}
+		if !r.Config.DefaultPrivMode && r.Config.HAMode {
+			expects = r.buildPrivilegedRequest(haSuffix)
+		}
+		if r.Config.DefaultPrivMode && !r.Config.HAMode {
+			expects = r.buildDefaultPrivilegedRequest(noSuffix)
+		}
+		if !r.Config.DefaultPrivMode && !r.Config.HAMode {
+			expects = r.buildPrivilegedRequest(noSuffix)
+		}
 	}
 
 	if r.Config.SecureMode {
