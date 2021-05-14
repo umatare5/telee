@@ -81,7 +81,7 @@ func checkArguments(cfg *Config) error {
 	if cfg.Command == domain.EmptyString {
 		return errors.ErrMissingCommand
 	}
-	if cfg.HAMode && isUsableHAMode(cfg.ExecPlatform) {
+	if cfg.HAMode && !isUsableHAMode(cfg.ExecPlatform) {
 		return errors.ErrUnsupportedHAMode
 	}
 	if cfg.SecureMode && !isUsableSecureMode(cfg.ExecPlatform) {
