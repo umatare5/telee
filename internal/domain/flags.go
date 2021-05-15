@@ -24,7 +24,7 @@ const (
 	CommandFlagUsage         string = "Set a command."
 	ExecPlatformFlagUsage    string = "Set exec-platform. Refer to README.md what to be set."
 	EnableModeFlagUsage      string = "Raise to privileged EXEC mode."
-	RedundantModeFlagUsage   string = "Use high-availability prompt mode."
+	RedundantModeFlagUsage   string = "Use redundant prompt mode."
 	SecureModeFlagUsage      string = "Use ssh mode."
 	DefaultPrivModeFlagUsage string = "Use default privileged mode assinged by RADIUS attribute."
 	UsernameFlagUsage        string = "Set username."
