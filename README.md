@@ -274,17 +274,17 @@ Current configuration : 18687 bytes
 
 ### Matrix
 
-| Name (`-x`) | Description              | Enable Mode (`-e`) | HA Mode (`-r`) |
-| :---------- | :----------------------- | ------------------ | -------------- |
-| aireos      | Cisco AireOS             | Optional           | Not Available  |
-| allied      | AlliedTelesis AlliedWare | Not Available      | Not Available  |
-| asa         | Cisco ASA Software       | **REQUIRED**       | Optional       |
-| foundry     | Brocade IronWare         | Optional           | Not Available  |
-| ios         | Cisco IOS, IOS-XE        | Optional           | Not Available  |
-| nxos        | Cisco NX-OS              | Optional           | Not Available  |
-| srx         | JuniperNetworks JunOS    | Not Available      | Not Available  |
-| ssg         | JuniperNetworks ScreenOS | Not Available      | Optional       |
-| yamaha      | YAMAHA RT OS             | Optional           | Not Available  |
+| Name (`-x`) | Description              | Enable Mode (`-e`) | Redundant Mode (`-r`) |
+| :---------- | :----------------------- | ------------------ | --------------------- |
+| aireos      | Cisco AireOS             | Optional           | Not Available         |
+| allied      | AlliedTelesis AlliedWare | Not Available      | Not Available         |
+| asa         | Cisco ASA Software       | **REQUIRED**       | Optional              |
+| foundry     | Brocade IronWare         | Optional           | Not Available         |
+| ios         | Cisco IOS, IOS-XE        | Optional           | Not Available         |
+| nxos        | Cisco NX-OS              | Optional           | Not Available         |
+| srx         | JuniperNetworks JunOS    | Not Available      | Not Available         |
+| ssg         | JuniperNetworks ScreenOS | Not Available      | Optional              |
+| yamaha      | YAMAHA RT OS             | Optional           | Not Available         |
 
 ### Verified On
 
