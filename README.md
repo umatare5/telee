@@ -34,7 +34,7 @@ USAGE:
    telee -H HOSTNAME -C COMMAND [options...]
 
 VERSION:
-   1.6.5
+   1.7.0
 
 COMMANDS:
    help, h  Shows a list of commands or help for one command
@@ -46,9 +46,9 @@ GLOBAL OPTIONS:
    --command value, -C value           Set a command. [$TELEE_COMMAND]
    --exec-platform value, -x value     Set exec-platform. Refer to README.md what to be set. (default: "ios")
    --enable-mode, -e, --ena, --enable  Raise to privileged EXEC mode. (default: false)
-   --redundant-mode, -r                Use high-availability prompt mode. (default: false)
+   --redundant-mode, -r, --redundant   Use high-availability prompt mode. (default: false)
    --secure-mode, -s, --sec, --secure  Use ssh mode. (default: false)
-   --default-privilege-mode, -d        Use default privilege mode assinged by RADIUS attribute. (default: false)
+   --default-privilege-mode, -d        Use default privileged mode assinged by RADIUS attribute. (default: false)
    --username value, -u value          Set username. (default: "admin") [$TELEE_USERNAME]
    --password value, -p value          Set password. (default: "cisco") [$TELEE_PASSWORD]
    --priv-password value, --pp value   Set password to raise to privileged EXEC mode. (default: "enable") [$TELEE_PRIVPASSWORD]
