@@ -46,7 +46,7 @@ GLOBAL OPTIONS:
    --command value, -C value           Set a command. [$TELEE_COMMAND]
    --exec-platform value, -x value     Set exec-platform. Refer to README.md what to be set. (default: "ios")
    --enable-mode, -e, --ena, --enable  Raise to privileged EXEC mode. (default: false)
-   --redundant-mode, -r                     Use high-availability prompt mode. (default: false)
+   --redundant-mode, -r                Use high-availability prompt mode. (default: false)
    --secure-mode, -s, --sec, --secure  Use ssh mode. (default: false)
    --default-privilege-mode, -d        Use default privilege mode assinged by RADIUS attribute. (default: false)
    --username value, -u value          Set username. (default: "admin") [$TELEE_USERNAME]

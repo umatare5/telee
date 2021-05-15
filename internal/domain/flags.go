@@ -60,7 +60,7 @@ var (
 	CommandFlagAliases         = []string{"C"}
 	ExecPlatformFlagAliases    = []string{"x"}
 	EnableModeFlagAliases      = []string{"e", "ena", "enable"}
-	RedundantModeFlagAliases   = []string{"r"}
+	RedundantModeFlagAliases   = []string{"r", "redundant"}
 	DefaultPrivModeFlagAliases = []string{"d"}
 	SecureModeFlagAliases      = []string{"s", "sec", "secure"}
 	UsernameFlagAliases        = []string{"u"}
