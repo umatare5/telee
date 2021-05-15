@@ -14,7 +14,7 @@ It has following advantages compared to use standard telnet and SSH.
 
 For those who use many "expect" scripts and "TeraTerm Macro", telee may be a simple alternative.
 
-In additional, the execution performance of telee is 10 times faster than [napalm](https://github.com/napalm-automation/napalm)'s one-liner! 🚀
+In additional, the execution performance of telee is 6 to 72 times faster than [napalm](https://napalm.readthedocs.io/en/latest/cli.html)! 🚀
 
 ![](https://github.com/umatare5/telee/blob/images/promo.gif)
 
@@ -103,7 +103,7 @@ Gi0/9                          admin down     down
 Gi0/10                         admin down     down
 ```
 
-- Also be able to redirect to file.
+- Also able to redirect to file.
 
 ```console
 $ telee --hostname lab-cat29l-02f99-01 --command "show run" --enable > telee.log
