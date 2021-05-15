@@ -22,7 +22,7 @@ type Config struct {
 	Timeout         int
 	ExecPlatform    string
 	EnableMode      bool
-	HAMode          bool
+	RedundantMode   bool
 	SecureMode      bool
 	DefaultPrivMode bool
 	Command         string
@@ -40,7 +40,7 @@ func New(ctx *cli.Context) Config {
 		Command:         ctx.String(domain.CommandFlagName),
 		ExecPlatform:    ctx.String(domain.ExecPlatformFlagName),
 		EnableMode:      ctx.Bool(domain.EnableModeFlagName),
-		HAMode:          ctx.Bool(domain.HAModeFlagName),
+		RedundantMode:   ctx.Bool(domain.RedundantModeFlagName),
 		DefaultPrivMode: ctx.Bool(domain.DefaultPrivModeFlagName),
 		SecureMode:      ctx.Bool(domain.SecureModeFlagName),
 		Username:        ctx.String(domain.UsernameFlagName),
@@ -71,8 +71,8 @@ func checkArguments(cfg *Config) error {
 	if cfg.EnableMode && cfg.DefaultPrivMode {
 		return errors.ErrUnsupportedModeSet
 	}
-	if cfg.HAMode && !isUsableHAMode(cfg.ExecPlatform) {
-		return errors.ErrUnsupportedHAMode
+	if cfg.RedundantMode && !isUsableRedundantMode(cfg.ExecPlatform) {
+		return errors.ErrUnsupportedRedundantMode
 	}
 	if cfg.SecureMode && !isUsableSecureMode(cfg.ExecPlatform) {
 		return errors.ErrUnsupportedSecureMode
@@ -168,7 +168,7 @@ func isUsableUnsecureMode(platform string) bool {
 	return platform != domain.JunOSPlatformName
 }
 
-func isUsableHAMode(platform string) bool {
+func isUsableRedundantMode(platform string) bool {
 	if platform == domain.ASASoftwarePlatformName {
 		return true
 	}

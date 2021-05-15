@@ -8,7 +8,7 @@ const (
 	CommandFlagName         string = "command"
 	ExecPlatformFlagName    string = "exec-platform"
 	EnableModeFlagName      string = "enable-mode"
-	HAModeFlagName          string = "ha-mode"
+	RedundantModeFlagName   string = "redundant-mode"
 	SecureModeFlagName      string = "secure-mode"
 	DefaultPrivModeFlagName string = "default-privilege-mode"
 	UsernameFlagName        string = "username"
@@ -24,7 +24,7 @@ const (
 	CommandFlagUsage         string = "Set a command."
 	ExecPlatformFlagUsage    string = "Set exec-platform. Refer to README.md what to be set."
 	EnableModeFlagUsage      string = "Raise to privileged EXEC mode."
-	HAModeFlagUsage          string = "Use high-availability prompt mode."
+	RedundantModeFlagUsage   string = "Use high-availability prompt mode."
 	SecureModeFlagUsage      string = "Use ssh mode."
 	DefaultPrivModeFlagUsage string = "Use default privileged mode assinged by RADIUS attribute."
 	UsernameFlagUsage        string = "Set username."
@@ -38,7 +38,7 @@ const (
 	TimeoutFlagDefaultValue         int    = 5
 	ExecPlatformFlagDefaultValue    string = "ios"
 	EnableModeFlagDefaultValue      bool   = false
-	HAModeFlagDefaultValue          bool   = false
+	RedundantModeFlagDefaultValue   bool   = false
 	SecureModeFlagDefaultValue      bool   = false
 	DefaultPrivModeFlagDefaultValue bool   = false
 	UsernameFlagDefaultValue        string = "admin"
@@ -60,7 +60,7 @@ var (
 	CommandFlagAliases         = []string{"C"}
 	ExecPlatformFlagAliases    = []string{"x"}
 	EnableModeFlagAliases      = []string{"e", "ena", "enable"}
-	HAModeFlagAliases          = []string{"ha"}
+	RedundantModeFlagAliases   = []string{"r"}
 	DefaultPrivModeFlagAliases = []string{"d"}
 	SecureModeFlagAliases      = []string{"s", "sec", "secure"}
 	UsernameFlagAliases        = []string{"u"}

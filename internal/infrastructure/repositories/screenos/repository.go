@@ -26,16 +26,16 @@ func (r *Repository) Fetch() (string, error) {
 	var data string
 	var err error
 
-	if r.Config.SecureMode && r.Config.HAMode {
+	if r.Config.SecureMode && r.Config.RedundantMode {
 		expects = r.buildSecureRequest(haSuffix)
 	}
-	if r.Config.SecureMode && !r.Config.HAMode {
+	if r.Config.SecureMode && !r.Config.RedundantMode {
 		expects = r.buildSecureRequest(noSuffix)
 	}
-	if !r.Config.SecureMode && r.Config.HAMode {
+	if !r.Config.SecureMode && r.Config.RedundantMode {
 		expects = r.buildRequest(haSuffix)
 	}
-	if !r.Config.SecureMode && !r.Config.HAMode {
+	if !r.Config.SecureMode && !r.Config.RedundantMode {
 		expects = r.buildRequest(noSuffix)
 	}
 

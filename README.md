@@ -46,7 +46,7 @@ GLOBAL OPTIONS:
    --command value, -C value           Set a command. [$TELEE_COMMAND]
    --exec-platform value, -x value     Set exec-platform. Refer to README.md what to be set. (default: "ios")
    --enable-mode, -e, --ena, --enable  Raise to privileged EXEC mode. (default: false)
-   --ha-mode, --ha                     Use high-availability prompt mode. (default: false)
+   --redundant-mode, -r                     Use high-availability prompt mode. (default: false)
    --secure-mode, -s, --sec, --secure  Use ssh mode. (default: false)
    --default-privilege-mode, -d        Use default privilege mode assinged by RADIUS attribute. (default: false)
    --username value, -u value          Set username. (default: "admin") [$TELEE_USERNAME]
@@ -274,35 +274,35 @@ Current configuration : 18687 bytes
 
 ### Matrix
 
-| Name (`-x`) | Description              | Enable Mode (`-e`) | HA Mode (`--ha`) |
-| :---------- | :----------------------- | ------------------ | ---------------- |
-| aireos      | Cisco AireOS             | Optional           | Not Available    |
-| allied      | AlliedTelesis AlliedWare | Not Available      | Not Available    |
-| asa         | Cisco ASA Software       | **REQUIRED**       | Optional         |
-| foundry     | Brocade IronWare         | Optional           | Not Available    |
-| ios         | Cisco IOS, IOS-XE        | Optional           | Not Available    |
-| nxos        | Cisco NX-OS              | Optional           | Not Available    |
-| srx         | JuniperNetworks JunOS    | Not Available      | Not Available    |
-| ssg         | JuniperNetworks ScreenOS | Not Available      | Optional         |
-| yamaha      | YAMAHA RT OS             | Optional           | Not Available    |
+| Name (`-x`) | Description              | Enable Mode (`-e`) | HA Mode (`-r`) |
+| :---------- | :----------------------- | ------------------ | -------------- |
+| aireos      | Cisco AireOS             | Optional           | Not Available  |
+| allied      | AlliedTelesis AlliedWare | Not Available      | Not Available  |
+| asa         | Cisco ASA Software       | **REQUIRED**       | Optional       |
+| foundry     | Brocade IronWare         | Optional           | Not Available  |
+| ios         | Cisco IOS, IOS-XE        | Optional           | Not Available  |
+| nxos        | Cisco NX-OS              | Optional           | Not Available  |
+| srx         | JuniperNetworks JunOS    | Not Available      | Not Available  |
+| ssg         | JuniperNetworks ScreenOS | Not Available      | Optional       |
+| yamaha      | YAMAHA RT OS             | Optional           | Not Available  |
 
 ### Verified On
 
 - "⚠ Not Verified" means "implemented but not checked". I'm waiting your report! 💓
 
-| Name (`-x`)   | Telnet           | SSH (--secure)   | Default PrivMode (`-d`) |
-| :------------ | :--------------- | :--------------- | ----------------------- |
-| aireos        | ✅ 8.5.120.0     | ✅ 8.5.120.0     | 🚫 Not Supported        |
-| allied        | ✅ 1.6.14B02     | 🚫 Not Supported | 🚫 Not Supported        |
-| asa           | ✅ 9.0(4)        | ⚠ Not Verified   | ⚠ Not Verified          |
-| asa (ha-mode) | ✅ 9.10(1)       | ⚠ Not Verified   | ⚠ Not Verified          |
-| foundry       | ✅ 07.2.02aT7e1  | 🚫 Not Supported | 🚫 Not Supported        |
-| ios           | ✅ 15.2(5c)E     | ✅ 15.2(5c)E     | ✅ 15.2(5c)E            |
-| nxos          | ✅ 6.2(14)       | ⚠ Not Verified   | ✅ 6.2(14)              |
-| srx           | 🚫 Not Supported | ✅ 15.1X49-D90.7 | 🚫 Not Supported        |
-| ssg           | ✅ 6.3.0r21.0    | ⚠ Not Verified   | 🚫 Not Supported        |
-| ssg (ha-mode) | ✅ 6.3.0r22.0    | ⚠ Not Verified   | 🚫 Not Supported        |
-| yamaha        | ✅ Rev.8.03.94   | 🚫 Not Supported | 🚫 Not Supported        |
+| Name (`-x`)          | Telnet           | SSH (--secure)   | Default PrivMode (`-d`) |
+| :------------------- | :--------------- | :--------------- | ----------------------- |
+| aireos               | ✅ 8.5.120.0     | ✅ 8.5.120.0     | 🚫 Not Supported        |
+| allied               | ✅ 1.6.14B02     | 🚫 Not Supported | 🚫 Not Supported        |
+| asa                  | ✅ 9.0(4)        | ⚠ Not Verified   | ⚠ Not Verified          |
+| asa (redundant-mode) | ✅ 9.10(1)       | ⚠ Not Verified   | ⚠ Not Verified          |
+| foundry              | ✅ 07.2.02aT7e1  | 🚫 Not Supported | 🚫 Not Supported        |
+| ios                  | ✅ 15.2(5c)E     | ✅ 15.2(5c)E     | ✅ 15.2(5c)E            |
+| nxos                 | ✅ 6.2(14)       | ⚠ Not Verified   | ✅ 6.2(14)              |
+| srx                  | 🚫 Not Supported | ✅ 15.1X49-D90.7 | 🚫 Not Supported        |
+| ssg                  | ✅ 6.3.0r21.0    | ⚠ Not Verified   | 🚫 Not Supported        |
+| ssg (redundant-mode) | ✅ 6.3.0r22.0    | ⚠ Not Verified   | 🚫 Not Supported        |
+| yamaha               | ✅ Rev.8.03.94   | 🚫 Not Supported | 🚫 Not Supported        |
 
 ## Development
 

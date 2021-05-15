@@ -15,7 +15,7 @@ func registerFlags() []cli.Flag {
 	flags = append(flags, registerCommandFlag()...)
 	flags = append(flags, registerExecPlatformFlag()...)
 	flags = append(flags, registerEnableModeFlag()...)
-	flags = append(flags, registerHAModeFlag()...)
+	flags = append(flags, registerRedundantModeFlag()...)
 	flags = append(flags, registerSecureModeFlag()...)
 	flags = append(flags, registerDefaultPrivModeFlag()...)
 	flags = append(flags, registerUsernameFlag()...)
@@ -98,14 +98,14 @@ func registerEnableModeFlag() []cli.Flag {
 	}
 }
 
-// Declare ha-mode flag
-func registerHAModeFlag() []cli.Flag {
+// Declare redundant-mode flag
+func registerRedundantModeFlag() []cli.Flag {
 	return []cli.Flag{
 		&cli.BoolFlag{
-			Name:    domain.HAModeFlagName,
-			Usage:   domain.HAModeFlagUsage,
-			Aliases: domain.HAModeFlagAliases,
-			Value:   domain.HAModeFlagDefaultValue,
+			Name:    domain.RedundantModeFlagName,
+			Usage:   domain.RedundantModeFlagUsage,
+			Aliases: domain.RedundantModeFlagAliases,
+			Value:   domain.RedundantModeFlagDefaultValue,
 		},
 	}
 }
