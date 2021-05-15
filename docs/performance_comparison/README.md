@@ -51,7 +51,7 @@
 - (G) 4.028s (Avg: 3.788s)
 
 | Case        | Result                             |
-| :---------- | ---------------------------------- |
+| :---------- | :--------------------------------- |
 | (A) and (E) | About 6 times faster than Napalm.  |
 | (B) and (F) | About 19 times faster than Napalm. |
 | (C) and (G) | About 60 times faster than Napalm. |
@@ -59,7 +59,7 @@
 
 ## Reports
 
-### (A) telee show tech-support
+### (A) telee - show tech-support
 
 <details><summary><u>Click to show the result</u></summary><p>
 
