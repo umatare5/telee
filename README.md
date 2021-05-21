@@ -1,6 +1,6 @@
 # telee
 
-telee [téli] is a pseudo **TE**rmina**L** to **E**x**E**cute a command on networking device through the user authentication.
+telee [téli] is a CLI works on **TE**rmina**L** to **E**x**E**cute a command on networking device through the user authentication.
 
 It has following advantages compared to use standard telnet and SSH.
 
