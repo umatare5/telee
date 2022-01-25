@@ -92,10 +92,10 @@ func checkArguments(cfg *Config) error {
 	if cfg.Command == domain.EmptyString {
 		return errors.ErrMissingCommand
 	}
-	if cfg.Username == domain.UsernameFlagDefaultValue {
+	if cfg.Username == domain.EmptyString {
 		return errors.ErrMissingUsername
 	}
-	if cfg.Password == domain.PasswordFlagDefaultValue {
+	if cfg.Password == domain.EmptyString {
 		return errors.ErrMissingPassword
 	}
 	if cfg.EnableMode && !hasPrivPassword(cfg.PrivPassword) {

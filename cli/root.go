@@ -14,9 +14,9 @@ import (
 // Preset parameters for this command
 const (
 	cmdName      string = "telee"
-	cmdUsage     string = "One-line pseudo terminal"
+	cmdUsage     string = "One-line command executor"
 	cmdUsageText string = "telee -H HOSTNAME -C COMMAND [options...]"
-	cmdVersion   string = "1.7.2"
+	cmdVersion   string = "1.7.3"
 )
 
 // Start executes this command

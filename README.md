@@ -28,13 +28,13 @@ telee works on `linux_amd64`, `linux_arm64`, `darwin_amd64` and `darwin_arm64`.
 
 ```bash
 NAME:
-   telee - One-line pseudo terminal
+   telee - One-line command executor
 
 USAGE:
    telee -H HOSTNAME -C COMMAND [options...]
 
 VERSION:
-   1.7.2
+   1.7.3
 
 COMMANDS:
    help, h  Shows a list of commands or help for one command
