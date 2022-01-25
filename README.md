@@ -267,6 +267,10 @@ Current configuration : 18687 bytes
 
   </p></details>
 
+## Usecase
+
+- [umatare5/my-network-config](https://github.com/umatare5/my-network-config)
+
 ## Exec Platform
 
 - telee works for several operating systems. These are called exec-platform.
