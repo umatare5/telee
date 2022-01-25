@@ -28,9 +28,9 @@ builds:
     env:
       - CGO_ENABLED=0
     asmflags:
-      - all=-trimpath={{.Env.GOPATH}}
+      - all=-trimpath=/Users/umatare5/go
     gcflags:
-      - all=-trimpath={{.Env.GOPATH}}
+      - all=-trimpath=/Users/umatare5/go
 
 archives:
   - name_template: '{{ .ProjectName }}-v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
