@@ -11,7 +11,6 @@ import (
 )
 
 const (
-	infoUserameIgnored    = "[INFO] username is ignored. It's not supported."
 	infoEnableModeIgnored = "[INFO] enable-mode is ignored. It's not supported."
 )
 
@@ -104,9 +103,6 @@ func checkArguments(cfg *Config) error {
 	if cfg.EnableMode && !isUsableEnableMode(cfg.ExecPlatform) {
 		fmt.Println(infoEnableModeIgnored)
 	}
-	if cfg.Username != domain.EmptyString && !isUsableUsername(cfg.ExecPlatform) {
-		fmt.Println(infoUserameIgnored)
-	}
 
 	return nil
 }
@@ -161,6 +157,10 @@ func isUsableSecureMode(platform string) bool {
 	if platform == domain.ScreenOSPlatformName {
 		return true
 	}
+	if platform == domain.YamahaOSPlatformName {
+		return true
+	}
+
 	return false
 }
 
@@ -197,8 +197,4 @@ func isUsableEnableMode(platform string) bool {
 		return false
 	}
 	return true
-}
-
-func isUsableUsername(platform string) bool {
-	return platform != domain.YamahaOSPlatformName
 }
