@@ -302,7 +302,7 @@ Current configuration : 18687 bytes
 | srx                  | 🚫 Not Supported | ✅ 15.1X49-D90.7 | 🚫 Not Supported        |
 | ssg                  | ✅ 6.3.0r21.0    | ⚠ Not Verified   | 🚫 Not Supported        |
 | ssg (redundant-mode) | ✅ 6.3.0r22.0    | ⚠ Not Verified   | 🚫 Not Supported        |
-| yamaha               | ✅ Rev.8.03.94   | 🚫 Not Supported | 🚫 Not Supported        |
+| yamaha               | ✅ Rev.8.03.94   | ✅ Rev.10.01.78  | 🚫 Not Supported        |
 
 ## Development
 
