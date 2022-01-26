@@ -294,19 +294,19 @@ Current configuration : 18687 bytes
 
 - "⚠ Not Verified" means "implemented but not checked". I'm waiting your report! 💓
 
-| Name (`-x`)          | Telnet           | SSH (--secure)   | Default PrivMode (`-d`) |
-| :------------------- | :--------------- | :--------------- | ----------------------- |
-| aireos               | ✅ 8.5.120.0     | ✅ 8.5.120.0     | 🚫 Not Supported        |
-| allied               | ✅ 1.6.14B02     | 🚫 Not Supported | 🚫 Not Supported        |
-| asa                  | ✅ 9.0(4)        | ⚠ Not Verified   | ⚠ Not Verified          |
-| asa (redundant-mode) | ✅ 9.10(1)       | ⚠ Not Verified   | ⚠ Not Verified          |
-| foundry              | ✅ 07.2.02aT7e1  | 🚫 Not Supported | 🚫 Not Supported        |
-| ios                  | ✅ 15.2(5c)E     | ✅ 15.2(5c)E     | ✅ 15.2(5c)E            |
-| nxos                 | ✅ 6.2(14)       | ⚠ Not Verified   | ✅ 6.2(14)              |
-| srx                  | 🚫 Not Supported | ✅ 15.1X49-D90.7 | 🚫 Not Supported        |
-| ssg                  | ✅ 6.3.0r21.0    | ⚠ Not Verified   | 🚫 Not Supported        |
-| ssg (redundant-mode) | ✅ 6.3.0r22.0    | ⚠ Not Verified   | 🚫 Not Supported        |
-| yamaha               | ✅ Rev.8.03.94   | ✅ Rev.10.01.78  | 🚫 Not Supported        |
+| Name (`-x`)          | Telnet          | SSH (--secure)   | Default PrivMode (`-d`) |
+| :------------------- | :-------------- | :--------------- | ----------------------- |
+| aireos               | ✅ 8.5.120.0    | ✅ 8.5.120.0     | Not Supported           |
+| allied               | ✅ 1.6.14B02    | Not Supported    | Not Supported           |
+| asa                  | ✅ 9.0(4)       | ⚠ Not Verified   | ⚠ Not Verified          |
+| asa (redundant-mode) | ✅ 9.10(1)      | ⚠ Not Verified   | ⚠ Not Verified          |
+| foundry              | ✅ 07.2.02aT7e1 | Not Supported    | Not Supported           |
+| ios                  | ✅ 15.2(5c)E    | ✅ 15.2(5c)E     | ✅ 15.2(5c)E            |
+| nxos                 | ✅ 6.2(14)      | ⚠ Not Verified   | ✅ 6.2(14)              |
+| srx                  | Not Supported   | ✅ 15.1X49-D90.7 | Not Supported           |
+| ssg                  | ✅ 6.3.0r21.0   | ⚠ Not Verified   | Not Supported           |
+| ssg (redundant-mode) | ✅ 6.3.0r22.0   | ⚠ Not Verified   | Not Supported           |
+| yamaha               | ✅ Rev.8.03.94  | ✅ Rev.10.01.78  | Not Supported           |
 
 ## Development
 
