@@ -269,7 +269,7 @@ Current configuration : 18687 bytes
 
 ## Usecase
 
-- [umatare5/my-network-config](https://github.com/umatare5/my-network-config)
+- [umatare5/my-infra-network](https://github.com/umatare5/my-infra-network)
 
 ## Exec Platform
 
