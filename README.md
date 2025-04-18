@@ -1,5 +1,10 @@
 # telee
 
+![GitHub Tag](https://img.shields.io/github/v/tag/umatare5/telee?label=Latest%20version)
+[![Go Reference](https://pkg.go.dev/badge/umatare5/telee.svg)](https://pkg.go.dev/github.com/umatare5/telee)
+[![Go Report Card](https://goreportcard.com/badge/github.com/umatare5/telee?style=flat-square)](https://goreportcard.com/report/github.com/umatare5/telee)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/umatare5/telee/blob/main/LICENSE)
+
 telee [téli] is a CLI works on **TE**rmina**L** to **E**x**E**cute a command on networking device through the user authentication.
 
 It has following advantages compared to use standard telnet and SSH.
@@ -20,9 +25,14 @@ In additional, the execution performance of telee is 6 to 72 times faster than [
 
 ## Installation
 
-Download from [release page](https://github.com/umatare5/telee/releases).
+```bash
+docker run ghcr.io/umatare5/telee
+```
 
-telee works on `linux_amd64`, `linux_arm64`, `darwin_amd64` and `darwin_arm64`.
+> [!Tip]
+> If you prefer using binaries, download them from the [release page](https://github.com/umatare5/telee/releases).
+>
+> - Supported Platforms: `linux_amd64`, `linux_arm64`, `darwin_amd64` and `darwin_arm64`
 
 ## Syntax
 
