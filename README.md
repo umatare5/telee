@@ -44,7 +44,7 @@ USAGE:
    telee -H HOSTNAME -C COMMAND [options...]
 
 VERSION:
-   1.7.6
+   1.8.0
 
 COMMANDS:
    help, h  Shows a list of commands or help for one command
