@@ -326,7 +326,7 @@ The repository includes a ready to use `Dockerfile`. To build a new Docker image
 make goreleaser-image
 ```
 
-This creates an image named `ghcr.io/$USER/controld-exporter`.
+This creates an image named `ghcr.io/$USER/telee`.
 
 ### Release
 
