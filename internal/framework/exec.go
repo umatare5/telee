@@ -2,10 +2,11 @@ package framework
 
 import (
 	"fmt"
-	"telee/internal/application"
-	"telee/internal/config"
-	"telee/internal/domain"
-	"telee/internal/infrastructure"
+
+	"github.com/umatare5/telee/internal/application"
+	"github.com/umatare5/telee/internal/config"
+	"github.com/umatare5/telee/internal/domain"
+	"github.com/umatare5/telee/internal/infrastructure"
 )
 
 // Exec struct

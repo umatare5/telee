@@ -3,8 +3,9 @@ package config
 import (
 	"fmt"
 	"log"
-	"telee/internal/domain"
-	"telee/pkg/errors"
+
+	"github.com/umatare5/telee/internal/domain"
+	"github.com/umatare5/telee/pkg/errors"
 
 	"github.com/jinzhu/configor"
 	"github.com/urfave/cli/v2"

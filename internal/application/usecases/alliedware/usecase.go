@@ -1,8 +1,8 @@
 package usecase
 
 import (
-	"telee/internal/config"
-	"telee/internal/infrastructure"
+	"github.com/umatare5/telee/internal/config"
+	"github.com/umatare5/telee/internal/infrastructure"
 )
 
 // Usecase struct

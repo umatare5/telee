@@ -1,7 +1,7 @@
 package main
 
 import (
-	cli "telee/cli"
+	cli "github.com/umatare5/telee/cli"
 )
 
 // The entrypoint of this program

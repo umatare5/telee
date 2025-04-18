@@ -3,10 +3,11 @@ package cli
 import (
 	"fmt"
 	"os"
-	"telee/internal/application"
-	"telee/internal/config"
-	"telee/internal/framework"
-	"telee/internal/infrastructure"
+
+	"github.com/umatare5/telee/internal/application"
+	"github.com/umatare5/telee/internal/config"
+	"github.com/umatare5/telee/internal/framework"
+	"github.com/umatare5/telee/internal/infrastructure"
 
 	"github.com/urfave/cli/v2"
 )
