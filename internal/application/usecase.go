@@ -1,17 +1,17 @@
 package application
 
 import (
-	aireosUsecase "telee/internal/application/usecases/aireos"
-	alliedwareUsecase "telee/internal/application/usecases/alliedware"
-	asasoftwareUsecase "telee/internal/application/usecases/asasoftware"
-	iosUsecase "telee/internal/application/usecases/ios"
-	ironwareUsecase "telee/internal/application/usecases/ironware"
-	junosUsecase "telee/internal/application/usecases/junos"
-	nxosUsecase "telee/internal/application/usecases/nxos"
-	screenosUsecase "telee/internal/application/usecases/screenos"
-	yamahaosUsecase "telee/internal/application/usecases/yamahaos"
-	"telee/internal/config"
-	"telee/internal/infrastructure"
+	aireosUsecase "github.com/umatare5/telee/internal/application/usecases/aireos"
+	alliedwareUsecase "github.com/umatare5/telee/internal/application/usecases/alliedware"
+	asasoftwareUsecase "github.com/umatare5/telee/internal/application/usecases/asasoftware"
+	iosUsecase "github.com/umatare5/telee/internal/application/usecases/ios"
+	ironwareUsecase "github.com/umatare5/telee/internal/application/usecases/ironware"
+	junosUsecase "github.com/umatare5/telee/internal/application/usecases/junos"
+	nxosUsecase "github.com/umatare5/telee/internal/application/usecases/nxos"
+	screenosUsecase "github.com/umatare5/telee/internal/application/usecases/screenos"
+	yamahaosUsecase "github.com/umatare5/telee/internal/application/usecases/yamahaos"
+	"github.com/umatare5/telee/internal/config"
+	"github.com/umatare5/telee/internal/infrastructure"
 )
 
 // Usecase struct

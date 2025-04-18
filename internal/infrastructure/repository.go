@@ -1,17 +1,17 @@
 package infrastructure
 
 import (
-	"telee/internal/config"
+	"github.com/umatare5/telee/internal/config"
 
-	aireosRepository "telee/internal/infrastructure/repositories/aireos"
-	alliedwareRepository "telee/internal/infrastructure/repositories/alliedware"
-	asasoftwareRepository "telee/internal/infrastructure/repositories/asasoftware"
-	iosRepository "telee/internal/infrastructure/repositories/ios"
-	ironwareRepository "telee/internal/infrastructure/repositories/ironware"
-	junosRepository "telee/internal/infrastructure/repositories/junos"
-	nxosRepository "telee/internal/infrastructure/repositories/nxos"
-	screenosRepository "telee/internal/infrastructure/repositories/screenos"
-	yamahaosRepository "telee/internal/infrastructure/repositories/yamahaos"
+	aireosRepository "github.com/umatare5/telee/internal/infrastructure/repositories/aireos"
+	alliedwareRepository "github.com/umatare5/telee/internal/infrastructure/repositories/alliedware"
+	asasoftwareRepository "github.com/umatare5/telee/internal/infrastructure/repositories/asasoftware"
+	iosRepository "github.com/umatare5/telee/internal/infrastructure/repositories/ios"
+	ironwareRepository "github.com/umatare5/telee/internal/infrastructure/repositories/ironware"
+	junosRepository "github.com/umatare5/telee/internal/infrastructure/repositories/junos"
+	nxosRepository "github.com/umatare5/telee/internal/infrastructure/repositories/nxos"
+	screenosRepository "github.com/umatare5/telee/internal/infrastructure/repositories/screenos"
+	yamahaosRepository "github.com/umatare5/telee/internal/infrastructure/repositories/yamahaos"
 )
 
 // Repository struct

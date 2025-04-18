@@ -1,10 +1,11 @@
 package repository
 
 import (
-	"telee/internal/config"
-	"telee/internal/domain"
-	"telee/pkg/ssh"
 	"time"
+
+	"github.com/umatare5/telee/internal/config"
+	"github.com/umatare5/telee/internal/domain"
+	"github.com/umatare5/telee/pkg/ssh"
 
 	x "github.com/google/goexpect"
 )

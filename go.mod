@@ -1,4 +1,4 @@
-module telee
+module github.com/umatare5/telee
 
 go 1.24
 

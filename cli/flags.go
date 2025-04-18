@@ -1,7 +1,7 @@
 package cli
 
 import (
-	"telee/internal/domain"
+	"github.com/umatare5/telee/internal/domain"
 
 	"github.com/urfave/cli/v2"
 )
