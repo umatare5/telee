@@ -17,7 +17,6 @@ const (
 	cmdName      string = "telee"
 	cmdUsage     string = "One-line command executor"
 	cmdUsageText string = "telee -H HOSTNAME -C COMMAND [options...]"
-	cmdVersion   string = "1.7.6"
 )
 
 // Start executes this command
@@ -27,7 +26,7 @@ func Start() {
 		HelpName:  cmdName,
 		Usage:     cmdUsage,
 		UsageText: cmdUsageText,
-		Version:   cmdVersion,
+		Version:   getVersion(),
 		Flags:     registerFlags(),
 		Action: func(ctx *cli.Context) error {
 			c := config.New(ctx)
