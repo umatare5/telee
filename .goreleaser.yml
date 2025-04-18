@@ -32,6 +32,13 @@ builds:
     gcflags:
       - all=-trimpath=.
 
+dockers:
+- id: telee
+  image_templates:
+  - 'ghcr.io/umatare5/telee:latest'
+  - 'ghcr.io/umatare5/telee:{{ .Tag }}'
+  dockerfile: .goreleaser/Dockerfile
+
 archives:
   - name_template: '{{ .ProjectName }}-v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
 
