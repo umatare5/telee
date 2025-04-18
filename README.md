@@ -318,16 +318,33 @@ Current configuration : 18687 bytes
 | ssg (redundant-mode) | ✅ 6.3.0r22.0   | ⚠ Not Verified   | Not Supported           |
 | yamaha               | ✅ Rev.8.03.94  | ✅ Rev.10.01.78  | Not Supported           |
 
-## Development
+### Build
 
-- build
-
-```bash
-make build
-```
-
-- release
+The repository includes a ready to use `Dockerfile`. To build a new Docker image:
 
 ```bash
-make release
+make goreleaser-image
 ```
+
+This creates an image named `ghcr.io/$USER/controld-exporter`.
+
+### Release
+
+To release a new version, follow these steps:
+
+1. Update the version in the `VERSION` file.
+2. Submit a pull request with the updated `VERSION` file.
+
+Once the pull request is merged, the GitHub Workflow will automatically:
+
+- Create and push a new tag based on the `VERSION` file.
+
+After that, I will manually release using [GitHub Actions: release workflow](https://github.com/umatare5/controld-exporter/actions/workflows/release.yaml).
+
+## Licence
+
+[MIT](LICENSE)
+
+## Author
+
+[umatare5](https://github.com/umatare5)
