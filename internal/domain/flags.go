@@ -34,8 +34,8 @@ const (
 
 // Flag values
 const (
-	PortFlagDefaultValue            int    = 0
-	TimeoutFlagDefaultValue         int    = 5
+	PortFlagDefaultValue            int64  = 0
+	TimeoutFlagDefaultValue         int64  = 5
 	ExecPlatformFlagDefaultValue    string = "ios"
 	EnableModeFlagDefaultValue      bool   = false
 	RedundantModeFlagDefaultValue   bool   = false
@@ -70,9 +70,9 @@ var (
 
 // Flag envvars
 var (
-	HostnameFlagEnvVars     = []string{"TELEE_HOSTNAME"}
-	CommandFlagEnvVars      = []string{"TELEE_COMMAND"}
-	UsernameFlagEnvVars     = []string{"TELEE_USERNAME"}
-	PasswordFlagEnvVars     = []string{"TELEE_PASSWORD"}
-	PrivPasswordFlagEnvVars = []string{"TELEE_PRIVPASSWORD"}
+	HostnameFlagEnvVars     = "TELEE_HOSTNAME"
+	CommandFlagEnvVars      = "TELEE_COMMAND"
+	UsernameFlagEnvVars     = "TELEE_USERNAME"
+	PasswordFlagEnvVars     = "TELEE_PASSWORD"
+	PrivPasswordFlagEnvVars = "TELEE_PRIVPASSWORD"
 )

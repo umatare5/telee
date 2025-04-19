@@ -8,7 +8,7 @@ import (
 	"github.com/umatare5/telee/pkg/errors"
 
 	"github.com/jinzhu/configor"
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v3"
 )
 
 const (
@@ -32,20 +32,20 @@ type Config struct {
 }
 
 // New returns Config struct
-func New(ctx *cli.Context) Config {
+func New(cli *cli.Command) Config {
 	cfg := Config{
-		Hostname:        ctx.String(domain.HostnameFlagName),
-		Port:            ctx.Int(domain.PortFlagName),
-		Timeout:         ctx.Int(domain.TimeoutFlagName),
-		Command:         ctx.String(domain.CommandFlagName),
-		ExecPlatform:    ctx.String(domain.ExecPlatformFlagName),
-		EnableMode:      ctx.Bool(domain.EnableModeFlagName),
-		RedundantMode:   ctx.Bool(domain.RedundantModeFlagName),
-		DefaultPrivMode: ctx.Bool(domain.DefaultPrivModeFlagName),
-		SecureMode:      ctx.Bool(domain.SecureModeFlagName),
-		Username:        ctx.String(domain.UsernameFlagName),
-		Password:        ctx.String(domain.PasswordFlagName),
-		PrivPassword:    ctx.String(domain.PrivPasswordFlagName),
+		Hostname:        cli.String(domain.HostnameFlagName),
+		Port:            int(cli.Int(domain.PortFlagName)),
+		Timeout:         int(cli.Int(domain.TimeoutFlagName)),
+		Command:         cli.String(domain.CommandFlagName),
+		ExecPlatform:    cli.String(domain.ExecPlatformFlagName),
+		EnableMode:      cli.Bool(domain.EnableModeFlagName),
+		RedundantMode:   cli.Bool(domain.RedundantModeFlagName),
+		DefaultPrivMode: cli.Bool(domain.DefaultPrivModeFlagName),
+		SecureMode:      cli.Bool(domain.SecureModeFlagName),
+		Username:        cli.String(domain.UsernameFlagName),
+		Password:        cli.String(domain.PasswordFlagName),
+		PrivPassword:    cli.String(domain.PrivPasswordFlagName),
 	}
 
 	err := configor.New(&configor.Config{}).Load(&cfg)
