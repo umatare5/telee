@@ -3,7 +3,7 @@ package cli
 import (
 	"github.com/umatare5/telee/internal/domain"
 
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v3"
 )
 
 // Register all flags
@@ -31,7 +31,7 @@ func registerHostNameFlag() []cli.Flag {
 			Name:     domain.HostnameFlagName,
 			Usage:    domain.HostnameFlagUsage,
 			Aliases:  domain.HostnameFlagAliases,
-			EnvVars:  domain.HostnameFlagEnvVars,
+			Sources:  cli.EnvVars(domain.HostnameFlagEnvVars),
 			Required: domain.HostnameFlagRequired,
 		},
 	}
@@ -68,7 +68,7 @@ func registerCommandFlag() []cli.Flag {
 			Name:     domain.CommandFlagName,
 			Usage:    domain.CommandFlagUsage,
 			Aliases:  domain.CommandFlagAliases,
-			EnvVars:  domain.CommandFlagEnvVars,
+			Sources:  cli.EnvVars(domain.CommandFlagEnvVars),
 			Required: domain.CommandFlagRequired,
 		},
 	}
@@ -142,7 +142,7 @@ func registerUsernameFlag() []cli.Flag {
 			Usage:   domain.UsernameFlagUsage,
 			Aliases: domain.UsernameFlagAliases,
 			Value:   domain.UsernameFlagDefaultValue,
-			EnvVars: domain.UsernameFlagEnvVars,
+			Sources: cli.EnvVars(domain.UsernameFlagEnvVars),
 		},
 	}
 }
@@ -155,7 +155,7 @@ func registerPasswordFlag() []cli.Flag {
 			Usage:   domain.PasswordFlagUsage,
 			Aliases: domain.PasswordFlagAliases,
 			Value:   domain.PasswordFlagDefaultValue,
-			EnvVars: domain.PasswordFlagEnvVars,
+			Sources: cli.EnvVars(domain.PasswordFlagEnvVars),
 		},
 	}
 }
@@ -168,7 +168,7 @@ func registerPrivPasswordFlag() []cli.Flag {
 			Usage:   domain.PrivPasswordFlagUsage,
 			Aliases: domain.PrivPasswordFlagAliases,
 			Value:   domain.PrivPasswordFlagDefaultValue,
-			EnvVars: domain.PrivPasswordFlagEnvVars,
+			Sources: cli.EnvVars(domain.PrivPasswordFlagEnvVars),
 		},
 	}
 }

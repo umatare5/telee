@@ -1,7 +1,8 @@
 package cli
 
 import (
-	"fmt"
+	"context"
+	"log"
 	"os"
 
 	"github.com/umatare5/telee/internal/application"
@@ -9,7 +10,7 @@ import (
 	"github.com/umatare5/telee/internal/framework"
 	"github.com/umatare5/telee/internal/infrastructure"
 
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v3"
 )
 
 // Preset parameters for this command
@@ -21,15 +22,14 @@ const (
 
 // Start executes this command
 func Start() {
-	cmd := &cli.App{
+	cmd := &cli.Command{
 		Name:      cmdName,
-		HelpName:  cmdName,
 		Usage:     cmdUsage,
 		UsageText: cmdUsageText,
 		Version:   getVersion(),
 		Flags:     registerFlags(),
-		Action: func(ctx *cli.Context) error {
-			c := config.New(ctx)
+		Action: func(ctx context.Context, cli *cli.Command) error {
+			c := config.New(cli)
 			r := infrastructure.New(&c)
 			u := application.New(&c, &r)
 			exec := framework.New(&c, &r, &u)
@@ -38,9 +38,7 @@ func Start() {
 		},
 	}
 
-	err := cmd.Run(os.Args)
-	if err != nil {
-		fmt.Println(err)
-		return
+	if err := cmd.Run(context.Background(), os.Args); err != nil {
+		log.Fatal(err)
 	}
 }
