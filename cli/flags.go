@@ -44,7 +44,7 @@ func registerPortFlag() []cli.Flag {
 			Name:    domain.PortFlagName,
 			Usage:   domain.PortFlagUsage,
 			Aliases: domain.PortFlagAliases,
-			Value:   domain.PortFlagDefaultValue,
+			Value:   int(domain.PortFlagDefaultValue),
 		},
 	}
 }
@@ -56,7 +56,7 @@ func registerTimeoutFlag() []cli.Flag {
 			Name:    domain.TimeoutFlagName,
 			Usage:   domain.TimeoutFlagUsage,
 			Aliases: domain.TimeoutFlagAliases,
-			Value:   domain.TimeoutFlagDefaultValue,
+			Value:   int(domain.TimeoutFlagDefaultValue),
 		},
 	}
 }
