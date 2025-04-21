@@ -2,6 +2,7 @@
 package cli
 
 import (
+	"os"
 	"os/exec"
 	"strings"
 )
@@ -12,6 +13,9 @@ const (
 
 // getVersion retrieves the Git tag or commit hash
 func getVersion() string {
+	if data, err := os.ReadFile("VERSION"); err == nil {
+		return string(data)
+	}
 	if tag := getGitTag(); tag != "" {
 		return tag
 	}
