@@ -4,6 +4,7 @@
 [![Go Reference](https://pkg.go.dev/badge/umatare5/telee.svg)](https://pkg.go.dev/github.com/umatare5/telee)
 [![Go Report Card](https://goreportcard.com/badge/github.com/umatare5/telee?style=flat-square)](https://goreportcard.com/report/github.com/umatare5/telee)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/umatare5/telee/blob/main/LICENSE)
+[![Published](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg)](https://developer.cisco.com/codeexchange/github/repo/umatare5/telee)
 
 telee [téli] is a CLI works on **TE**rmina**L** to **E**x**E**cute a command on networking device through the user authentication.
 
