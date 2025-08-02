@@ -142,26 +142,21 @@ func handleHostKeyVerificationFailure(hostname string, originalErr error) error 
 
 // extractHostFromAddress extracts hostname from "hostname:port" format
 func extractHostFromAddress(address string) string {
-	if idx := len(address) - 1; idx >= 0 {
-		for i := idx; i >= 0; i-- {
-			if address[i] == ':' {
-				return address[:i]
-			}
-		}
+	host, _, err := net.SplitHostPort(address)
+	if err != nil {
+		// If address does not contain a port, return as is
+		return address
 	}
-	return address
+	return host
 }
 
 // extractPortFromAddress extracts port from "hostname:port" format
 func extractPortFromAddress(address string) string {
-	if idx := len(address) - 1; idx >= 0 {
-		for i := idx; i >= 0; i-- {
-			if address[i] == ':' {
-				return address[i+1:]
-			}
-		}
+	_, port, err := net.SplitHostPort(address)
+	if err != nil || port == "" {
+		return "22"
 	}
-	return "22"
+	return port
 }
 
 // isStandardSSHPort checks if the address uses standard SSH port (22)
