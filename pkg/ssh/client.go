@@ -35,6 +35,9 @@ func New(host string, port int, protocol string, timeout time.Duration) *SSH {
 
 // GenerateClientConfig returns client config
 func GenerateClientConfig(username string, password string, hostKeyPath string) (*ssh.ClientConfig, error) {
+	if hostKeyPath == "" {
+		return nil, fmt.Errorf("hostKeyPath must not be empty")
+	}
 	publicKeyBytes, err := os.ReadFile(hostKeyPath)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read host key file: %w", err)
