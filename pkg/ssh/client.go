@@ -34,12 +34,21 @@ func New(host string, port int, protocol string, timeout time.Duration) *SSH {
 }
 
 // GenerateClientConfig returns client config
-func GenerateClientConfig(username string, password string) *ssh.ClientConfig {
+func GenerateClientConfig(username string, password string, hostKeyPath string) (*ssh.ClientConfig, error) {
+	publicKeyBytes, err := ioutil.ReadFile(hostKeyPath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read host key file: %w", err)
+	}
+	publicKey, err := ssh.ParsePublicKey(publicKeyBytes)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse host key: %w", err)
+	}
+
 	return &ssh.ClientConfig{
 		User:            username,
 		Auth:            []ssh.AuthMethod{ssh.Password(password)},
-		HostKeyCallback: ssh.InsecureIgnoreHostKey(), // nolint: gosec
-	}
+		HostKeyCallback: ssh.FixedHostKey(publicKey),
+	}, nil
 }
 
 // Fetch starts the expect process.
