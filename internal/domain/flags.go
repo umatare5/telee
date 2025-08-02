@@ -14,6 +14,7 @@ const (
 	UsernameFlagName        string = "username"
 	PasswordFlagName        string = "password"
 	PrivPasswordFlagName    string = "priv-password"
+	HostKeyPathFlagName     string = "host-key-path"
 )
 
 // Flag usages
@@ -30,6 +31,7 @@ const (
 	UsernameFlagUsage        string = "Set username."
 	PasswordFlagUsage        string = "Set password."
 	PrivPasswordFlagUsage    string = "Set password to raise to privileged EXEC mode."
+	HostKeyPathFlagUsage     string = "Set path to host key file for SSH host key verification."
 )
 
 // Flag values
@@ -44,6 +46,7 @@ const (
 	UsernameFlagDefaultValue        string = "admin"
 	PasswordFlagDefaultValue        string = "cisco"
 	PrivPasswordFlagDefaultValue    string = "enable"
+	HostKeyPathFlagDefaultValue     string = ""
 )
 
 // Flag requireds
@@ -66,6 +69,7 @@ var (
 	UsernameFlagAliases        = []string{"u"}
 	PasswordFlagAliases        = []string{"p"}
 	PrivPasswordFlagAliases    = []string{"pp"}
+	HostKeyPathFlagAliases     = []string{"hkp"}
 )
 
 // Flag envvars
@@ -75,4 +79,5 @@ var (
 	UsernameFlagEnvVars     = "TELEE_USERNAME"
 	PasswordFlagEnvVars     = "TELEE_PASSWORD"
 	PrivPasswordFlagEnvVars = "TELEE_PRIVPASSWORD"
+	HostKeyPathFlagEnvVars  = "TELEE_HOSTKEYPATH"
 )

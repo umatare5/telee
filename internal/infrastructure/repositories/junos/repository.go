@@ -24,9 +24,13 @@ func (r *Repository) Fetch() (string, error) {
 	expects = r.buildUserModeSecureRequest()
 
 	// JunOS is not supporting Telnet
+	clientConfig, err := ssh.GenerateClientConfig(r.Config.Username, r.Config.Password, r.Config.HostKeyPath, r.Config.Hostname)
+	if err != nil {
+		return "", err
+	}
 	data, err = ssh.New(
 		r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
-	).Fetch(&expects, ssh.GenerateClientConfig(r.Config.Username, r.Config.Password))
+	).Fetch(&expects, clientConfig)
 
 	if err != nil {
 		return "", err

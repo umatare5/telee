@@ -29,6 +29,7 @@ type Config struct {
 	Username        string
 	Password        string
 	PrivPassword    string
+	HostKeyPath     string
 }
 
 // New returns Config struct
@@ -46,6 +47,7 @@ func New(cli *cli.Command) Config {
 		Username:        cli.String(domain.UsernameFlagName),
 		Password:        cli.String(domain.PasswordFlagName),
 		PrivPassword:    cli.String(domain.PrivPasswordFlagName),
+		HostKeyPath:     cli.String(domain.HostKeyPathFlagName),
 	}
 
 	err := configor.New(&configor.Config{}).Load(&cfg)
