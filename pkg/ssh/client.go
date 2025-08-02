@@ -163,7 +163,9 @@ func extractPortFromAddress(address string) string {
 func isStandardSSHPort(address string) bool {
 	port := extractPortFromAddress(address)
 	return port == "22"
-} // Fetch starts the expect process.
+}
+
+// Fetch starts the expect process.
 func (c *SSH) Fetch(x *[]x.Batcher, config *ssh.ClientConfig) (string, error) {
 	conn, err := c.dial(config)
 	if err != nil {
