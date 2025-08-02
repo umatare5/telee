@@ -74,14 +74,14 @@ func createFixedHostKeyCallback(hostKeyPath string) (ssh.HostKeyCallback, error)
 }
 
 // createKnownHostsCallback creates HostKeyCallback using known_hosts file
-func createKnownHostsCallback() (ssh.HostKeyCallback, error) {
+func createKnownHostsCallback(hostname string) (ssh.HostKeyCallback, error) {
 	knownHostsPath, err := getKnownHostsPath()
 	if err != nil {
 		return nil, fmt.Errorf("failed to get home directory: %w", err)
 	}
 
 	if _, err := os.Stat(knownHostsPath); err != nil {
-		return nil, fmt.Errorf("~/.ssh/known_hosts not found. Please create it by running: ssh-keyscan <hostname> >> ~/.ssh/known_hosts")
+		return nil, fmt.Errorf("~/.ssh/known_hosts not found. Please create it by running: ssh-keyscan %s >> ~/.ssh/known_hosts", hostname)
 	}
 
 	knownHostsCallback, err := knownhosts.New(knownHostsPath)
