@@ -2,12 +2,15 @@ package ssh
 
 import (
 	"fmt"
+	"net"
+	"os"
 	"strconv"
 	"time"
 
 	expect "github.com/google/goexpect"
 	x "github.com/google/goexpect"
 	"golang.org/x/crypto/ssh"
+	"golang.org/x/crypto/ssh/knownhosts"
 )
 
 const (
@@ -35,40 +38,151 @@ func New(host string, port int, protocol string, timeout time.Duration) *SSH {
 
 // GenerateClientConfig returns client config
 func GenerateClientConfig(username string, password string, hostKeyPath string) (*ssh.ClientConfig, error) {
-	if hostKeyPath == "" {
-		return nil, fmt.Errorf("hostKeyPath must not be empty")
-	}
-	publicKeyBytes, err := os.ReadFile(hostKeyPath)
+	hostKeyCallback, err := createHostKeyCallback(hostKeyPath)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read host key file: %w", err)
-	}
-	publicKey, err := ssh.ParsePublicKey(publicKeyBytes)
-	if err != nil {
-		return nil, fmt.Errorf("failed to parse host key: %w", err)
+		return nil, err
 	}
 
 	return &ssh.ClientConfig{
 		User:            username,
 		Auth:            []ssh.AuthMethod{ssh.Password(password)},
-		HostKeyCallback: ssh.FixedHostKey(publicKey),
+		HostKeyCallback: hostKeyCallback,
 	}, nil
 }
 
-// Fetch starts the expect process.
+// createHostKeyCallback creates appropriate HostKeyCallback based on hostKeyPath
+func createHostKeyCallback(hostKeyPath string) (ssh.HostKeyCallback, error) {
+	if hostKeyPath != "" {
+		return createFixedHostKeyCallback(hostKeyPath)
+	}
+	return createKnownHostsCallback()
+}
+
+// createFixedHostKeyCallback creates HostKeyCallback from specific host key file
+func createFixedHostKeyCallback(hostKeyPath string) (ssh.HostKeyCallback, error) {
+	publicKeyBytes, err := os.ReadFile(hostKeyPath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read host key file: %w", err)
+	}
+
+	publicKey, err := ssh.ParsePublicKey(publicKeyBytes)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse host key: %w", err)
+	}
+
+	return ssh.FixedHostKey(publicKey), nil
+}
+
+// createKnownHostsCallback creates HostKeyCallback using known_hosts file
+func createKnownHostsCallback() (ssh.HostKeyCallback, error) {
+	knownHostsPath, err := getKnownHostsPath()
+	if err != nil {
+		return nil, fmt.Errorf("failed to get home directory: %w", err)
+	}
+
+	if _, err := os.Stat(knownHostsPath); err != nil {
+		return nil, fmt.Errorf("~/.ssh/known_hosts not found. Please create it by running: ssh-keyscan <hostname> >> ~/.ssh/known_hosts")
+	}
+
+	knownHostsCallback, err := knownhosts.New(knownHostsPath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to load known_hosts file: %w", err)
+	}
+
+	return createFallbackCallback(knownHostsCallback), nil
+}
+
+// getKnownHostsPath returns the path to the known_hosts file
+func getKnownHostsPath() (string, error) {
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		return "", err
+	}
+	return homeDir + "/.ssh/known_hosts", nil
+}
+
+// createFallbackCallback creates a callback that tries known_hosts first, then provides guidance
+func createFallbackCallback(knownHostsCallback ssh.HostKeyCallback) ssh.HostKeyCallback {
+	return func(hostname string, remote net.Addr, key ssh.PublicKey) error {
+		err := knownHostsCallback(hostname, remote, key)
+		if err != nil {
+			return handleHostKeyVerificationFailure(hostname, err)
+		}
+		return nil
+	}
+}
+
+// handleHostKeyVerificationFailure handles host key verification failure and provides user guidance
+func handleHostKeyVerificationFailure(hostname string, originalErr error) error {
+	// Extract hostname without port
+	host := extractHostFromAddress(hostname)
+
+	fmt.Printf("\n[ERROR] Host key verification failed for %s: %v\n", hostname, originalErr)
+	fmt.Println("\nTo resolve this issue, you can add the host key to your known_hosts file using one of these methods:")
+	fmt.Printf("\n1. Run the following command to add the host key:\n")
+
+	// Check if it's a standard SSH port or custom port
+	if isStandardSSHPort(hostname) {
+		fmt.Printf("   ssh-keyscan %s >> ~/.ssh/known_hosts\n", host)
+		fmt.Printf("\n2. Or connect manually first with ssh to accept the host key:\n")
+		fmt.Printf("   ssh %s\n", host)
+	} else {
+		port := extractPortFromAddress(hostname)
+		fmt.Printf("   ssh-keyscan -p %s %s >> ~/.ssh/known_hosts\n", port, host)
+		fmt.Printf("\n2. Or connect manually first with ssh to accept the host key:\n")
+		fmt.Printf("   ssh -p %s %s\n", port, host)
+	}
+
+	fmt.Printf("\n3. Or use the --host-key-path flag to specify a specific host key file\n")
+	fmt.Printf("\n4. Or set TELEE_HOSTKEYPATH environment variable to specify the host key file path\n")
+	fmt.Println("\nConnection cancelled for security reasons.")
+
+	return fmt.Errorf("host key verification failed for %s", hostname)
+}
+
+// extractHostFromAddress extracts hostname from "hostname:port" format
+func extractHostFromAddress(address string) string {
+	if idx := len(address) - 1; idx >= 0 {
+		for i := idx; i >= 0; i-- {
+			if address[i] == ':' {
+				return address[:i]
+			}
+		}
+	}
+	return address
+}
+
+// extractPortFromAddress extracts port from "hostname:port" format
+func extractPortFromAddress(address string) string {
+	if idx := len(address) - 1; idx >= 0 {
+		for i := idx; i >= 0; i-- {
+			if address[i] == ':' {
+				return address[i+1:]
+			}
+		}
+	}
+	return "22"
+}
+
+// isStandardSSHPort checks if the address uses standard SSH port (22)
+func isStandardSSHPort(address string) bool {
+	port := extractPortFromAddress(address)
+	return port == "22"
+} // Fetch starts the expect process.
 func (c *SSH) Fetch(x *[]x.Batcher, config *ssh.ClientConfig) (string, error) {
 	conn, err := c.dial(config)
 	if err != nil {
 		fmt.Println(errSSHSpawnFailed)
 		return "", err
 	}
-	defer conn.Close() // nolint: errcheck
+	defer conn.Close() //nolint: errcheck
 
 	expecter, _, err := expect.SpawnSSH(conn, c.timeout)
 	if err != nil {
 		fmt.Println(errSSHSpawnFailed)
 		return "", err
 	}
-	defer expecter.Close() // nolint: errcheck
+	defer expecter.Close() //nolint: errcheck
 
 	stdout, err := expecter.ExpectBatch(*x, c.timeout)
 	if err != nil {
