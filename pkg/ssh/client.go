@@ -37,8 +37,8 @@ func New(host string, port int, protocol string, timeout time.Duration) *SSH {
 }
 
 // GenerateClientConfig returns client config
-func GenerateClientConfig(username string, password string, hostKeyPath string) (*ssh.ClientConfig, error) {
-	hostKeyCallback, err := createHostKeyCallback(hostKeyPath)
+func GenerateClientConfig(username string, password string, hostKeyPath string, hostname string) (*ssh.ClientConfig, error) {
+	hostKeyCallback, err := createHostKeyCallback(hostKeyPath, hostname)
 	if err != nil {
 		return nil, err
 	}
@@ -51,11 +51,11 @@ func GenerateClientConfig(username string, password string, hostKeyPath string) 
 }
 
 // createHostKeyCallback creates appropriate HostKeyCallback based on hostKeyPath
-func createHostKeyCallback(hostKeyPath string) (ssh.HostKeyCallback, error) {
+func createHostKeyCallback(hostKeyPath string, hostname string) (ssh.HostKeyCallback, error) {
 	if hostKeyPath != "" {
 		return createFixedHostKeyCallback(hostKeyPath)
 	}
-	return createKnownHostsCallback()
+	return createKnownHostsCallback(hostname)
 }
 
 // createFixedHostKeyCallback creates HostKeyCallback from specific host key file
