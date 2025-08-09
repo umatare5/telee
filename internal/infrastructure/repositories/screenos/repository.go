@@ -41,9 +41,13 @@ func (r *Repository) Fetch() (string, error) {
 	}
 
 	if r.Config.SecureMode {
+		clientConfig, err := ssh.GenerateClientConfig(r.Config.Username, r.Config.Password, r.Config.HostKeyPath, r.Config.Hostname)
+		if err != nil {
+			return "", err
+		}
 		data, err = ssh.New(
 			r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
-		).Fetch(&expects, ssh.GenerateClientConfig(r.Config.Username, r.Config.Password))
+		).Fetch(&expects, clientConfig)
 	} else {
 		data, err = telnet.New(
 			r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,

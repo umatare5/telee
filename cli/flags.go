@@ -21,6 +21,7 @@ func registerFlags() []cli.Flag {
 	flags = append(flags, registerUsernameFlag()...)
 	flags = append(flags, registerPasswordFlag()...)
 	flags = append(flags, registerPrivPasswordFlag()...)
+	flags = append(flags, registerHostKeyPathFlag()...)
 	return flags
 }
 
@@ -169,6 +170,19 @@ func registerPrivPasswordFlag() []cli.Flag {
 			Aliases: domain.PrivPasswordFlagAliases,
 			Value:   domain.PrivPasswordFlagDefaultValue,
 			Sources: cli.EnvVars(domain.PrivPasswordFlagEnvVars),
+		},
+	}
+}
+
+// Declare host-key-path flag
+func registerHostKeyPathFlag() []cli.Flag {
+	return []cli.Flag{
+		&cli.StringFlag{
+			Name:    domain.HostKeyPathFlagName,
+			Usage:   domain.HostKeyPathFlagUsage,
+			Aliases: domain.HostKeyPathFlagAliases,
+			Value:   domain.HostKeyPathFlagDefaultValue,
+			Sources: cli.EnvVars(domain.HostKeyPathFlagEnvVars),
 		},
 	}
 }
