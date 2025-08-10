@@ -7,7 +7,6 @@ import (
 	"strconv"
 	"time"
 
-	expect "github.com/google/goexpect"
 	x "github.com/google/goexpect"
 	"golang.org/x/crypto/ssh"
 	"golang.org/x/crypto/ssh/knownhosts"
@@ -130,11 +129,15 @@ func handleHostKeyVerificationFailure(hostname string, originalErr error) error 
 		fmt.Printf("   ssh-keyscan %s >> ~/.ssh/known_hosts\n", host)
 		fmt.Printf("\n2. Or connect manually first with ssh to accept the host key:\n")
 		fmt.Printf("   ssh %s\n", host)
+		fmt.Printf("\n   For older Cisco IOS devices, you may need additional SSH options:\n")
+		fmt.Printf("   ssh -o HostKeyAlgorithms=+ssh-rsa -o KexAlgorithms=+diffie-hellman-group14-sha1 %s\n", host)
 	} else {
 		port := extractPortFromAddress(hostname)
 		fmt.Printf("   ssh-keyscan -p %s %s >> ~/.ssh/known_hosts\n", port, host)
 		fmt.Printf("\n2. Or connect manually first with ssh to accept the host key:\n")
 		fmt.Printf("   ssh -p %s %s\n", port, host)
+		fmt.Printf("\n   For older Cisco IOS devices, you may need additional SSH options:\n")
+		fmt.Printf("   ssh -p %s -o HostKeyAlgorithms=+ssh-rsa -o KexAlgorithms=+diffie-hellman-group14-sha1 %s\n", port, host)
 	}
 
 	fmt.Printf("\n3. Or use the --host-key-path flag to specify a specific host key file\n")
@@ -170,24 +173,24 @@ func isStandardSSHPort(address string) bool {
 }
 
 // Fetch starts the expect process.
-func (c *SSH) Fetch(x *[]x.Batcher, config *ssh.ClientConfig) (string, error) {
+func (c *SSH) Fetch(batchers *[]x.Batcher, config *ssh.ClientConfig) (string, error) {
 	conn, err := c.dial(config)
 	if err != nil {
-		fmt.Println(errSSHSpawnFailed)
+		fmt.Print(errSSHSpawnFailed)
 		return "", err
 	}
 	defer conn.Close() //nolint: errcheck
 
-	expecter, _, err := expect.SpawnSSH(conn, c.timeout)
+	expecter, _, err := x.SpawnSSH(conn, c.timeout)
 	if err != nil {
-		fmt.Println(errSSHSpawnFailed)
+		fmt.Print(errSSHSpawnFailed)
 		return "", err
 	}
 	defer expecter.Close() //nolint: errcheck
 
-	stdout, err := expecter.ExpectBatch(*x, c.timeout)
+	stdout, err := expecter.ExpectBatch(*batchers, c.timeout)
 	if err != nil {
-		fmt.Println(errSSHBatchFailed)
+		fmt.Print(errSSHBatchFailed)
 		return "", err
 	}
 
