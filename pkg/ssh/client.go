@@ -120,29 +120,29 @@ func handleHostKeyVerificationFailure(hostname string, originalErr error) error 
 	// Extract hostname without port
 	host := extractHostFromAddress(hostname)
 
-	fmt.Printf("\n[ERROR] Host key verification failed for %s: %v\n", hostname, originalErr)
-	fmt.Println("\nTo resolve this issue, you can add the host key to your known_hosts file using one of these methods:")
-	fmt.Printf("\n1. Run the following command to add the host key:\n")
+	fmt.Fprintf(os.Stderr, "\n[ERROR] Host key verification failed for %s: %v\n", hostname, originalErr)
+	fmt.Fprintln(os.Stderr, "\nTo resolve this issue, you can add the host key to your known_hosts file using one of these methods:")
+	fmt.Fprintf(os.Stderr, "\n1. Run the following command to add the host key:\n")
 
 	// Check if it's a standard SSH port or custom port
 	if isStandardSSHPort(hostname) {
-		fmt.Printf("   ssh-keyscan %s >> ~/.ssh/known_hosts\n", host)
-		fmt.Printf("\n2. Or connect manually first with ssh to accept the host key:\n")
-		fmt.Printf("   ssh %s\n", host)
-		fmt.Printf("\n   For older Cisco IOS devices, you may need additional SSH options:\n")
-		fmt.Printf("   ssh -o HostKeyAlgorithms=+ssh-rsa -o KexAlgorithms=+diffie-hellman-group14-sha1 %s\n", host)
+		fmt.Fprintf(os.Stderr, "   ssh-keyscan %s >> ~/.ssh/known_hosts\n", host)
+		fmt.Fprintf(os.Stderr, "\n2. Or connect manually first with ssh to accept the host key:\n")
+		fmt.Fprintf(os.Stderr, "   ssh %s\n", host)
+		fmt.Fprintf(os.Stderr, "\n   For older Cisco IOS devices, you may need additional SSH options:\n")
+		fmt.Fprintf(os.Stderr, "   ssh -o HostKeyAlgorithms=+ssh-rsa -o KexAlgorithms=+diffie-hellman-group14-sha1 %s\n", host)
 	} else {
 		port := extractPortFromAddress(hostname)
-		fmt.Printf("   ssh-keyscan -p %s %s >> ~/.ssh/known_hosts\n", port, host)
-		fmt.Printf("\n2. Or connect manually first with ssh to accept the host key:\n")
-		fmt.Printf("   ssh -p %s %s\n", port, host)
-		fmt.Printf("\n   For older Cisco IOS devices, you may need additional SSH options:\n")
-		fmt.Printf("   ssh -p %s -o HostKeyAlgorithms=+ssh-rsa -o KexAlgorithms=+diffie-hellman-group14-sha1 %s\n", port, host)
+		fmt.Fprintf(os.Stderr, "   ssh-keyscan -p %s %s >> ~/.ssh/known_hosts\n", port, host)
+		fmt.Fprintf(os.Stderr, "\n2. Or connect manually first with ssh to accept the host key:\n")
+		fmt.Fprintf(os.Stderr, "   ssh -p %s %s\n", port, host)
+		fmt.Fprintf(os.Stderr, "\n   For older Cisco IOS devices, you may need additional SSH options:\n")
+		fmt.Fprintf(os.Stderr, "   ssh -p %s -o HostKeyAlgorithms=+ssh-rsa -o KexAlgorithms=+diffie-hellman-group14-sha1 %s\n", port, host)
 	}
 
-	fmt.Printf("\n3. Or use the --host-key-path flag to specify a specific host key file\n")
-	fmt.Printf("\n4. Or set TELEE_HOSTKEYPATH environment variable to specify the host key file path\n")
-	fmt.Println("\nConnection cancelled for security reasons.")
+	fmt.Fprintf(os.Stderr, "\n3. Or use the --host-key-path flag to specify a specific host key file\n")
+	fmt.Fprintf(os.Stderr, "\n4. Or set TELEE_HOSTKEYPATH environment variable to specify the host key file path\n")
+	fmt.Fprintln(os.Stderr, "\nConnection cancelled for security reasons.")
 
 	return fmt.Errorf("host key verification failed for %s", hostname)
 }
