@@ -81,7 +81,11 @@ func createKnownHostsCallback(hostname string) (ssh.HostKeyCallback, error) {
 	}
 
 	if _, err := os.Stat(knownHostsPath); err != nil {
-		return nil, fmt.Errorf("~/.ssh/known_hosts not found. Please create it by running: ssh-keyscan %s >> ~/.ssh/known_hosts", hostname)
+		hostOnly := hostname
+		if h, _, err := net.SplitHostPort(hostname); err == nil {
+			hostOnly = h
+		}
+		return nil, fmt.Errorf("~/.ssh/known_hosts not found. Please create it by running: ssh-keyscan %s >> ~/.ssh/known_hosts", hostOnly)
 	}
 
 	knownHostsCallback, err := knownhosts.New(knownHostsPath)
