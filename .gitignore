@@ -4,3 +4,4 @@ dist
 tmp
 vendor
 .envrc
+.copilot_report
