@@ -1,15 +1,24 @@
-# telee
+<div align="center">
 
-![GitHub Tag](https://img.shields.io/github/v/tag/umatare5/telee?label=Latest%20version)
-[![Go Reference](https://pkg.go.dev/badge/umatare5/telee.svg)](https://pkg.go.dev/github.com/umatare5/telee)
-[![Go Report Card](https://goreportcard.com/badge/github.com/umatare5/telee?style=flat-square)](https://goreportcard.com/report/github.com/umatare5/telee)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/umatare5/telee/blob/main/LICENSE)
-[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/10968/badge)](https://www.bestpractices.dev/projects/10968)
-[![Published](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg)](https://developer.cisco.com/codeexchange/github/repo/umatare5/telee)
+<img src="docs/assets/logo.png" width="200px"/>
 
-telee [téli] is a CLI works on **TE**rmina**L** to **E**x**E**cute a command on networking device through the user authentication.
+  <h1>telee</h1>
 
-It has following advantages compared to use standard telnet and SSH.
+  <p>A CLI works on <b>TE</b>rmina<b>L</b> to <b>E</b>x<b>E</b>cute a command on networking device through the user authentication.</p>
+
+  <p>
+    <img alt="GitHub Tag" src="https://img.shields.io/github/v/tag/umatare5/telee?label=Latest%20version" />
+    <a href="https://goreportcard.com/report/github.com/umatare5/telee"><img alt="Go Report Card" src="https://goreportcard.com/badge/github.com/umatare5/telee?style=flat-square" /></a>
+    <a href="https://www.bestpractices.dev/projects/10968"><img alt="OpenSSF Best Practices" src="https://www.bestpractices.dev/projects/10968/badge" /></a>
+    <a href="./LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" /></a>
+    <a href="https://developer.cisco.com/codeexchange/github/repo/umatare5/telee"><img alt="Published" src="https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg" /></a>
+  </p>
+
+</div>
+
+## Overview
+
+This CLI has following advantages compared to use standard telnet and SSH.
 
 - Reduces login and logout operations.
 
