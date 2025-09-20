@@ -1,10 +1,13 @@
 <div align="center">
 
-<img src="docs/assets/logo.png" width="200px"/>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/logo_dark.png" width="180px">
+  <img src="docs/assets/logo.png" width="180px">
+</picture>
 
   <h1>telee</h1>
 
-  <p>A CLI works on <b>TE</b>rmina<b>L</b> to <b>E</b>x<b>E</b>cute a command on networking device through the user authentication.</p>
+  <p>A CLI works on terminal execute a command on networking device through the user authentication.</p>
 
   <p>
     <img alt="GitHub Tag" src="https://img.shields.io/github/v/tag/umatare5/telee?label=Latest%20version" />
