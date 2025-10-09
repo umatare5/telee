@@ -17,7 +17,7 @@ COPY . .
 RUN go build -trimpath -o telee ./cmd/main.go
 
 # Final stage
-FROM alpine:3.22.1
+FROM alpine:3.22.2
 WORKDIR /app
 COPY --from=builder /tmp/build/telee /bin/
 
