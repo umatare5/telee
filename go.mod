@@ -5,7 +5,7 @@ go 1.24.0
 require (
 	github.com/google/goexpect v0.0.0-20210430020637-ab937bf7fd6f
 	github.com/jinzhu/configor v1.2.2
-	github.com/urfave/cli/v3 v3.6.1
+	github.com/urfave/cli/v3 v3.6.2
 	github.com/ziutek/telnet v0.1.0
 	golang.org/x/crypto v0.46.0
 )
