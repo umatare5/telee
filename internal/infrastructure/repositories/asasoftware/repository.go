@@ -9,6 +9,7 @@ import (
 	"github.com/umatare5/telee/pkg/telnet"
 
 	x "github.com/google/goexpect"
+	cryptossh "golang.org/x/crypto/ssh"
 )
 
 const (
@@ -56,7 +57,8 @@ func (r *Repository) Fetch() (string, error) {
 	}
 
 	if r.Config.SecureMode {
-		clientConfig, err := ssh.GenerateClientConfig(r.Config.Username, r.Config.Password, r.Config.HostKeyPath, r.Config.Hostname)
+		var clientConfig *cryptossh.ClientConfig
+		clientConfig, err = ssh.GenerateClientConfig(r.Config.Username, r.Config.Password, r.Config.HostKeyPath, r.Config.Hostname)
 		if err != nil {
 			return "", err
 		}
