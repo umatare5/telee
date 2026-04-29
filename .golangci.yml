@@ -64,7 +64,7 @@ linters:
     - whitespace             # Normalize whitespace
     - fatcontext             # Avoid capturing/propagating "fat" contexts
     - nosprintfhostport      # Safer host:port formatting
-    # - depguard               # Belt-and-suspenders dependency rules (temporarily disabled)
+    - depguard               # Belt-and-suspenders dependency rules
 
   ########################
   # 4. Per-linter settings

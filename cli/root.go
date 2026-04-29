@@ -2,7 +2,7 @@ package cli
 
 import (
 	"context"
-	"log"
+	"log/slog"
 	"os"
 
 	"github.com/umatare5/telee/internal/application"
@@ -39,6 +39,7 @@ func Start() {
 	}
 
 	if err := cmd.Run(context.Background(), os.Args); err != nil {
-		log.Fatal(err)
+		slog.Error("command execution failed", "error", err)
+		os.Exit(1)
 	}
 }

@@ -3,7 +3,8 @@ package config
 
 import (
 	"fmt"
-	"log"
+	"log/slog"
+	"os"
 
 	"github.com/umatare5/telee/internal/domain"
 	"github.com/umatare5/telee/pkg/errors"
@@ -53,12 +54,14 @@ func New(cli *cli.Command) Config {
 
 	err := configor.New(&configor.Config{}).Load(&cfg)
 	if err != nil {
-		log.Fatal(err)
+		slog.Error("failed to load configuration", "error", err)
+		os.Exit(1)
 	}
 
 	err = checkArguments(&cfg)
 	if err != nil {
-		log.Fatal(err)
+		slog.Error("failed to validate arguments", "error", err)
+		os.Exit(1)
 	}
 
 	return cfg
