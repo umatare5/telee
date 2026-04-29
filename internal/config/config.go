@@ -36,8 +36,8 @@ type Config struct {
 func New(cli *cli.Command) Config {
 	cfg := Config{
 		Hostname:        cli.String(domain.HostnameFlagName),
-		Port:            int(cli.Int(domain.PortFlagName)),
-		Timeout:         int(cli.Int(domain.TimeoutFlagName)),
+		Port:            cli.Int(domain.PortFlagName),
+		Timeout:         cli.Int(domain.TimeoutFlagName),
 		Command:         cli.String(domain.CommandFlagName),
 		ExecPlatform:    cli.String(domain.ExecPlatformFlagName),
 		EnableMode:      cli.Bool(domain.EnableModeFlagName),
