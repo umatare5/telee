@@ -24,7 +24,7 @@ coverage/*
 
 # IDE files
 .idea/
-.copilot_reports/
+.agent_reports/
 *.swp
 *.swo
 .env
