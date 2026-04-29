@@ -1,3 +1,4 @@
+// Package repository implements YAMAHA RT OS-specific data access layer.
 package repository
 
 import (

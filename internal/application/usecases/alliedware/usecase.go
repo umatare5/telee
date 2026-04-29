@@ -1,3 +1,4 @@
+// Package usecase implements AlliedTelesis AlliedWare-specific business logic.
 package usecase
 
 import (

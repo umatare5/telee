@@ -1,3 +1,4 @@
+// Package repository implements Juniper JunOS-specific data access layer.
 package repository
 
 import (

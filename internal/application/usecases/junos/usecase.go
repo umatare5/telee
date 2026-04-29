@@ -1,3 +1,4 @@
+// Package usecase implements Juniper JunOS-specific business logic.
 package usecase
 
 import (

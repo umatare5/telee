@@ -1,3 +1,4 @@
+// Package repository implements Brocade IronWare-specific data access layer.
 package repository
 
 import (

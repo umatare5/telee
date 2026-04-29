@@ -1,3 +1,4 @@
+// Package usecase implements Cisco IOS/IOS-XE-specific business logic.
 package usecase
 
 import (

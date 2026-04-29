@@ -1,3 +1,4 @@
+// Package usecase implements YAMAHA RT OS-specific business logic.
 package usecase
 
 import (

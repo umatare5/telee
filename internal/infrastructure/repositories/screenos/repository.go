@@ -1,3 +1,4 @@
+// Package repository implements Juniper ScreenOS-specific data access layer.
 package repository
 
 import (

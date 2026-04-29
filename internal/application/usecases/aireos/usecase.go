@@ -1,3 +1,4 @@
+// Package usecase implements Cisco AireOS-specific business logic.
 package usecase
 
 import (

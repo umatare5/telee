@@ -1,3 +1,4 @@
+// Package repository implements Cisco IOS/IOS-XE-specific data access layer.
 package repository
 
 import (

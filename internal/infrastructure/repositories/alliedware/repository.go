@@ -1,3 +1,4 @@
+// Package repository implements AlliedTelesis AlliedWare-specific data access layer.
 package repository
 
 import (

@@ -1,3 +1,4 @@
+// Package repository implements Cisco ASA Software-specific data access layer.
 package repository
 
 import (

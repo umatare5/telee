@@ -1,3 +1,4 @@
+// Package usecase implements Cisco ASA Software-specific business logic.
 package usecase
 
 import (

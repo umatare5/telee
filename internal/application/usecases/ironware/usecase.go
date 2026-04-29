@@ -1,3 +1,4 @@
+// Package usecase implements Brocade IronWare-specific business logic.
 package usecase
 
 import (

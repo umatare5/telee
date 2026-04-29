@@ -1,3 +1,4 @@
+// Package repository implements Cisco AireOS-specific data access layer.
 package repository
 
 import (

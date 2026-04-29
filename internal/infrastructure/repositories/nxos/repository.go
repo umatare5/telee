@@ -1,3 +1,4 @@
+// Package repository implements Cisco NX-OS-specific data access layer.
 package repository
 
 import (
