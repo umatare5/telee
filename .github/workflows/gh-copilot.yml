@@ -3,11 +3,11 @@ name: Sync Copilot Public Instructions
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 13 * * 0' # Weekly on Sunday at 13:00 UTC
+    - cron: "0 13 * * 0" # Weekly on Sunday at 13:00 UTC
 
 permissions:
-  contents: write        # For creating commits and branches
-  pull-requests: write   # For creating pull requests
+  contents: write # For creating commits and branches
+  pull-requests: write # For creating pull requests
 
 jobs:
   sync:
