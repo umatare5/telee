@@ -1,3 +1,4 @@
+// Package ssh provides SSH client functionality for network device connections.
 package ssh
 
 import (

@@ -1,3 +1,4 @@
+// Package infrastructure provides data access layer for network device communication.
 package infrastructure
 
 import (

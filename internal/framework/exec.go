@@ -1,3 +1,4 @@
+// Package framework provides the execution framework for network device commands.
 package framework
 
 import (

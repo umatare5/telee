@@ -1,3 +1,4 @@
+// Package telnet provides Telnet client functionality for network device connections.
 package telnet
 
 import (

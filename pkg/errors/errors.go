@@ -1,3 +1,4 @@
+// Package errors provides custom error types for configuration validation.
 package errors
 
 import "errors"

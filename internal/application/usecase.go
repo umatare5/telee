@@ -1,3 +1,4 @@
+// Package application coordinates business logic across platform-specific use cases.
 package application
 
 import (

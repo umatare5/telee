@@ -1,3 +1,4 @@
+// Package config provides configuration management for CLI flags and environment variables.
 package config
 
 import (
