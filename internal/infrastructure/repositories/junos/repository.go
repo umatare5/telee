@@ -39,7 +39,7 @@ func (r *Repository) Fetch() (string, error) {
 	return data, nil
 }
 
-// [platform: junos] buildUserModeSecureRequest returns the expects
+// [platform: junos] buildUserModeSecureRequest returns the expects.
 func (r *Repository) buildUserModeSecureRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Username + "@" + r.Config.Hostname + ">"},

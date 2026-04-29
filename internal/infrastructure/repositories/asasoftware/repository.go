@@ -78,7 +78,7 @@ func (r *Repository) Fetch() (string, error) {
 	return data, nil
 }
 
-// [platform: asa] buildPrivilegedRequest returns the expects
+// [platform: asa] buildPrivilegedRequest returns the expects.
 func (r *Repository) buildPrivilegedRequest(suffix string) []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "Username:"},
@@ -97,7 +97,7 @@ func (r *Repository) buildPrivilegedRequest(suffix string) []x.Batcher {
 	}
 }
 
-// [platform: asa] buildDefaultPrivilegedRequest returns the expects
+// [platform: asa] buildDefaultPrivilegedRequest returns the expects.
 func (r *Repository) buildDefaultPrivilegedRequest(suffix string) []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "Username:"},
@@ -112,7 +112,7 @@ func (r *Repository) buildDefaultPrivilegedRequest(suffix string) []x.Batcher {
 	}
 }
 
-// [platform: asa] buildPrivilegedSecureRequest returns the expects
+// [platform: asa] buildPrivilegedSecureRequest returns the expects.
 func (r *Repository) buildPrivilegedSecureRequest(suffix string) []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + suffix + ">"},
@@ -127,7 +127,7 @@ func (r *Repository) buildPrivilegedSecureRequest(suffix string) []x.Batcher {
 	}
 }
 
-// [platform: asa] buildDefaultPrivilegedSecureRequest returns the expects
+// [platform: asa] buildDefaultPrivilegedSecureRequest returns the expects.
 func (r *Repository) buildDefaultPrivilegedSecureRequest(suffix string) []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + suffix + "#"},

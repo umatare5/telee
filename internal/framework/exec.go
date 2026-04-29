@@ -10,14 +10,14 @@ import (
 	"github.com/umatare5/telee/internal/infrastructure"
 )
 
-// Exec struct
+// Exec struct.
 type Exec struct {
 	Config     *config.Config
 	Repository *infrastructure.Repository
 	Usecase    *application.Usecase
 }
 
-// New returns Exec struct
+// New returns Exec struct.
 func New(c *config.Config, r *infrastructure.Repository, u *application.Usecase) Exec {
 	return Exec{
 		Config:     c,
@@ -26,7 +26,7 @@ func New(c *config.Config, r *infrastructure.Repository, u *application.Usecase)
 	}
 }
 
-// Run displays the command result
+// Run displays the command result.
 func (e *Exec) Run() {
 	var err error
 	var data string

@@ -48,7 +48,7 @@ func (r *Repository) Fetch() (string, error) {
 	return data, nil
 }
 
-// [platform: aireos] buildRequest returns the expects
+// [platform: aireos] buildRequest returns the expects.
 func (r *Repository) buildRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "User:"},

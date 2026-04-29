@@ -64,7 +64,7 @@ func (r *Repository) Fetch() (string, error) {
 	return data, nil
 }
 
-// [platform: nxos] buildUserModeRequest returns the expects
+// [platform: nxos] buildUserModeRequest returns the expects.
 func (r *Repository) buildUserModeRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "login:"},
@@ -79,7 +79,7 @@ func (r *Repository) buildUserModeRequest() []x.Batcher {
 	}
 }
 
-// [platform: nxos] buildPrivilegedRequest returns the expects
+// [platform: nxos] buildPrivilegedRequest returns the expects.
 func (r *Repository) buildPrivilegedRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "login:"},
@@ -98,7 +98,7 @@ func (r *Repository) buildPrivilegedRequest() []x.Batcher {
 	}
 }
 
-// [platform: nxos] buildDefaultPrivilegedRequest returns the expects
+// [platform: nxos] buildDefaultPrivilegedRequest returns the expects.
 func (r *Repository) buildDefaultPrivilegedRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "login:"},
@@ -113,7 +113,7 @@ func (r *Repository) buildDefaultPrivilegedRequest() []x.Batcher {
 	}
 }
 
-// [platform: nxos] buildUserModeSecureRequest returns the expects
+// [platform: nxos] buildUserModeSecureRequest returns the expects.
 func (r *Repository) buildUserModeSecureRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + "> "},
@@ -124,7 +124,7 @@ func (r *Repository) buildUserModeSecureRequest() []x.Batcher {
 	}
 }
 
-// [platform: nxos] buildPrivilegedSecureRequest returns the expects
+// [platform: nxos] buildPrivilegedSecureRequest returns the expects.
 func (r *Repository) buildPrivilegedSecureRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + "> "},
@@ -139,7 +139,7 @@ func (r *Repository) buildPrivilegedSecureRequest() []x.Batcher {
 	}
 }
 
-// [platform: nxos] buildDefaultPrivilegedSecureRequest returns the expects
+// [platform: nxos] buildDefaultPrivilegedSecureRequest returns the expects.
 func (r *Repository) buildDefaultPrivilegedSecureRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + "# "},

@@ -1,6 +1,6 @@
 package domain
 
-// Flag names
+// Flag names.
 const (
 	HostnameFlagName        string = "hostname"
 	PortFlagName            string = "port"
@@ -17,7 +17,7 @@ const (
 	HostKeyPathFlagName     string = "host-key-path"
 )
 
-// Flag usages
+// Flag usages.
 const (
 	HostnameFlagUsage        string = "Set hostname or IP address."
 	PortFlagUsage            string = "Set port number."
@@ -34,7 +34,7 @@ const (
 	HostKeyPathFlagUsage     string = "Set path to host key file for SSH host key verification."
 )
 
-// Flag values
+// Flag values.
 const (
 	PortFlagDefaultValue            int64  = 0
 	TimeoutFlagDefaultValue         int64  = 5
@@ -49,13 +49,13 @@ const (
 	HostKeyPathFlagDefaultValue     string = ""
 )
 
-// Flag requireds
+// Flag requireds.
 const (
 	HostnameFlagRequired bool = true
 	CommandFlagRequired  bool = true
 )
 
-// Flag aliases
+// Flag aliases.
 var (
 	HostnameFlagAliases        = []string{"H"}
 	PortFlagAliases            = []string{"P"}
@@ -72,7 +72,7 @@ var (
 	HostKeyPathFlagAliases     = []string{"hkp"}
 )
 
-// Flag envvars
+// Flag envvars.
 var (
 	HostnameFlagEnvVars     = "TELEE_HOSTNAME"
 	CommandFlagEnvVars      = "TELEE_COMMAND"

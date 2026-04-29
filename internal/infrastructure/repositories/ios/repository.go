@@ -64,7 +64,7 @@ func (r *Repository) Fetch() (string, error) {
 	return data, nil
 }
 
-// [platform: ios] buildUserModeRequest returns the expects
+// [platform: ios] buildUserModeRequest returns the expects.
 func (r *Repository) buildUserModeRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "Username:"},
@@ -79,7 +79,7 @@ func (r *Repository) buildUserModeRequest() []x.Batcher {
 	}
 }
 
-// [platform: ios] buildPrivilegedRequest returns the expects
+// [platform: ios] buildPrivilegedRequest returns the expects.
 func (r *Repository) buildPrivilegedRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "Username:"},
@@ -98,7 +98,7 @@ func (r *Repository) buildPrivilegedRequest() []x.Batcher {
 	}
 }
 
-// [platform: ios] buildDefaultPrivilegedRequest returns the expects
+// [platform: ios] buildDefaultPrivilegedRequest returns the expects.
 func (r *Repository) buildDefaultPrivilegedRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "Username:"},
@@ -113,7 +113,7 @@ func (r *Repository) buildDefaultPrivilegedRequest() []x.Batcher {
 	}
 }
 
-// [platform: ios] buildUserModeSecureRequest returns the expects
+// [platform: ios] buildUserModeSecureRequest returns the expects.
 func (r *Repository) buildUserModeSecureRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + ">"},
@@ -124,7 +124,7 @@ func (r *Repository) buildUserModeSecureRequest() []x.Batcher {
 	}
 }
 
-// [platform: ios] buildPrivilegedSecureRequest returns the expects
+// [platform: ios] buildPrivilegedSecureRequest returns the expects.
 func (r *Repository) buildPrivilegedSecureRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + ">"},
@@ -139,7 +139,7 @@ func (r *Repository) buildPrivilegedSecureRequest() []x.Batcher {
 	}
 }
 
-// [platform: ios] buildDefaultPrivilegedSecureRequest returns the expects
+// [platform: ios] buildDefaultPrivilegedSecureRequest returns the expects.
 func (r *Repository) buildDefaultPrivilegedSecureRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + "#"},

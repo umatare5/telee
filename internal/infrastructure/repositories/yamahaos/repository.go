@@ -62,7 +62,7 @@ func (r *Repository) Fetch() (string, error) {
 	return data, nil
 }
 
-// [platform: yamaha] buildRequest returns the expects
+// [platform: yamaha] buildRequest returns the expects.
 func (r *Repository) buildUserModeRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "Password:"},
@@ -75,7 +75,7 @@ func (r *Repository) buildUserModeRequest() []x.Batcher {
 	}
 }
 
-// [platform: yamaha] buildPrivilegedRequest returns the expects
+// [platform: yamaha] buildPrivilegedRequest returns the expects.
 func (r *Repository) buildPrivilegedRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "Password:"},
@@ -92,7 +92,7 @@ func (r *Repository) buildPrivilegedRequest() []x.Batcher {
 	}
 }
 
-// [platform: yamaha] buildUserModeSecureRequest returns the expects
+// [platform: yamaha] buildUserModeSecureRequest returns the expects.
 func (r *Repository) buildUserModeSecureRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + ">"},
@@ -103,7 +103,7 @@ func (r *Repository) buildUserModeSecureRequest() []x.Batcher {
 	}
 }
 
-// [platform: yamaha] buildPrivilegedSecureRequest returns the expects
+// [platform: yamaha] buildPrivilegedSecureRequest returns the expects.
 func (r *Repository) buildPrivilegedSecureRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + ">"},
