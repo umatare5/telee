@@ -13,14 +13,14 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-// Preset parameters for this command
+// Preset parameters for this command.
 const (
 	cmdName      string = "telee"
 	cmdUsage     string = "One-line command executor"
 	cmdUsageText string = "telee -H HOSTNAME -C COMMAND [options...]"
 )
 
-// Start executes this command
+// Start executes this command.
 func Start() {
 	cmd := &cli.Command{
 		Name:      cmdName,

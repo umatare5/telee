@@ -15,13 +15,13 @@ import (
 	"github.com/umatare5/telee/internal/infrastructure"
 )
 
-// Usecase struct
+// Usecase struct.
 type Usecase struct {
 	Config     *config.Config
 	Repository *infrastructure.Repository
 }
 
-// New returns Usecase struct
+// New returns Usecase struct.
 func New(c *config.Config, r *infrastructure.Repository) Usecase {
 	return Usecase{
 		Config:     c,
@@ -29,7 +29,7 @@ func New(c *config.Config, r *infrastructure.Repository) Usecase {
 	}
 }
 
-// InvokeAireOSUsecase returns new AireOSUsecase
+// InvokeAireOSUsecase returns new AireOSUsecase.
 func (u *Usecase) InvokeAireOSUsecase() *aireosUsecase.Usecase {
 	return &aireosUsecase.Usecase{
 		Config:     u.Config,
@@ -37,7 +37,7 @@ func (u *Usecase) InvokeAireOSUsecase() *aireosUsecase.Usecase {
 	}
 }
 
-// InvokeAlliedWareUsecase returns new AlliedWareUsecase
+// InvokeAlliedWareUsecase returns new AlliedWareUsecase.
 func (u *Usecase) InvokeAlliedWareUsecase() *alliedwareUsecase.Usecase {
 	return &alliedwareUsecase.Usecase{
 		Config:     u.Config,
@@ -45,7 +45,7 @@ func (u *Usecase) InvokeAlliedWareUsecase() *alliedwareUsecase.Usecase {
 	}
 }
 
-// InvokeASASoftwareUsecase returns new ASASoftwareUsecase
+// InvokeASASoftwareUsecase returns new ASASoftwareUsecase.
 func (u *Usecase) InvokeASASoftwareUsecase() *asasoftwareUsecase.Usecase {
 	return &asasoftwareUsecase.Usecase{
 		Config:     u.Config,
@@ -53,7 +53,7 @@ func (u *Usecase) InvokeASASoftwareUsecase() *asasoftwareUsecase.Usecase {
 	}
 }
 
-// InvokeIOSUsecase returns new IOSUsecase
+// InvokeIOSUsecase returns new IOSUsecase.
 func (u *Usecase) InvokeIOSUsecase() *iosUsecase.Usecase {
 	return &iosUsecase.Usecase{
 		Config:     u.Config,
@@ -61,7 +61,7 @@ func (u *Usecase) InvokeIOSUsecase() *iosUsecase.Usecase {
 	}
 }
 
-// InvokeIronWareUsecase returns new IronWareUsecase
+// InvokeIronWareUsecase returns new IronWareUsecase.
 func (u *Usecase) InvokeIronWareUsecase() *ironwareUsecase.Usecase {
 	return &ironwareUsecase.Usecase{
 		Config:     u.Config,
@@ -69,7 +69,7 @@ func (u *Usecase) InvokeIronWareUsecase() *ironwareUsecase.Usecase {
 	}
 }
 
-// InvokeJunOSUsecase returns new JunOSUsecase
+// InvokeJunOSUsecase returns new JunOSUsecase.
 func (u *Usecase) InvokeJunOSUsecase() *junosUsecase.Usecase {
 	return &junosUsecase.Usecase{
 		Config:     u.Config,
@@ -77,7 +77,7 @@ func (u *Usecase) InvokeJunOSUsecase() *junosUsecase.Usecase {
 	}
 }
 
-// InvokeNXOSUsecase returns new NXOSUsecase
+// InvokeNXOSUsecase returns new NXOSUsecase.
 func (u *Usecase) InvokeNXOSUsecase() *nxosUsecase.Usecase {
 	return &nxosUsecase.Usecase{
 		Config:     u.Config,
@@ -85,7 +85,7 @@ func (u *Usecase) InvokeNXOSUsecase() *nxosUsecase.Usecase {
 	}
 }
 
-// InvokeScreenOSUsecase returns new ScreenOSUsecase
+// InvokeScreenOSUsecase returns new ScreenOSUsecase.
 func (u *Usecase) InvokeScreenOSUsecase() *screenosUsecase.Usecase {
 	return &screenosUsecase.Usecase{
 		Config:     u.Config,
@@ -93,7 +93,7 @@ func (u *Usecase) InvokeScreenOSUsecase() *screenosUsecase.Usecase {
 	}
 }
 
-// InvokeYamahaOSUsecase returns new YamahaOSUsecase
+// InvokeYamahaOSUsecase returns new YamahaOSUsecase.
 func (u *Usecase) InvokeYamahaOSUsecase() *yamahaosUsecase.Usecase {
 	return &yamahaosUsecase.Usecase{
 		Config:     u.Config,

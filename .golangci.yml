@@ -60,7 +60,7 @@ linters:
     # API/style consistency that reduces long-term churn
     - nilnesserr             # Detect inconsistent nil/err returns
     - predeclared            # Avoid shadowing predeclared identifiers
-    # - godot                  # Enforce periods at the end of doc comments (temporarily disabled)
+    - godot                  # Enforce periods at the end of doc comments
     - whitespace             # Normalize whitespace
     - fatcontext             # Avoid capturing/propagating "fat" contexts
     - nosprintfhostport      # Safer host:port formatting
