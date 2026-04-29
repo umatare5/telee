@@ -2,92 +2,107 @@
 
 **Last Updated**: 2026-04-30
 
+> [!IMPORTANT]
+> **Read [README.md](README.md) first** to understand the project's purpose, architecture, and constraints before making any changes.
+
 ## Overview
 
-`telee` is a production network automation CLI (5+ years, v1.9.0) that executes single commands on network devices via Telnet/SSH. This tool is actively used in production environments and stability is paramount.
+`telee` is a **production-grade network automation CLI** (5+ years, v1.9.0) executing single commands on network devices via Telnet/SSH.
 
-**Primary Goal**: Maintain backward compatibility while improving code quality and reliability.
+**Primary Goal**: Maintain backward compatibility while improving code quality.
 
 **Key Constraints**:
 
-- CLI interface must remain stable (flags, output format, exit codes)
-- Shell-friendly design (stdout for device output, stderr for diagnostics)
-- Pipeline-oriented (`|`, `>`, `grep` must work reliably)
-- Minimal dependencies (prefer standard library)
+- ✅ CLI interface stability (flags, output format, exit codes)
+- ✅ Shell-friendly design (stdout: device output, stderr: diagnostics)
+- ✅ Pipeline-oriented (`|`, `>`, `grep` compatibility)
+- ✅ Minimal dependencies (prefer standard library)
+
+---
 
 ## Core Principles
 
-**Stability Over Features**: This is a mature tool. Prefer bug fixes and code quality improvements over new features. Any change that could break existing scripts requires explicit approval.
+> [!NOTE]
+> These principles guide all development decisions:
 
-**Production Quality**: All code must be lint-clean, well-tested, and follow Go idioms. Use named constants, predicate functions, and early returns. Avoid clever code.
+**🛡️ Stability Over Features**  
+Prefer bug fixes and quality improvements. Breaking changes require explicit approval.
 
-**Security First**: Never log credentials. Mask secrets in all output. Prefer SSH in documentation. No session transcripts unless explicitly requested.
+**⚙️ Production Quality**  
+Lint-clean, well-tested, idiomatic Go. Use named constants, predicate functions, early returns.
 
-**Minimal Diffs**: Change only what's necessary. Preserve existing patterns and style unless there's a compelling reason to refactor.
+**🔒 Security First**  
+Never log credentials. Mask all secrets. Prefer SSH in documentation.
 
-## Technical Context
+**📝 Minimal Diffs**  
+Change only what's necessary. Preserve existing patterns unless compelling reason exists.
 
-**Stack**:
+---
+
+## Technical Stack
+
+**Language & Architecture**:
 
 - Go 1.25+ with Clean Architecture pattern
-- Supports: Cisco IOS/NX-OS/ASA/AireOS, Juniper SRX/SSG, YAMAHA, AlliedWare, IronWare
-- Platform-specific prompt detection and privilege-mode handling
-- Network protocols: SSH (preferred), Telnet (legacy support)
+- Entry: `cmd/` → Interface: `cli/` → Business: `internal/` → Libraries: `pkg/`
 
-**Architecture**:
+**Supported Platforms**:
 
-```text
-cmd/         → Entry point
-cli/         → CLI interface (flags, version)
-internal/    → Business logic (Clean Architecture)
-  domain/    → Core types, constants
-  application/ → Use cases per platform
-  infrastructure/ → Repositories (SSH/Telnet clients)
-  framework/ → Platform executor
-pkg/         → Reusable libraries
-```
+- Cisco: IOS/IOS-XE, NX-OS, ASA, AireOS
+- Juniper: SRX, SSG
+- Others: YAMAHA RT, AlliedWare, IronWare
 
-**Tooling**: Follow `.golangci.yml`, `.editorconfig`, `Makefile`. No ad-hoc linter disables.
+**Network Protocols**: SSH (preferred), Telnet (legacy)
+
+**Tooling**: Follow `.golangci.yml`, `.editorconfig`, `Makefile` — no ad-hoc overrides.
+
+---
 
 ## Development Guidelines
 
-**When Adding Code**:
+### Adding Code
 
-- Check existing patterns first (consistency matters)
-- Use named constants for timeouts, regex patterns, retry counts
-- Factor predicate helpers (`isPlatformX()`, `hasPrivilege()`)
-- Comment platform-specific assumptions
-- Update README's platform matrix if adding support
+- ✅ Check existing patterns (consistency matters)
+- ✅ Use named constants (timeouts, regex, retry counts)
+- ✅ Factor predicate helpers (`isPlatformX()`, `hasPrivilege()`)
+- ✅ Comment platform-specific assumptions
+- ✅ Update README platform matrix if adding support
 
-**When Modifying CLI**:
+### Modifying CLI
 
-- Preserve all existing flags and environment variables
-- Maintain deterministic exit codes (0=success, nonzero=failure)
-- Keep `--help` concise and accurate
-- Document breaking changes explicitly
+> [!WARNING]
+> CLI changes can break user scripts. Exercise extreme caution.
 
-**When Working with Platforms**:
+- ✅ Preserve all flags and environment variables
+- ✅ Maintain deterministic exit codes (0=success, nonzero=failure)
+- ✅ Keep `--help` concise and accurate
+- ✅ Explicitly document breaking changes
 
-- Each platform has unique prompt patterns and enable-mode sequences
-- Test thoroughly (or note in PR if manual testing is needed)
-- Reference existing platform implementations for patterns
-- Update the "Verified On" table in README
+### Working with Platforms
 
-**Code Quality**:
+Each platform has unique prompt patterns and privilege-mode sequences. Reference existing code in `internal/application/usecases/` and `internal/infrastructure/repositories/`.
 
-- Ensure `make build`, `make lint`, `make test-unit` pass
-- Use `go mod tidy` after dependency changes
-- Place temp artifacts under `./tmp`
-- No secrets in code, tests, or examples
+### Quality Checks
+
+```bash
+make build  # Must succeed
+make lint   # Must be clean (0 issues)
+make test-unit  # Must pass
+```
+
+---
 
 ## Security & Privacy
 
+> [!CAUTION]
+> **Never log credentials.** This is a production tool handling sensitive data.
+
 **Critical Rules**:
 
-- Never log `TELEE_PASSWORD`, `TELEE_PRIVPASSWORD`, or any credentials
-- Mask secrets when displaying (show first 4 chars only: `${TOKEN:0:4}…`)
-- Use SSH in documentation examples (Telnet only with warnings)
-- No automatic session logging (user must explicitly enable)
+- 🚫 Never log `TELEE_PASSWORD`, `TELEE_PRIVPASSWORD`, or any credentials
+- 🔒 Mask secrets when displaying (first 4 chars only: `${TOKEN:0:4}…`)
+- 📖 Use SSH in documentation (Telnet only with explicit warnings)
+- 🚫 No automatic session logging (user must explicitly enable)
 
 **Safe Example**:
 
@@ -95,28 +110,30 @@ pkg/         → Reusable libraries
 telee -H device.example.net -C "show version" --secure
 ```
 
+---
+
 ## Platform-Specific Notes
 
-**Cisco IOS/IOS-XE**: Enable mode requires password, prompt changes from `>` to `#`
+| Platform | Key Characteristics |
+|----------|---------------------|
+| **Cisco IOS/IOS-XE** | Enable mode requires password, prompt: `>` → `#` |
+| **Cisco NX-OS** | Similar to IOS, different paging commands |
+| **Cisco ASA** | Paging not supported in user-level mode |
+| **Cisco AireOS** | No enable mode, WLC-specific prompts |
+| **Juniper SRX/SSG** | CLI vs config mode, prompts: `>` / `#` |
+| **YAMAHA RT** | Japanese vendor, unique command syntax |
 
-**Cisco NX-OS**: Similar to IOS but different paging commands
+> [!TIP]
+> Consult existing code in `internal/application/usecases/` for implementation patterns.
 
-**Cisco ASA**: Paging not supported in user-level mode
-
-**Cisco AireOS**: No enable mode, WLC-specific prompts
-
-**Juniper SRX/SSG**: CLI mode vs configuration mode, `>`/`#` prompts
-
-**YAMAHA RT**: Japanese vendor, unique command syntax
-
-Consult existing code in `internal/application/usecases/` and `internal/infrastructure/repositories/` for platform-specific details.
+---
 
 ## Release Process
 
-Version is tracked in `VERSION` file. Follow SemVer strictly:
+**Version Management**: Tracked in `VERSION` file. Follow [SemVer](https://semver.org/) strictly.
 
 - **MAJOR**: Breaking CLI changes (flag removal, output format changes)
-- **MINOR**: New features, new platform support
-- **PATCH**: Bug fixes, documentation updates
+- **MINOR**: New features, platform support
+- **PATCH**: Bug fixes, documentation
 
-Release via `.goreleaser.yml` automation. Docker images published to ghcr.io.
+**Automation**: Release via `.goreleaser.yml`. Docker images → `ghcr.io/umatare5/telee`.
