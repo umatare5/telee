@@ -26,11 +26,9 @@ help:
 	@echo "  - gotestsum: go install gotest.tools/gotestsum@latest"
 	@echo "  - golangci-lint: https://golangci-lint.run/usage/install/"
 
-build: $(BINARY_PATH)
-
 # Build the binary
-$(BINARY_PATH):
-	mkdir -p $(BUILD_DIR)
+build:
+	@mkdir -p $(BUILD_DIR)
 	go build $(BUILD_FLAGS) -o $(BINARY_PATH) ./cmd
 
 # Lint the code
