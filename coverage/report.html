@@ -1,0 +1,2295 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>cli: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">github.com/umatare5/telee/cli/flags.go (0.0%)</option>
+				
+				<option value="file1">github.com/umatare5/telee/cli/root.go (0.0%)</option>
+				
+				<option value="file2">github.com/umatare5/telee/cli/version.go (0.0%)</option>
+				
+				<option value="file3">github.com/umatare5/telee/cmd/main.go (0.0%)</option>
+				
+				<option value="file4">github.com/umatare5/telee/internal/application/usecase.go (0.0%)</option>
+				
+				<option value="file5">github.com/umatare5/telee/internal/application/usecases/aireos/usecase.go (0.0%)</option>
+				
+				<option value="file6">github.com/umatare5/telee/internal/application/usecases/alliedware/usecase.go (0.0%)</option>
+				
+				<option value="file7">github.com/umatare5/telee/internal/application/usecases/asasoftware/usecase.go (0.0%)</option>
+				
+				<option value="file8">github.com/umatare5/telee/internal/application/usecases/ios/usecase.go (0.0%)</option>
+				
+				<option value="file9">github.com/umatare5/telee/internal/application/usecases/ironware/usecase.go (0.0%)</option>
+				
+				<option value="file10">github.com/umatare5/telee/internal/application/usecases/junos/usecase.go (0.0%)</option>
+				
+				<option value="file11">github.com/umatare5/telee/internal/application/usecases/nxos/usecase.go (0.0%)</option>
+				
+				<option value="file12">github.com/umatare5/telee/internal/application/usecases/screenos/usecase.go (0.0%)</option>
+				
+				<option value="file13">github.com/umatare5/telee/internal/application/usecases/yamahaos/usecase.go (0.0%)</option>
+				
+				<option value="file14">github.com/umatare5/telee/internal/config/config.go (0.0%)</option>
+				
+				<option value="file15">github.com/umatare5/telee/internal/framework/exec.go (0.0%)</option>
+				
+				<option value="file16">github.com/umatare5/telee/internal/infrastructure/repositories/aireos/repository.go (0.0%)</option>
+				
+				<option value="file17">github.com/umatare5/telee/internal/infrastructure/repositories/alliedware/repository.go (0.0%)</option>
+				
+				<option value="file18">github.com/umatare5/telee/internal/infrastructure/repositories/asasoftware/repository.go (0.0%)</option>
+				
+				<option value="file19">github.com/umatare5/telee/internal/infrastructure/repositories/ios/repository.go (0.0%)</option>
+				
+				<option value="file20">github.com/umatare5/telee/internal/infrastructure/repositories/ironware/repository.go (0.0%)</option>
+				
+				<option value="file21">github.com/umatare5/telee/internal/infrastructure/repositories/junos/repository.go (0.0%)</option>
+				
+				<option value="file22">github.com/umatare5/telee/internal/infrastructure/repositories/nxos/repository.go (0.0%)</option>
+				
+				<option value="file23">github.com/umatare5/telee/internal/infrastructure/repositories/screenos/repository.go (0.0%)</option>
+				
+				<option value="file24">github.com/umatare5/telee/internal/infrastructure/repositories/yamahaos/repository.go (0.0%)</option>
+				
+				<option value="file25">github.com/umatare5/telee/internal/infrastructure/repository.go (0.0%)</option>
+				
+				<option value="file26">github.com/umatare5/telee/pkg/ssh/client.go (0.0%)</option>
+				
+				<option value="file27">github.com/umatare5/telee/pkg/telnet/client.go (0.0%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package cli
+
+import (
+        "github.com/umatare5/telee/internal/domain"
+
+        "github.com/urfave/cli/v3"
+)
+
+// Register all flags.
+func registerFlags() []cli.Flag <span class="cov0" title="0">{
+        flags := []cli.Flag{}
+        flags = append(flags, registerHostNameFlag()...)
+        flags = append(flags, registerPortFlag()...)
+        flags = append(flags, registerTimeoutFlag()...)
+        flags = append(flags, registerCommandFlag()...)
+        flags = append(flags, registerExecPlatformFlag()...)
+        flags = append(flags, registerEnableModeFlag()...)
+        flags = append(flags, registerRedundantModeFlag()...)
+        flags = append(flags, registerSecureModeFlag()...)
+        flags = append(flags, registerDefaultPrivModeFlag()...)
+        flags = append(flags, registerUsernameFlag()...)
+        flags = append(flags, registerPasswordFlag()...)
+        flags = append(flags, registerPrivPasswordFlag()...)
+        flags = append(flags, registerHostKeyPathFlag()...)
+        return flags
+}</span>
+
+// Declare hostname flag.
+func registerHostNameFlag() []cli.Flag <span class="cov0" title="0">{
+        return []cli.Flag{
+                &amp;cli.StringFlag{
+                        Name:     domain.HostnameFlagName,
+                        Usage:    domain.HostnameFlagUsage,
+                        Aliases:  domain.HostnameFlagAliases,
+                        Sources:  cli.EnvVars(domain.HostnameFlagEnvVars),
+                        Required: domain.HostnameFlagRequired,
+                },
+        }
+}</span>
+
+// Declare port flag.
+func registerPortFlag() []cli.Flag <span class="cov0" title="0">{
+        return []cli.Flag{
+                &amp;cli.IntFlag{
+                        Name:    domain.PortFlagName,
+                        Usage:   domain.PortFlagUsage,
+                        Aliases: domain.PortFlagAliases,
+                        Value:   int(domain.PortFlagDefaultValue),
+                },
+        }
+}</span>
+
+// Declare timeout flag.
+func registerTimeoutFlag() []cli.Flag <span class="cov0" title="0">{
+        return []cli.Flag{
+                &amp;cli.IntFlag{
+                        Name:    domain.TimeoutFlagName,
+                        Usage:   domain.TimeoutFlagUsage,
+                        Aliases: domain.TimeoutFlagAliases,
+                        Value:   int(domain.TimeoutFlagDefaultValue),
+                },
+        }
+}</span>
+
+// Declare command flag.
+func registerCommandFlag() []cli.Flag <span class="cov0" title="0">{
+        return []cli.Flag{
+                &amp;cli.StringFlag{
+                        Name:     domain.CommandFlagName,
+                        Usage:    domain.CommandFlagUsage,
+                        Aliases:  domain.CommandFlagAliases,
+                        Sources:  cli.EnvVars(domain.CommandFlagEnvVars),
+                        Required: domain.CommandFlagRequired,
+                },
+        }
+}</span>
+
+// Declare exec-platform flag.
+func registerExecPlatformFlag() []cli.Flag <span class="cov0" title="0">{
+        return []cli.Flag{
+                &amp;cli.StringFlag{
+                        Name:    domain.ExecPlatformFlagName,
+                        Usage:   domain.ExecPlatformFlagUsage,
+                        Aliases: domain.ExecPlatformFlagAliases,
+                        Value:   domain.ExecPlatformFlagDefaultValue,
+                },
+        }
+}</span>
+
+// Declare enable-mode flag.
+func registerEnableModeFlag() []cli.Flag <span class="cov0" title="0">{
+        return []cli.Flag{
+                &amp;cli.BoolFlag{
+                        Name:    domain.EnableModeFlagName,
+                        Usage:   domain.EnableModeFlagUsage,
+                        Aliases: domain.EnableModeFlagAliases,
+                        Value:   domain.EnableModeFlagDefaultValue,
+                },
+        }
+}</span>
+
+// Declare redundant-mode flag.
+func registerRedundantModeFlag() []cli.Flag <span class="cov0" title="0">{
+        return []cli.Flag{
+                &amp;cli.BoolFlag{
+                        Name:    domain.RedundantModeFlagName,
+                        Usage:   domain.RedundantModeFlagUsage,
+                        Aliases: domain.RedundantModeFlagAliases,
+                        Value:   domain.RedundantModeFlagDefaultValue,
+                },
+        }
+}</span>
+
+// Declare secure-mode flag.
+func registerSecureModeFlag() []cli.Flag <span class="cov0" title="0">{
+        return []cli.Flag{
+                &amp;cli.BoolFlag{
+                        Name:    domain.SecureModeFlagName,
+                        Usage:   domain.SecureModeFlagUsage,
+                        Aliases: domain.SecureModeFlagAliases,
+                        Value:   domain.SecureModeFlagDefaultValue,
+                },
+        }
+}</span>
+
+// Declare priv-mode flag.
+func registerDefaultPrivModeFlag() []cli.Flag <span class="cov0" title="0">{
+        return []cli.Flag{
+                &amp;cli.BoolFlag{
+                        Name:    domain.DefaultPrivModeFlagName,
+                        Usage:   domain.DefaultPrivModeFlagUsage,
+                        Aliases: domain.DefaultPrivModeFlagAliases,
+                        Value:   domain.DefaultPrivModeFlagDefaultValue,
+                },
+        }
+}</span>
+
+// Declare username flag.
+func registerUsernameFlag() []cli.Flag <span class="cov0" title="0">{
+        return []cli.Flag{
+                &amp;cli.StringFlag{
+                        Name:    domain.UsernameFlagName,
+                        Usage:   domain.UsernameFlagUsage,
+                        Aliases: domain.UsernameFlagAliases,
+                        Value:   domain.UsernameFlagDefaultValue,
+                        Sources: cli.EnvVars(domain.UsernameFlagEnvVars),
+                },
+        }
+}</span>
+
+// Declare password flag.
+func registerPasswordFlag() []cli.Flag <span class="cov0" title="0">{
+        return []cli.Flag{
+                &amp;cli.StringFlag{
+                        Name:    domain.PasswordFlagName,
+                        Usage:   domain.PasswordFlagUsage,
+                        Aliases: domain.PasswordFlagAliases,
+                        Value:   domain.PasswordFlagDefaultValue,
+                        Sources: cli.EnvVars(domain.PasswordFlagEnvVars),
+                },
+        }
+}</span>
+
+// Declare priv-password flag.
+func registerPrivPasswordFlag() []cli.Flag <span class="cov0" title="0">{
+        return []cli.Flag{
+                &amp;cli.StringFlag{
+                        Name:    domain.PrivPasswordFlagName,
+                        Usage:   domain.PrivPasswordFlagUsage,
+                        Aliases: domain.PrivPasswordFlagAliases,
+                        Value:   domain.PrivPasswordFlagDefaultValue,
+                        Sources: cli.EnvVars(domain.PrivPasswordFlagEnvVars),
+                },
+        }
+}</span>
+
+// Declare host-key-path flag.
+func registerHostKeyPathFlag() []cli.Flag <span class="cov0" title="0">{
+        return []cli.Flag{
+                &amp;cli.StringFlag{
+                        Name:    domain.HostKeyPathFlagName,
+                        Usage:   domain.HostKeyPathFlagUsage,
+                        Aliases: domain.HostKeyPathFlagAliases,
+                        Value:   domain.HostKeyPathFlagDefaultValue,
+                        Sources: cli.EnvVars(domain.HostKeyPathFlagEnvVars),
+                },
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package cli
+
+import (
+        "context"
+        "log/slog"
+        "os"
+
+        "github.com/umatare5/telee/internal/application"
+        "github.com/umatare5/telee/internal/config"
+        "github.com/umatare5/telee/internal/framework"
+        "github.com/umatare5/telee/internal/infrastructure"
+
+        "github.com/urfave/cli/v3"
+)
+
+// Preset parameters for this command.
+const (
+        cmdName      string = "telee"
+        cmdUsage     string = "One-line command executor"
+        cmdUsageText string = "telee -H HOSTNAME -C COMMAND [options...]"
+)
+
+// Start executes this command.
+func Start() <span class="cov0" title="0">{
+        cmd := &amp;cli.Command{
+                Name:      cmdName,
+                Usage:     cmdUsage,
+                UsageText: cmdUsageText,
+                Version:   getVersion(),
+                Flags:     registerFlags(),
+                Action: func(ctx context.Context, cli *cli.Command) error </span><span class="cov0" title="0">{
+                        c := config.New(cli)
+                        r := infrastructure.New(&amp;c)
+                        u := application.New(&amp;c, &amp;r)
+                        exec := framework.New(&amp;c, &amp;r, &amp;u)
+                        exec.Run()
+                        return nil
+                }</span>,
+        }
+
+        <span class="cov0" title="0">if err := cmd.Run(context.Background(), os.Args); err != nil </span><span class="cov0" title="0">{
+                slog.Error("command execution failed", "error", err)
+                os.Exit(1)
+        }</span>
+}
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">// Package cli handles the execution of the CLI application.
+package cli
+
+var version = "dev"
+
+func getVersion() string <span class="cov0" title="0">{
+        return version
+}</span>
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">package main
+
+import (
+        cli "github.com/umatare5/telee/cli"
+)
+
+// The entrypoint of this program.
+func main() <span class="cov0" title="0">{
+        cli.Start()
+}</span>
+</pre>
+		
+		<pre class="file" id="file4" style="display: none">// Package application coordinates business logic across platform-specific use cases.
+package application
+
+import (
+        aireosUsecase "github.com/umatare5/telee/internal/application/usecases/aireos"
+        alliedwareUsecase "github.com/umatare5/telee/internal/application/usecases/alliedware"
+        asasoftwareUsecase "github.com/umatare5/telee/internal/application/usecases/asasoftware"
+        iosUsecase "github.com/umatare5/telee/internal/application/usecases/ios"
+        ironwareUsecase "github.com/umatare5/telee/internal/application/usecases/ironware"
+        junosUsecase "github.com/umatare5/telee/internal/application/usecases/junos"
+        nxosUsecase "github.com/umatare5/telee/internal/application/usecases/nxos"
+        screenosUsecase "github.com/umatare5/telee/internal/application/usecases/screenos"
+        yamahaosUsecase "github.com/umatare5/telee/internal/application/usecases/yamahaos"
+        "github.com/umatare5/telee/internal/config"
+        "github.com/umatare5/telee/internal/infrastructure"
+)
+
+// Usecase struct.
+type Usecase struct {
+        Config     *config.Config
+        Repository *infrastructure.Repository
+}
+
+// New returns Usecase struct.
+func New(c *config.Config, r *infrastructure.Repository) Usecase <span class="cov0" title="0">{
+        return Usecase{
+                Config:     c,
+                Repository: r,
+        }
+}</span>
+
+// InvokeAireOSUsecase returns new AireOSUsecase.
+func (u *Usecase) InvokeAireOSUsecase() *aireosUsecase.Usecase <span class="cov0" title="0">{
+        return &amp;aireosUsecase.Usecase{
+                Config:     u.Config,
+                Repository: u.Repository,
+        }
+}</span>
+
+// InvokeAlliedWareUsecase returns new AlliedWareUsecase.
+func (u *Usecase) InvokeAlliedWareUsecase() *alliedwareUsecase.Usecase <span class="cov0" title="0">{
+        return &amp;alliedwareUsecase.Usecase{
+                Config:     u.Config,
+                Repository: u.Repository,
+        }
+}</span>
+
+// InvokeASASoftwareUsecase returns new ASASoftwareUsecase.
+func (u *Usecase) InvokeASASoftwareUsecase() *asasoftwareUsecase.Usecase <span class="cov0" title="0">{
+        return &amp;asasoftwareUsecase.Usecase{
+                Config:     u.Config,
+                Repository: u.Repository,
+        }
+}</span>
+
+// InvokeIOSUsecase returns new IOSUsecase.
+func (u *Usecase) InvokeIOSUsecase() *iosUsecase.Usecase <span class="cov0" title="0">{
+        return &amp;iosUsecase.Usecase{
+                Config:     u.Config,
+                Repository: u.Repository,
+        }
+}</span>
+
+// InvokeIronWareUsecase returns new IronWareUsecase.
+func (u *Usecase) InvokeIronWareUsecase() *ironwareUsecase.Usecase <span class="cov0" title="0">{
+        return &amp;ironwareUsecase.Usecase{
+                Config:     u.Config,
+                Repository: u.Repository,
+        }
+}</span>
+
+// InvokeJunOSUsecase returns new JunOSUsecase.
+func (u *Usecase) InvokeJunOSUsecase() *junosUsecase.Usecase <span class="cov0" title="0">{
+        return &amp;junosUsecase.Usecase{
+                Config:     u.Config,
+                Repository: u.Repository,
+        }
+}</span>
+
+// InvokeNXOSUsecase returns new NXOSUsecase.
+func (u *Usecase) InvokeNXOSUsecase() *nxosUsecase.Usecase <span class="cov0" title="0">{
+        return &amp;nxosUsecase.Usecase{
+                Config:     u.Config,
+                Repository: u.Repository,
+        }
+}</span>
+
+// InvokeScreenOSUsecase returns new ScreenOSUsecase.
+func (u *Usecase) InvokeScreenOSUsecase() *screenosUsecase.Usecase <span class="cov0" title="0">{
+        return &amp;screenosUsecase.Usecase{
+                Config:     u.Config,
+                Repository: u.Repository,
+        }
+}</span>
+
+// InvokeYamahaOSUsecase returns new YamahaOSUsecase.
+func (u *Usecase) InvokeYamahaOSUsecase() *yamahaosUsecase.Usecase <span class="cov0" title="0">{
+        return &amp;yamahaosUsecase.Usecase{
+                Config:     u.Config,
+                Repository: u.Repository,
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file5" style="display: none">// Package usecase implements Cisco AireOS-specific business logic.
+package usecase
+
+import (
+        "github.com/umatare5/telee/internal/config"
+        "github.com/umatare5/telee/internal/infrastructure"
+)
+
+// Usecase struct.
+type Usecase struct {
+        Config     *config.Config
+        Repository *infrastructure.Repository
+}
+
+// Fetch returns stdout from the session.
+func (u *Usecase) Fetch() (string, error) <span class="cov0" title="0">{
+        data, err := u.Repository.InvokeAireOSRepository().Fetch()
+        if err != nil </span><span class="cov0" title="0">{
+                return "", err
+        }</span>
+        <span class="cov0" title="0">return data, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file6" style="display: none">// Package usecase implements AlliedTelesis AlliedWare-specific business logic.
+package usecase
+
+import (
+        "github.com/umatare5/telee/internal/config"
+        "github.com/umatare5/telee/internal/infrastructure"
+)
+
+// Usecase struct.
+type Usecase struct {
+        Config     *config.Config
+        Repository *infrastructure.Repository
+}
+
+// Fetch returns stdout from the session.
+func (u *Usecase) Fetch() (string, error) <span class="cov0" title="0">{
+        data, err := u.Repository.InvokeAlliedWareRepository().Fetch()
+        if err != nil </span><span class="cov0" title="0">{
+                return "", err
+        }</span>
+        <span class="cov0" title="0">return data, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file7" style="display: none">// Package usecase implements Cisco ASA Software-specific business logic.
+package usecase
+
+import (
+        "github.com/umatare5/telee/internal/config"
+        "github.com/umatare5/telee/internal/infrastructure"
+)
+
+// Usecase struct.
+type Usecase struct {
+        Config     *config.Config
+        Repository *infrastructure.Repository
+}
+
+// Fetch returns stdout from the session.
+func (u *Usecase) Fetch() (string, error) <span class="cov0" title="0">{
+        data, err := u.Repository.InvokeASASoftwareRepository().Fetch()
+        if err != nil </span><span class="cov0" title="0">{
+                return "", err
+        }</span>
+        <span class="cov0" title="0">return data, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file8" style="display: none">// Package usecase implements Cisco IOS/IOS-XE-specific business logic.
+package usecase
+
+import (
+        "github.com/umatare5/telee/internal/config"
+        "github.com/umatare5/telee/internal/infrastructure"
+)
+
+// Usecase struct.
+type Usecase struct {
+        Config     *config.Config
+        Repository *infrastructure.Repository
+}
+
+// Fetch returns stdout from the session.
+func (u *Usecase) Fetch() (string, error) <span class="cov0" title="0">{
+        data, err := u.Repository.InvokeIOSRepository().Fetch()
+        if err != nil </span><span class="cov0" title="0">{
+                return "", err
+        }</span>
+        <span class="cov0" title="0">return data, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file9" style="display: none">// Package usecase implements Brocade IronWare-specific business logic.
+package usecase
+
+import (
+        "github.com/umatare5/telee/internal/config"
+        "github.com/umatare5/telee/internal/infrastructure"
+)
+
+// Usecase struct.
+type Usecase struct {
+        Config     *config.Config
+        Repository *infrastructure.Repository
+}
+
+// Fetch returns stdout from the session.
+func (u *Usecase) Fetch() (string, error) <span class="cov0" title="0">{
+        data, err := u.Repository.InvokeIronWareRepository().Fetch()
+        if err != nil </span><span class="cov0" title="0">{
+                return "", err
+        }</span>
+        <span class="cov0" title="0">return data, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file10" style="display: none">// Package usecase implements Juniper JunOS-specific business logic.
+package usecase
+
+import (
+        "github.com/umatare5/telee/internal/config"
+        "github.com/umatare5/telee/internal/infrastructure"
+)
+
+// Usecase struct.
+type Usecase struct {
+        Config     *config.Config
+        Repository *infrastructure.Repository
+}
+
+// Fetch returns stdout from the session.
+func (u *Usecase) Fetch() (string, error) <span class="cov0" title="0">{
+        data, err := u.Repository.InvokeJunOSRepository().Fetch()
+        if err != nil </span><span class="cov0" title="0">{
+                return "", err
+        }</span>
+        <span class="cov0" title="0">return data, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file11" style="display: none">// Package usecase implements Cisco NX-OS-specific business logic.
+package usecase
+
+import (
+        "github.com/umatare5/telee/internal/config"
+        "github.com/umatare5/telee/internal/infrastructure"
+)
+
+// Usecase struct.
+type Usecase struct {
+        Config     *config.Config
+        Repository *infrastructure.Repository
+}
+
+// Fetch returns stdout from the session.
+func (u *Usecase) Fetch() (string, error) <span class="cov0" title="0">{
+        data, err := u.Repository.InvokeNXOSRepository().Fetch()
+        if err != nil </span><span class="cov0" title="0">{
+                return "", err
+        }</span>
+        <span class="cov0" title="0">return data, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file12" style="display: none">// Package usecase implements Juniper ScreenOS-specific business logic.
+package usecase
+
+import (
+        "github.com/umatare5/telee/internal/config"
+        "github.com/umatare5/telee/internal/infrastructure"
+)
+
+// Usecase struct.
+type Usecase struct {
+        Config     *config.Config
+        Repository *infrastructure.Repository
+}
+
+// Fetch returns stdout from the session.
+func (u *Usecase) Fetch() (string, error) <span class="cov0" title="0">{
+        data, err := u.Repository.InvokeScreenOSRepository().Fetch()
+        if err != nil </span><span class="cov0" title="0">{
+                return "", err
+        }</span>
+        <span class="cov0" title="0">return data, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file13" style="display: none">// Package usecase implements YAMAHA RT OS-specific business logic.
+package usecase
+
+import (
+        "github.com/umatare5/telee/internal/config"
+        "github.com/umatare5/telee/internal/infrastructure"
+)
+
+// Usecase struct.
+type Usecase struct {
+        Config     *config.Config
+        Repository *infrastructure.Repository
+}
+
+// Fetch returns stdout from the session.
+func (u *Usecase) Fetch() (string, error) <span class="cov0" title="0">{
+        data, err := u.Repository.InvokeYamahaOSRepository().Fetch()
+        if err != nil </span><span class="cov0" title="0">{
+                return "", err
+        }</span>
+        <span class="cov0" title="0">return data, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file14" style="display: none">// Package config provides configuration management for CLI flags and environment variables.
+package config
+
+import (
+        "fmt"
+        "log/slog"
+        "os"
+
+        "github.com/umatare5/telee/internal/domain"
+        "github.com/umatare5/telee/pkg/errors"
+
+        "github.com/jinzhu/configor"
+        "github.com/urfave/cli/v3"
+)
+
+const (
+        infoEnableModeIgnored = "[INFO] enable-mode is ignored. It's not supported."
+)
+
+// Config struct.
+type Config struct {
+        Hostname        string
+        Port            int
+        Timeout         int
+        ExecPlatform    string
+        EnableMode      bool
+        RedundantMode   bool
+        SecureMode      bool
+        DefaultPrivMode bool
+        Command         string
+        Username        string
+        Password        string
+        PrivPassword    string
+        HostKeyPath     string
+}
+
+// New returns Config struct.
+func New(cli *cli.Command) Config <span class="cov0" title="0">{
+        cfg := Config{
+                Hostname:        cli.String(domain.HostnameFlagName),
+                Port:            cli.Int(domain.PortFlagName),
+                Timeout:         cli.Int(domain.TimeoutFlagName),
+                Command:         cli.String(domain.CommandFlagName),
+                ExecPlatform:    cli.String(domain.ExecPlatformFlagName),
+                EnableMode:      cli.Bool(domain.EnableModeFlagName),
+                RedundantMode:   cli.Bool(domain.RedundantModeFlagName),
+                DefaultPrivMode: cli.Bool(domain.DefaultPrivModeFlagName),
+                SecureMode:      cli.Bool(domain.SecureModeFlagName),
+                Username:        cli.String(domain.UsernameFlagName),
+                Password:        cli.String(domain.PasswordFlagName),
+                PrivPassword:    cli.String(domain.PrivPasswordFlagName),
+                HostKeyPath:     cli.String(domain.HostKeyPathFlagName),
+        }
+
+        err := configor.New(&amp;configor.Config{}).Load(&amp;cfg)
+        if err != nil </span><span class="cov0" title="0">{
+                slog.Error("failed to load configuration", "error", err)
+                os.Exit(1)
+        }</span>
+
+        <span class="cov0" title="0">err = checkArguments(&amp;cfg)
+        if err != nil </span><span class="cov0" title="0">{
+                slog.Error("failed to validate arguments", "error", err)
+                os.Exit(1)
+        }</span>
+
+        <span class="cov0" title="0">return cfg</span>
+}
+
+func checkArguments(cfg *Config) error <span class="cov0" title="0">{
+        if cfg.Port == 0 </span><span class="cov0" title="0">{
+                completePortNumber(cfg)
+        }</span>
+        <span class="cov0" title="0">if !isValidExecPlatform(cfg.ExecPlatform) </span><span class="cov0" title="0">{
+                return errors.ErrInvalidPlatform
+        }</span>
+        <span class="cov0" title="0">if cfg.EnableMode &amp;&amp; cfg.DefaultPrivMode </span><span class="cov0" title="0">{
+                return errors.ErrUnsupportedModeSet
+        }</span>
+        <span class="cov0" title="0">if cfg.RedundantMode &amp;&amp; !isUsableRedundantMode(cfg.ExecPlatform) </span><span class="cov0" title="0">{
+                return errors.ErrUnsupportedRedundantMode
+        }</span>
+        <span class="cov0" title="0">if cfg.SecureMode &amp;&amp; !isUsableSecureMode(cfg.ExecPlatform) </span><span class="cov0" title="0">{
+                return errors.ErrUnsupportedSecureMode
+        }</span>
+        <span class="cov0" title="0">if !cfg.SecureMode &amp;&amp; !isUsableUnsecureMode(cfg.ExecPlatform) </span><span class="cov0" title="0">{
+                return errors.ErrUnsupportedUnsecureMode
+        }</span>
+        <span class="cov0" title="0">if cfg.DefaultPrivMode &amp;&amp; !isUsableDefaultPrivMode(cfg.ExecPlatform) </span><span class="cov0" title="0">{
+                return errors.ErrUnsupportedDefaultPrivMode
+        }</span>
+        <span class="cov0" title="0">if !cfg.EnableMode &amp;&amp; !isExpandableTermLength(cfg.ExecPlatform) </span><span class="cov0" title="0">{
+                return errors.ErrTermLengthIsEnforced
+        }</span>
+        <span class="cov0" title="0">if cfg.Hostname == domain.EmptyString </span><span class="cov0" title="0">{
+                return errors.ErrMissingHostname
+        }</span>
+        <span class="cov0" title="0">if cfg.Command == domain.EmptyString </span><span class="cov0" title="0">{
+                return errors.ErrMissingCommand
+        }</span>
+        <span class="cov0" title="0">if cfg.Username == domain.EmptyString </span><span class="cov0" title="0">{
+                return errors.ErrMissingUsername
+        }</span>
+        <span class="cov0" title="0">if cfg.Password == domain.EmptyString </span><span class="cov0" title="0">{
+                return errors.ErrMissingPassword
+        }</span>
+        <span class="cov0" title="0">if cfg.EnableMode &amp;&amp; !hasPrivPassword(cfg.PrivPassword) </span><span class="cov0" title="0">{
+                return errors.ErrMissingPrivPassword
+        }</span>
+        <span class="cov0" title="0">if cfg.EnableMode &amp;&amp; !isUsableEnableMode(cfg.ExecPlatform) </span><span class="cov0" title="0">{
+                fmt.Println(infoEnableModeIgnored)
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+func completePortNumber(cfg *Config) bool <span class="cov0" title="0">{
+        if cfg.SecureMode </span><span class="cov0" title="0">{
+                cfg.Port = domain.SSHPort
+        }</span> else<span class="cov0" title="0"> {
+                cfg.Port = domain.TelnetPort
+        }</span>
+        <span class="cov0" title="0">return true</span>
+}
+
+func isValidExecPlatform(platform string) bool <span class="cov0" title="0">{
+        for _, p := range domain.Platforms </span><span class="cov0" title="0">{
+                if platform == p </span><span class="cov0" title="0">{
+                        return true
+                }</span>
+        }
+        <span class="cov0" title="0">return false</span>
+}
+
+func isUsableDefaultPrivMode(platform string) bool <span class="cov0" title="0">{
+        if platform == domain.ASASoftwarePlatformName </span><span class="cov0" title="0">{
+                return true
+        }</span>
+        <span class="cov0" title="0">if platform == domain.IOSPlatformName </span><span class="cov0" title="0">{
+                return true
+        }</span>
+        <span class="cov0" title="0">if platform == domain.NXOSPlatformName </span><span class="cov0" title="0">{
+                return true
+        }</span>
+        <span class="cov0" title="0">return false</span>
+}
+
+func isUsableSecureMode(platform string) bool <span class="cov0" title="0">{
+        if platform == domain.AireOSPlatformName </span><span class="cov0" title="0">{
+                return true
+        }</span>
+        <span class="cov0" title="0">if platform == domain.ASASoftwarePlatformName </span><span class="cov0" title="0">{
+                return true
+        }</span>
+        <span class="cov0" title="0">if platform == domain.IOSPlatformName </span><span class="cov0" title="0">{
+                return true
+        }</span>
+        <span class="cov0" title="0">if platform == domain.NXOSPlatformName </span><span class="cov0" title="0">{
+                return true
+        }</span>
+        <span class="cov0" title="0">if platform == domain.JunOSPlatformName </span><span class="cov0" title="0">{
+                return true
+        }</span>
+        <span class="cov0" title="0">if platform == domain.ScreenOSPlatformName </span><span class="cov0" title="0">{
+                return true
+        }</span>
+        <span class="cov0" title="0">if platform == domain.YamahaOSPlatformName </span><span class="cov0" title="0">{
+                return true
+        }</span>
+
+        <span class="cov0" title="0">return false</span>
+}
+
+func isUsableUnsecureMode(platform string) bool <span class="cov0" title="0">{
+        return platform != domain.JunOSPlatformName
+}</span>
+
+func isUsableRedundantMode(platform string) bool <span class="cov0" title="0">{
+        if platform == domain.ASASoftwarePlatformName </span><span class="cov0" title="0">{
+                return true
+        }</span>
+        <span class="cov0" title="0">if platform == domain.ScreenOSPlatformName </span><span class="cov0" title="0">{
+                return true
+        }</span>
+        <span class="cov0" title="0">return false</span>
+}
+
+func isExpandableTermLength(platform string) bool <span class="cov0" title="0">{
+        return platform != domain.ASASoftwarePlatformName
+}</span>
+
+func hasPrivPassword(password string) bool <span class="cov0" title="0">{
+        return password != domain.PrivPasswordFlagDefaultValue
+}</span>
+
+func isUsableEnableMode(platform string) bool <span class="cov0" title="0">{
+        if platform == domain.AireOSPlatformName </span><span class="cov0" title="0">{
+                return false
+        }</span>
+        <span class="cov0" title="0">if platform == domain.AlliedWarePlatformName </span><span class="cov0" title="0">{
+                return false
+        }</span>
+        <span class="cov0" title="0">if platform == domain.ScreenOSPlatformName </span><span class="cov0" title="0">{
+                return false
+        }</span>
+        <span class="cov0" title="0">return true</span>
+}
+</pre>
+		
+		<pre class="file" id="file15" style="display: none">// Package framework provides the execution framework for network device commands.
+package framework
+
+import (
+        "fmt"
+
+        "github.com/umatare5/telee/internal/application"
+        "github.com/umatare5/telee/internal/config"
+        "github.com/umatare5/telee/internal/domain"
+        "github.com/umatare5/telee/internal/infrastructure"
+)
+
+// Exec struct.
+type Exec struct {
+        Config     *config.Config
+        Repository *infrastructure.Repository
+        Usecase    *application.Usecase
+}
+
+// New returns Exec struct.
+func New(c *config.Config, r *infrastructure.Repository, u *application.Usecase) Exec <span class="cov0" title="0">{
+        return Exec{
+                Config:     c,
+                Repository: r,
+                Usecase:    u,
+        }
+}</span>
+
+// Run displays the command result.
+func (e *Exec) Run() <span class="cov0" title="0">{
+        var err error
+        var data string
+
+        if e.Config.ExecPlatform == domain.AireOSPlatformName </span><span class="cov0" title="0">{
+                data, err = e.Usecase.InvokeAireOSUsecase().Fetch()
+        }</span>
+        <span class="cov0" title="0">if e.Config.ExecPlatform == domain.AlliedWarePlatformName </span><span class="cov0" title="0">{
+                data, err = e.Usecase.InvokeAlliedWareUsecase().Fetch()
+        }</span>
+        <span class="cov0" title="0">if e.Config.ExecPlatform == domain.ASASoftwarePlatformName </span><span class="cov0" title="0">{
+                data, err = e.Usecase.InvokeASASoftwareUsecase().Fetch()
+        }</span>
+        <span class="cov0" title="0">if e.Config.ExecPlatform == domain.IOSPlatformName </span><span class="cov0" title="0">{
+                data, err = e.Usecase.InvokeIOSUsecase().Fetch()
+        }</span>
+        <span class="cov0" title="0">if e.Config.ExecPlatform == domain.IronWarePlatformName </span><span class="cov0" title="0">{
+                data, err = e.Usecase.InvokeIronWareUsecase().Fetch()
+        }</span>
+        <span class="cov0" title="0">if e.Config.ExecPlatform == domain.JunOSPlatformName </span><span class="cov0" title="0">{
+                data, err = e.Usecase.InvokeJunOSUsecase().Fetch()
+        }</span>
+        <span class="cov0" title="0">if e.Config.ExecPlatform == domain.ScreenOSPlatformName </span><span class="cov0" title="0">{
+                data, err = e.Usecase.InvokeScreenOSUsecase().Fetch()
+        }</span>
+        <span class="cov0" title="0">if e.Config.ExecPlatform == domain.NXOSPlatformName </span><span class="cov0" title="0">{
+                data, err = e.Usecase.InvokeNXOSUsecase().Fetch()
+        }</span>
+        <span class="cov0" title="0">if e.Config.ExecPlatform == domain.YamahaOSPlatformName </span><span class="cov0" title="0">{
+                data, err = e.Usecase.InvokeYamahaOSUsecase().Fetch()
+        }</span>
+
+        <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
+                fmt.Println(err)
+                fmt.Print(domain.HintTelnetFailed)
+                return
+        }</span>
+        <span class="cov0" title="0">fmt.Println(data)</span>
+}
+</pre>
+		
+		<pre class="file" id="file16" style="display: none">// Package repository implements Cisco AireOS-specific data access layer.
+package repository
+
+import (
+        "time"
+
+        "github.com/umatare5/telee/internal/config"
+        "github.com/umatare5/telee/internal/domain"
+        "github.com/umatare5/telee/pkg/ssh"
+        "github.com/umatare5/telee/pkg/telnet"
+
+        x "github.com/google/goexpect"
+        cryptossh "golang.org/x/crypto/ssh"
+)
+
+// Repository struct.
+type Repository struct {
+        Config *config.Config
+}
+
+// Fetch returns stdout from telnet session.
+func (r *Repository) Fetch() (string, error) <span class="cov0" title="0">{
+        var expects []x.Batcher
+        var data string
+        var err error
+
+        // AireOS needs the interactive authentication when also use SSH
+        expects = r.buildRequest()
+
+        if r.Config.SecureMode </span><span class="cov0" title="0">{
+                var clientConfig *cryptossh.ClientConfig
+                clientConfig, err = ssh.GenerateClientConfig(r.Config.Username, r.Config.Password, r.Config.HostKeyPath, r.Config.Hostname)
+                if err != nil </span><span class="cov0" title="0">{
+                        return "", err
+                }</span>
+                <span class="cov0" title="0">data, err = ssh.New(
+                        r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
+                ).Fetch(&amp;expects, clientConfig)</span>
+        } else<span class="cov0" title="0"> {
+                data, err = telnet.New(
+                        r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
+                ).Fetch(&amp;expects)
+        }</span>
+
+        <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
+                return "", err
+        }</span>
+        <span class="cov0" title="0">return data, nil</span>
+}
+
+// [platform: aireos] buildRequest returns the expects.
+func (r *Repository) buildRequest() []x.Batcher <span class="cov0" title="0">{
+        return []x.Batcher{
+                &amp;x.BExp{R: "User:"},
+                &amp;x.BSnd{S: r.Config.Username + "\n"},
+                &amp;x.BExp{R: "Password:"},
+                &amp;x.BSnd{S: r.Config.Password + "\n"},
+                &amp;x.BExp{R: "\\(Cisco Controller\\) &gt;"},
+                &amp;x.BSnd{S: "config paging disable\n"},
+                &amp;x.BExp{R: "\\(Cisco Controller\\) &gt;"},
+                &amp;x.BSnd{S: r.Config.Command + "\n"},
+                &amp;x.BExp{R: "\\(Cisco Controller\\) &gt;"},
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file17" style="display: none">// Package repository implements AlliedTelesis AlliedWare-specific data access layer.
+package repository
+
+import (
+        "time"
+
+        "github.com/umatare5/telee/internal/config"
+        "github.com/umatare5/telee/internal/domain"
+        "github.com/umatare5/telee/pkg/telnet"
+
+        x "github.com/google/goexpect"
+)
+
+// Repository struct.
+type Repository struct {
+        Config *config.Config
+}
+
+// Fetch returns stdout from telnet session.
+func (r *Repository) Fetch() (string, error) <span class="cov0" title="0">{
+        var expects []x.Batcher
+        var data string
+        var err error
+
+        expects = r.buildRequest()
+
+        // Alliedware is not supporting SSH
+        data, err = telnet.New(
+                r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
+        ).Fetch(&amp;expects)
+
+        if err != nil </span><span class="cov0" title="0">{
+                return "", err
+        }</span>
+        <span class="cov0" title="0">return data, nil</span>
+}
+
+// [platform: allied] buildRequest returns the expects.
+func (r *Repository) buildRequest() []x.Batcher <span class="cov0" title="0">{
+        return []x.Batcher{
+                &amp;x.BExp{R: "login:"},
+                &amp;x.BSnd{S: r.Config.Username + "\n"},
+                &amp;x.BExp{R: "Password:"},
+                &amp;x.BSnd{S: r.Config.Password + "\n"},
+                &amp;x.BExp{R: "Manager " + r.Config.Hostname + "&gt;"},
+                &amp;x.BSnd{S: "terminal length 0\n"},
+                &amp;x.BExp{R: "Manager " + r.Config.Hostname + "&gt;"},
+                &amp;x.BSnd{S: r.Config.Command + "\n"},
+                &amp;x.BExp{R: "Manager " + r.Config.Hostname + "&gt;"},
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file18" style="display: none">// Package repository implements Cisco ASA Software-specific data access layer.
+package repository
+
+import (
+        "time"
+
+        "github.com/umatare5/telee/internal/config"
+        "github.com/umatare5/telee/internal/domain"
+        "github.com/umatare5/telee/pkg/ssh"
+        "github.com/umatare5/telee/pkg/telnet"
+
+        x "github.com/google/goexpect"
+        cryptossh "golang.org/x/crypto/ssh"
+)
+
+const (
+        noSuffix string = ""
+        haSuffix string = "/pri/act"
+)
+
+// Repository struct.
+type Repository struct {
+        Config *config.Config
+}
+
+// Fetch returns stdout from telnet session.
+func (r *Repository) Fetch() (string, error) <span class="cov0" title="0">{
+        var expects []x.Batcher
+        var data string
+        var err error
+
+        if r.Config.SecureMode </span><span class="cov0" title="0">{
+                if r.Config.DefaultPrivMode &amp;&amp; r.Config.RedundantMode </span><span class="cov0" title="0">{
+                        expects = r.buildDefaultPrivilegedSecureRequest(haSuffix)
+                }</span>
+                <span class="cov0" title="0">if !r.Config.DefaultPrivMode &amp;&amp; r.Config.RedundantMode </span><span class="cov0" title="0">{
+                        expects = r.buildPrivilegedSecureRequest(haSuffix)
+                }</span>
+                <span class="cov0" title="0">if r.Config.DefaultPrivMode &amp;&amp; !r.Config.RedundantMode </span><span class="cov0" title="0">{
+                        expects = r.buildDefaultPrivilegedSecureRequest(noSuffix)
+                }</span>
+                <span class="cov0" title="0">if !r.Config.DefaultPrivMode &amp;&amp; !r.Config.RedundantMode </span><span class="cov0" title="0">{
+                        expects = r.buildPrivilegedSecureRequest(noSuffix)
+                }</span>
+        } else<span class="cov0" title="0"> {
+                if r.Config.DefaultPrivMode &amp;&amp; r.Config.RedundantMode </span><span class="cov0" title="0">{
+                        expects = r.buildDefaultPrivilegedRequest(haSuffix)
+                }</span>
+                <span class="cov0" title="0">if !r.Config.DefaultPrivMode &amp;&amp; r.Config.RedundantMode </span><span class="cov0" title="0">{
+                        expects = r.buildPrivilegedRequest(haSuffix)
+                }</span>
+                <span class="cov0" title="0">if r.Config.DefaultPrivMode &amp;&amp; !r.Config.RedundantMode </span><span class="cov0" title="0">{
+                        expects = r.buildDefaultPrivilegedRequest(noSuffix)
+                }</span>
+                <span class="cov0" title="0">if !r.Config.DefaultPrivMode &amp;&amp; !r.Config.RedundantMode </span><span class="cov0" title="0">{
+                        expects = r.buildPrivilegedRequest(noSuffix)
+                }</span>
+        }
+
+        <span class="cov0" title="0">if r.Config.SecureMode </span><span class="cov0" title="0">{
+                var clientConfig *cryptossh.ClientConfig
+                clientConfig, err = ssh.GenerateClientConfig(r.Config.Username, r.Config.Password, r.Config.HostKeyPath, r.Config.Hostname)
+                if err != nil </span><span class="cov0" title="0">{
+                        return "", err
+                }</span>
+                <span class="cov0" title="0">data, err = ssh.New(
+                        r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
+                ).Fetch(&amp;expects, clientConfig)</span>
+        } else<span class="cov0" title="0"> {
+                data, err = telnet.New(
+                        r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
+                ).Fetch(&amp;expects)
+        }</span>
+
+        <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
+                return "", err
+        }</span>
+        <span class="cov0" title="0">return data, nil</span>
+}
+
+// [platform: asa] buildPrivilegedRequest returns the expects.
+func (r *Repository) buildPrivilegedRequest(suffix string) []x.Batcher <span class="cov0" title="0">{
+        return []x.Batcher{
+                &amp;x.BExp{R: "Username:"},
+                &amp;x.BSnd{S: r.Config.Username + "\n"},
+                &amp;x.BExp{R: "Password:"},
+                &amp;x.BSnd{S: r.Config.Password + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + suffix + "&gt;"},
+                &amp;x.BSnd{S: "enable\n"},
+                &amp;x.BExp{R: "Password:"},
+                &amp;x.BSnd{S: r.Config.PrivPassword + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + suffix + "#"},
+                &amp;x.BSnd{S: "terminal pager 0\n"},
+                &amp;x.BExp{R: r.Config.Hostname + suffix + "#"},
+                &amp;x.BSnd{S: r.Config.Command + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + suffix + "#"},
+        }
+}</span>
+
+// [platform: asa] buildDefaultPrivilegedRequest returns the expects.
+func (r *Repository) buildDefaultPrivilegedRequest(suffix string) []x.Batcher <span class="cov0" title="0">{
+        return []x.Batcher{
+                &amp;x.BExp{R: "Username:"},
+                &amp;x.BSnd{S: r.Config.Username + "\n"},
+                &amp;x.BExp{R: "Password:"},
+                &amp;x.BSnd{S: r.Config.Password + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + suffix + "#"},
+                &amp;x.BSnd{S: "terminal pager 0\n"},
+                &amp;x.BExp{R: r.Config.Hostname + suffix + "#"},
+                &amp;x.BSnd{S: r.Config.Command + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + suffix + "#"},
+        }
+}</span>
+
+// [platform: asa] buildPrivilegedSecureRequest returns the expects.
+func (r *Repository) buildPrivilegedSecureRequest(suffix string) []x.Batcher <span class="cov0" title="0">{
+        return []x.Batcher{
+                &amp;x.BExp{R: r.Config.Hostname + suffix + "&gt;"},
+                &amp;x.BSnd{S: "enable\n"},
+                &amp;x.BExp{R: "Password:"},
+                &amp;x.BSnd{S: r.Config.PrivPassword + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + suffix + "#"},
+                &amp;x.BSnd{S: "terminal pager 0\n"},
+                &amp;x.BExp{R: r.Config.Hostname + suffix + "#"},
+                &amp;x.BSnd{S: r.Config.Command + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + suffix + "#"},
+        }
+}</span>
+
+// [platform: asa] buildDefaultPrivilegedSecureRequest returns the expects.
+func (r *Repository) buildDefaultPrivilegedSecureRequest(suffix string) []x.Batcher <span class="cov0" title="0">{
+        return []x.Batcher{
+                &amp;x.BExp{R: r.Config.Hostname + suffix + "#"},
+                &amp;x.BSnd{S: "terminal pager 0\n"},
+                &amp;x.BExp{R: r.Config.Hostname + suffix + "#"},
+                &amp;x.BSnd{S: r.Config.Command + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + suffix + "#"},
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file19" style="display: none">// Package repository implements Cisco IOS/IOS-XE-specific data access layer.
+package repository
+
+import (
+        "time"
+
+        "github.com/umatare5/telee/internal/config"
+        "github.com/umatare5/telee/internal/domain"
+        "github.com/umatare5/telee/pkg/ssh"
+        "github.com/umatare5/telee/pkg/telnet"
+
+        x "github.com/google/goexpect"
+        cryptossh "golang.org/x/crypto/ssh"
+)
+
+// Repository struct.
+type Repository struct {
+        Config *config.Config
+}
+
+// Fetch returns stdout from telnet session.
+func (r *Repository) Fetch() (string, error) <span class="cov0" title="0">{
+        var expects []x.Batcher
+        var data string
+        var err error
+
+        if r.Config.SecureMode &amp;&amp; r.Config.DefaultPrivMode </span><span class="cov0" title="0">{
+                expects = r.buildDefaultPrivilegedSecureRequest()
+        }</span>
+        <span class="cov0" title="0">if r.Config.SecureMode &amp;&amp; r.Config.EnableMode </span><span class="cov0" title="0">{
+                expects = r.buildPrivilegedSecureRequest()
+        }</span>
+        <span class="cov0" title="0">if r.Config.SecureMode &amp;&amp; !r.Config.DefaultPrivMode &amp;&amp; !r.Config.EnableMode </span><span class="cov0" title="0">{
+                expects = r.buildUserModeSecureRequest()
+        }</span>
+        <span class="cov0" title="0">if !r.Config.SecureMode &amp;&amp; r.Config.DefaultPrivMode </span><span class="cov0" title="0">{
+                expects = r.buildDefaultPrivilegedRequest()
+        }</span>
+        <span class="cov0" title="0">if !r.Config.SecureMode &amp;&amp; r.Config.EnableMode </span><span class="cov0" title="0">{
+                expects = r.buildPrivilegedRequest()
+        }</span>
+        <span class="cov0" title="0">if !r.Config.SecureMode &amp;&amp; !r.Config.DefaultPrivMode &amp;&amp; !r.Config.EnableMode </span><span class="cov0" title="0">{
+                expects = r.buildUserModeRequest()
+        }</span>
+
+        <span class="cov0" title="0">if r.Config.SecureMode </span><span class="cov0" title="0">{
+                var clientConfig *cryptossh.ClientConfig
+                clientConfig, err = ssh.GenerateClientConfig(r.Config.Username, r.Config.Password, r.Config.HostKeyPath, r.Config.Hostname)
+                if err != nil </span><span class="cov0" title="0">{
+                        return "", err
+                }</span>
+                <span class="cov0" title="0">data, err = ssh.New(
+                        r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
+                ).Fetch(&amp;expects, clientConfig)</span>
+        } else<span class="cov0" title="0"> {
+                data, err = telnet.New(
+                        r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
+                ).Fetch(&amp;expects)
+        }</span>
+
+        <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
+                return "", err
+        }</span>
+        <span class="cov0" title="0">return data, nil</span>
+}
+
+// [platform: ios] buildUserModeRequest returns the expects.
+func (r *Repository) buildUserModeRequest() []x.Batcher <span class="cov0" title="0">{
+        return []x.Batcher{
+                &amp;x.BExp{R: "Username:"},
+                &amp;x.BSnd{S: r.Config.Username + "\n"},
+                &amp;x.BExp{R: "Password:"},
+                &amp;x.BSnd{S: r.Config.Password + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "&gt;"},
+                &amp;x.BSnd{S: "terminal length 0\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "&gt;"},
+                &amp;x.BSnd{S: r.Config.Command + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "&gt;"},
+        }
+}</span>
+
+// [platform: ios] buildPrivilegedRequest returns the expects.
+func (r *Repository) buildPrivilegedRequest() []x.Batcher <span class="cov0" title="0">{
+        return []x.Batcher{
+                &amp;x.BExp{R: "Username:"},
+                &amp;x.BSnd{S: r.Config.Username + "\n"},
+                &amp;x.BExp{R: "Password:"},
+                &amp;x.BSnd{S: r.Config.Password + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "&gt;"},
+                &amp;x.BSnd{S: "enable\n"},
+                &amp;x.BExp{R: "Password:"},
+                &amp;x.BSnd{S: r.Config.PrivPassword + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "#"},
+                &amp;x.BSnd{S: "terminal length 0\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "#"},
+                &amp;x.BSnd{S: r.Config.Command + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "#"},
+        }
+}</span>
+
+// [platform: ios] buildDefaultPrivilegedRequest returns the expects.
+func (r *Repository) buildDefaultPrivilegedRequest() []x.Batcher <span class="cov0" title="0">{
+        return []x.Batcher{
+                &amp;x.BExp{R: "Username:"},
+                &amp;x.BSnd{S: r.Config.Username + "\n"},
+                &amp;x.BExp{R: "Password:"},
+                &amp;x.BSnd{S: r.Config.Password + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "#"},
+                &amp;x.BSnd{S: "terminal length 0\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "#"},
+                &amp;x.BSnd{S: r.Config.Command + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "#"},
+        }
+}</span>
+
+// [platform: ios] buildUserModeSecureRequest returns the expects.
+func (r *Repository) buildUserModeSecureRequest() []x.Batcher <span class="cov0" title="0">{
+        return []x.Batcher{
+                &amp;x.BExp{R: r.Config.Hostname + "&gt;"},
+                &amp;x.BSnd{S: "terminal length 0\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "&gt;"},
+                &amp;x.BSnd{S: r.Config.Command + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "&gt;"},
+        }
+}</span>
+
+// [platform: ios] buildPrivilegedSecureRequest returns the expects.
+func (r *Repository) buildPrivilegedSecureRequest() []x.Batcher <span class="cov0" title="0">{
+        return []x.Batcher{
+                &amp;x.BExp{R: r.Config.Hostname + "&gt;"},
+                &amp;x.BSnd{S: "enable\n"},
+                &amp;x.BExp{R: "Password:"},
+                &amp;x.BSnd{S: r.Config.PrivPassword + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "#"},
+                &amp;x.BSnd{S: "terminal length 0\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "#"},
+                &amp;x.BSnd{S: r.Config.Command + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "#"},
+        }
+}</span>
+
+// [platform: ios] buildDefaultPrivilegedSecureRequest returns the expects.
+func (r *Repository) buildDefaultPrivilegedSecureRequest() []x.Batcher <span class="cov0" title="0">{
+        return []x.Batcher{
+                &amp;x.BExp{R: r.Config.Hostname + "#"},
+                &amp;x.BSnd{S: "terminal length 0\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "#"},
+                &amp;x.BSnd{S: r.Config.Command + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "#"},
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file20" style="display: none">// Package repository implements Brocade IronWare-specific data access layer.
+package repository
+
+import (
+        "time"
+
+        "github.com/umatare5/telee/internal/config"
+        "github.com/umatare5/telee/internal/domain"
+        "github.com/umatare5/telee/pkg/telnet"
+
+        x "github.com/google/goexpect"
+)
+
+// Repository struct.
+type Repository struct {
+        Config *config.Config
+}
+
+// Fetch returns stdout from telnet session.
+func (r *Repository) Fetch() (string, error) <span class="cov0" title="0">{
+        var expects []x.Batcher
+        var data string
+        var err error
+
+        if r.Config.EnableMode </span><span class="cov0" title="0">{
+                expects = r.buildPrivilegedRequest()
+        }</span> else<span class="cov0" title="0"> {
+                expects = r.buildUserModeRequest()
+        }</span>
+
+        // IronWare is not supporting SSH
+        <span class="cov0" title="0">data, err = telnet.New(
+                r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
+        ).Fetch(&amp;expects)
+
+        if err != nil </span><span class="cov0" title="0">{
+                return "", err
+        }</span>
+        <span class="cov0" title="0">return data, nil</span>
+}
+
+// [platform: foundry] buildUserModeRequest returns the expects.
+func (r *Repository) buildUserModeRequest() []x.Batcher <span class="cov0" title="0">{
+        return []x.Batcher{
+                &amp;x.BExp{R: "Please Enter Login Name:"},
+                &amp;x.BSnd{S: r.Config.Username + "\r\n"},
+                &amp;x.BExp{R: "Please Enter Password:"},
+                &amp;x.BSnd{S: r.Config.Password + "\r\n"},
+                &amp;x.BExp{R: "telnet@" + r.Config.Hostname + "&gt;"},
+                &amp;x.BSnd{S: "skip-page-display\r\n"},
+                &amp;x.BExp{R: "telnet@" + r.Config.Hostname + "&gt;"},
+                &amp;x.BSnd{S: r.Config.Command + "\r\n"},
+                &amp;x.BExp{R: "telnet@" + r.Config.Hostname + "&gt;"},
+        }
+}</span>
+
+// [platform: foundry] buildPrivilegedRequest returns the expects.
+func (r *Repository) buildPrivilegedRequest() []x.Batcher <span class="cov0" title="0">{
+        return []x.Batcher{
+                &amp;x.BExp{R: "Please Enter Login Name:"},
+                &amp;x.BSnd{S: r.Config.Username + "\r\n"},
+                &amp;x.BExp{R: "Please Enter Password:"},
+                &amp;x.BSnd{S: r.Config.Password + "\r\n"},
+                &amp;x.BExp{R: "telnet@" + r.Config.Hostname + "&gt;"},
+                &amp;x.BSnd{S: "enable\r\n"},
+                &amp;x.BExp{R: "Password:"},
+                &amp;x.BSnd{S: r.Config.PrivPassword + "\r\n"},
+                &amp;x.BSnd{S: "skip-page-display\r\n"},
+                &amp;x.BExp{R: "telnet@" + r.Config.Hostname + "#"},
+                &amp;x.BSnd{S: r.Config.Command + "\r\n"},
+                &amp;x.BExp{R: "telnet@" + r.Config.Hostname + "#"},
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file21" style="display: none">// Package repository implements Juniper JunOS-specific data access layer.
+package repository
+
+import (
+        "time"
+
+        "github.com/umatare5/telee/internal/config"
+        "github.com/umatare5/telee/internal/domain"
+        "github.com/umatare5/telee/pkg/ssh"
+
+        x "github.com/google/goexpect"
+)
+
+// Repository struct.
+type Repository struct {
+        Config *config.Config
+}
+
+// Fetch returns stdout from telnet session.
+func (r *Repository) Fetch() (string, error) <span class="cov0" title="0">{
+        var expects []x.Batcher
+        var data string
+        var err error
+
+        expects = r.buildUserModeSecureRequest()
+
+        // JunOS is not supporting Telnet
+        clientConfig, err := ssh.GenerateClientConfig(r.Config.Username, r.Config.Password, r.Config.HostKeyPath, r.Config.Hostname)
+        if err != nil </span><span class="cov0" title="0">{
+                return "", err
+        }</span>
+        <span class="cov0" title="0">data, err = ssh.New(
+                r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
+        ).Fetch(&amp;expects, clientConfig)
+
+        if err != nil </span><span class="cov0" title="0">{
+                return "", err
+        }</span>
+        <span class="cov0" title="0">return data, nil</span>
+}
+
+// [platform: junos] buildUserModeSecureRequest returns the expects.
+func (r *Repository) buildUserModeSecureRequest() []x.Batcher <span class="cov0" title="0">{
+        return []x.Batcher{
+                &amp;x.BExp{R: r.Config.Username + "@" + r.Config.Hostname + "&gt;"},
+                &amp;x.BSnd{S: r.Config.Command + " | no-more\n"},
+                &amp;x.BExp{R: r.Config.Username + "@" + r.Config.Hostname + "&gt;"},
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file22" style="display: none">// Package repository implements Cisco NX-OS-specific data access layer.
+package repository
+
+import (
+        "time"
+
+        "github.com/umatare5/telee/internal/config"
+        "github.com/umatare5/telee/internal/domain"
+        "github.com/umatare5/telee/pkg/ssh"
+        "github.com/umatare5/telee/pkg/telnet"
+
+        x "github.com/google/goexpect"
+        cryptossh "golang.org/x/crypto/ssh"
+)
+
+// Repository struct.
+type Repository struct {
+        Config *config.Config
+}
+
+// Fetch returns stdout from telnet session.
+func (r *Repository) Fetch() (string, error) <span class="cov0" title="0">{
+        var expects []x.Batcher
+        var data string
+        var err error
+
+        if r.Config.SecureMode &amp;&amp; r.Config.DefaultPrivMode </span><span class="cov0" title="0">{
+                expects = r.buildDefaultPrivilegedSecureRequest()
+        }</span>
+        <span class="cov0" title="0">if r.Config.SecureMode &amp;&amp; r.Config.EnableMode </span><span class="cov0" title="0">{
+                expects = r.buildPrivilegedSecureRequest()
+        }</span>
+        <span class="cov0" title="0">if r.Config.SecureMode &amp;&amp; !r.Config.DefaultPrivMode &amp;&amp; !r.Config.EnableMode </span><span class="cov0" title="0">{
+                expects = r.buildUserModeSecureRequest()
+        }</span>
+        <span class="cov0" title="0">if !r.Config.SecureMode &amp;&amp; r.Config.DefaultPrivMode </span><span class="cov0" title="0">{
+                expects = r.buildDefaultPrivilegedRequest()
+        }</span>
+        <span class="cov0" title="0">if !r.Config.SecureMode &amp;&amp; r.Config.EnableMode </span><span class="cov0" title="0">{
+                expects = r.buildPrivilegedRequest()
+        }</span>
+        <span class="cov0" title="0">if !r.Config.SecureMode &amp;&amp; !r.Config.DefaultPrivMode &amp;&amp; !r.Config.EnableMode </span><span class="cov0" title="0">{
+                expects = r.buildUserModeRequest()
+        }</span>
+
+        <span class="cov0" title="0">if r.Config.SecureMode </span><span class="cov0" title="0">{
+                var clientConfig *cryptossh.ClientConfig
+                clientConfig, err = ssh.GenerateClientConfig(r.Config.Username, r.Config.Password, r.Config.HostKeyPath, r.Config.Hostname)
+                if err != nil </span><span class="cov0" title="0">{
+                        return "", err
+                }</span>
+                <span class="cov0" title="0">data, err = ssh.New(
+                        r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
+                ).Fetch(&amp;expects, clientConfig)</span>
+        } else<span class="cov0" title="0"> {
+                data, err = telnet.New(
+                        r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
+                ).Fetch(&amp;expects)
+        }</span>
+
+        <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
+                return "", err
+        }</span>
+        <span class="cov0" title="0">return data, nil</span>
+}
+
+// [platform: nxos] buildUserModeRequest returns the expects.
+func (r *Repository) buildUserModeRequest() []x.Batcher <span class="cov0" title="0">{
+        return []x.Batcher{
+                &amp;x.BExp{R: "login:"},
+                &amp;x.BSnd{S: r.Config.Username + "\n"},
+                &amp;x.BExp{R: "Password:"},
+                &amp;x.BSnd{S: r.Config.Password + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "&gt; "},
+                &amp;x.BSnd{S: "terminal length 0\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "&gt; "},
+                &amp;x.BSnd{S: r.Config.Command + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "&gt; "},
+        }
+}</span>
+
+// [platform: nxos] buildPrivilegedRequest returns the expects.
+func (r *Repository) buildPrivilegedRequest() []x.Batcher <span class="cov0" title="0">{
+        return []x.Batcher{
+                &amp;x.BExp{R: "login:"},
+                &amp;x.BSnd{S: r.Config.Username + "\n"},
+                &amp;x.BExp{R: "Password:"},
+                &amp;x.BSnd{S: r.Config.Password + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "&gt; "},
+                &amp;x.BSnd{S: "enable\n"},
+                &amp;x.BExp{R: "Password:"},
+                &amp;x.BSnd{S: r.Config.PrivPassword + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "# "},
+                &amp;x.BSnd{S: "terminal length 0\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "# "},
+                &amp;x.BSnd{S: r.Config.Command + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "# "},
+        }
+}</span>
+
+// [platform: nxos] buildDefaultPrivilegedRequest returns the expects.
+func (r *Repository) buildDefaultPrivilegedRequest() []x.Batcher <span class="cov0" title="0">{
+        return []x.Batcher{
+                &amp;x.BExp{R: "login:"},
+                &amp;x.BSnd{S: r.Config.Username + "\n"},
+                &amp;x.BExp{R: "Password:"},
+                &amp;x.BSnd{S: r.Config.Password + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "# "},
+                &amp;x.BSnd{S: "terminal length 0\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "# "},
+                &amp;x.BSnd{S: r.Config.Command + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "# "},
+        }
+}</span>
+
+// [platform: nxos] buildUserModeSecureRequest returns the expects.
+func (r *Repository) buildUserModeSecureRequest() []x.Batcher <span class="cov0" title="0">{
+        return []x.Batcher{
+                &amp;x.BExp{R: r.Config.Hostname + "&gt; "},
+                &amp;x.BSnd{S: "terminal length 0\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "&gt; "},
+                &amp;x.BSnd{S: r.Config.Command + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "&gt; "},
+        }
+}</span>
+
+// [platform: nxos] buildPrivilegedSecureRequest returns the expects.
+func (r *Repository) buildPrivilegedSecureRequest() []x.Batcher <span class="cov0" title="0">{
+        return []x.Batcher{
+                &amp;x.BExp{R: r.Config.Hostname + "&gt; "},
+                &amp;x.BSnd{S: "enable\n"},
+                &amp;x.BExp{R: "Password:"},
+                &amp;x.BSnd{S: r.Config.PrivPassword + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "# "},
+                &amp;x.BSnd{S: "terminal length 0\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "# "},
+                &amp;x.BSnd{S: r.Config.Command + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "# "},
+        }
+}</span>
+
+// [platform: nxos] buildDefaultPrivilegedSecureRequest returns the expects.
+func (r *Repository) buildDefaultPrivilegedSecureRequest() []x.Batcher <span class="cov0" title="0">{
+        return []x.Batcher{
+                &amp;x.BExp{R: r.Config.Hostname + "# "},
+                &amp;x.BSnd{S: "terminal length 0\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "# "},
+                &amp;x.BSnd{S: r.Config.Command + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "# "},
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file23" style="display: none">// Package repository implements Juniper ScreenOS-specific data access layer.
+package repository
+
+import (
+        "time"
+
+        "github.com/umatare5/telee/internal/config"
+        "github.com/umatare5/telee/internal/domain"
+        "github.com/umatare5/telee/pkg/ssh"
+        "github.com/umatare5/telee/pkg/telnet"
+
+        x "github.com/google/goexpect"
+        cryptossh "golang.org/x/crypto/ssh"
+)
+
+const (
+        noSuffix string = ""
+        haSuffix string = "\\(M\\)"
+)
+
+// Repository struct.
+type Repository struct {
+        Config *config.Config
+}
+
+// Fetch returns stdout from telnet session.
+func (r *Repository) Fetch() (string, error) <span class="cov0" title="0">{
+        var expects []x.Batcher
+        var data string
+        var err error
+
+        if r.Config.SecureMode &amp;&amp; r.Config.RedundantMode </span><span class="cov0" title="0">{
+                expects = r.buildSecureRequest(haSuffix)
+        }</span>
+        <span class="cov0" title="0">if r.Config.SecureMode &amp;&amp; !r.Config.RedundantMode </span><span class="cov0" title="0">{
+                expects = r.buildSecureRequest(noSuffix)
+        }</span>
+        <span class="cov0" title="0">if !r.Config.SecureMode &amp;&amp; r.Config.RedundantMode </span><span class="cov0" title="0">{
+                expects = r.buildRequest(haSuffix)
+        }</span>
+        <span class="cov0" title="0">if !r.Config.SecureMode &amp;&amp; !r.Config.RedundantMode </span><span class="cov0" title="0">{
+                expects = r.buildRequest(noSuffix)
+        }</span>
+
+        <span class="cov0" title="0">if r.Config.SecureMode </span><span class="cov0" title="0">{
+                var clientConfig *cryptossh.ClientConfig
+                clientConfig, err = ssh.GenerateClientConfig(r.Config.Username, r.Config.Password, r.Config.HostKeyPath, r.Config.Hostname)
+                if err != nil </span><span class="cov0" title="0">{
+                        return "", err
+                }</span>
+                <span class="cov0" title="0">data, err = ssh.New(
+                        r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
+                ).Fetch(&amp;expects, clientConfig)</span>
+        } else<span class="cov0" title="0"> {
+                data, err = telnet.New(
+                        r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
+                ).Fetch(&amp;expects)
+        }</span>
+
+        <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
+                return "", err
+        }</span>
+        <span class="cov0" title="0">return data, nil</span>
+}
+
+// [platform: ssg] buildRequest returns the expects.
+func (r *Repository) buildRequest(suffix string) []x.Batcher <span class="cov0" title="0">{
+        return []x.Batcher{
+                &amp;x.BExp{R: "login:"},
+                &amp;x.BSnd{S: r.Config.Username + "\n"},
+                &amp;x.BExp{R: "password:"},
+                &amp;x.BSnd{S: r.Config.Password + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + suffix + "-&gt;"},
+                &amp;x.BSnd{S: "set console page 0\n"},
+                &amp;x.BExp{R: r.Config.Hostname + suffix + "-&gt;"},
+                &amp;x.BSnd{S: r.Config.Command + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + suffix + "-&gt;"},
+        }
+}</span>
+
+// [platform: ssg] buildSecureRequest returns the expects.
+func (r *Repository) buildSecureRequest(suffix string) []x.Batcher <span class="cov0" title="0">{
+        return []x.Batcher{
+                &amp;x.BExp{R: r.Config.Hostname + suffix + "-&gt;"},
+                &amp;x.BSnd{S: "set console page 0\n"},
+                &amp;x.BExp{R: r.Config.Hostname + suffix + "-&gt;"},
+                &amp;x.BSnd{S: r.Config.Command + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + suffix + "-&gt;"},
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file24" style="display: none">// Package repository implements YAMAHA RT OS-specific data access layer.
+package repository
+
+import (
+        "time"
+
+        "github.com/umatare5/telee/internal/config"
+        "github.com/umatare5/telee/internal/domain"
+        "github.com/umatare5/telee/pkg/ssh"
+        "github.com/umatare5/telee/pkg/telnet"
+
+        x "github.com/google/goexpect"
+        cryptossh "golang.org/x/crypto/ssh"
+)
+
+// Repository struct.
+type Repository struct {
+        Config *config.Config
+}
+
+// Fetch returns stdout from telnet session.
+func (r *Repository) Fetch() (string, error) <span class="cov0" title="0">{
+        var expects []x.Batcher
+        var data string
+        var err error
+
+        if r.Config.SecureMode </span><span class="cov0" title="0">{
+                if r.Config.EnableMode </span><span class="cov0" title="0">{
+                        expects = r.buildPrivilegedSecureRequest()
+                }</span>
+                <span class="cov0" title="0">if !r.Config.EnableMode </span><span class="cov0" title="0">{
+                        expects = r.buildUserModeSecureRequest()
+                }</span>
+        }
+        <span class="cov0" title="0">if !r.Config.SecureMode </span><span class="cov0" title="0">{
+                if r.Config.EnableMode </span><span class="cov0" title="0">{
+                        expects = r.buildPrivilegedRequest()
+                }</span>
+                <span class="cov0" title="0">if !r.Config.EnableMode </span><span class="cov0" title="0">{
+                        expects = r.buildUserModeRequest()
+                }</span>
+        }
+
+        <span class="cov0" title="0">if r.Config.SecureMode </span><span class="cov0" title="0">{
+                var clientConfig *cryptossh.ClientConfig
+                clientConfig, err = ssh.GenerateClientConfig(r.Config.Username, r.Config.Password, r.Config.HostKeyPath, r.Config.Hostname)
+                if err != nil </span><span class="cov0" title="0">{
+                        return "", err
+                }</span>
+                <span class="cov0" title="0">data, err = ssh.New(
+                        r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
+                ).Fetch(&amp;expects, clientConfig)</span>
+        } else<span class="cov0" title="0"> {
+                data, err = telnet.New(
+                        r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
+                ).Fetch(&amp;expects)
+        }</span>
+
+        <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
+                return "", err
+        }</span>
+        <span class="cov0" title="0">return data, nil</span>
+}
+
+// [platform: yamaha] buildRequest returns the expects.
+func (r *Repository) buildUserModeRequest() []x.Batcher <span class="cov0" title="0">{
+        return []x.Batcher{
+                &amp;x.BExp{R: "Password:"},
+                &amp;x.BSnd{S: r.Config.Password + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "&gt;"},
+                &amp;x.BSnd{S: "console lines infinity\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "&gt;"},
+                &amp;x.BSnd{S: r.Config.Command + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "&gt;"},
+        }
+}</span>
+
+// [platform: yamaha] buildPrivilegedRequest returns the expects.
+func (r *Repository) buildPrivilegedRequest() []x.Batcher <span class="cov0" title="0">{
+        return []x.Batcher{
+                &amp;x.BExp{R: "Password:"},
+                &amp;x.BSnd{S: r.Config.Password + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "&gt;"},
+                &amp;x.BSnd{S: "administrator\n"},
+                &amp;x.BExp{R: "Password:"},
+                &amp;x.BSnd{S: r.Config.PrivPassword + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "#"},
+                &amp;x.BSnd{S: "console lines infinity\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "#"},
+                &amp;x.BSnd{S: r.Config.Command + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "#"},
+        }
+}</span>
+
+// [platform: yamaha] buildUserModeSecureRequest returns the expects.
+func (r *Repository) buildUserModeSecureRequest() []x.Batcher <span class="cov0" title="0">{
+        return []x.Batcher{
+                &amp;x.BExp{R: r.Config.Hostname + "&gt;"},
+                &amp;x.BSnd{S: "console lines infinity\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "&gt;"},
+                &amp;x.BSnd{S: r.Config.Command + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "&gt;"},
+        }
+}</span>
+
+// [platform: yamaha] buildPrivilegedSecureRequest returns the expects.
+func (r *Repository) buildPrivilegedSecureRequest() []x.Batcher <span class="cov0" title="0">{
+        return []x.Batcher{
+                &amp;x.BExp{R: r.Config.Hostname + "&gt;"},
+                &amp;x.BSnd{S: "administrator\n"},
+                &amp;x.BExp{R: "Password:"},
+                &amp;x.BSnd{S: r.Config.PrivPassword + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "#"},
+                &amp;x.BSnd{S: "console lines infinity\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "#"},
+                &amp;x.BSnd{S: r.Config.Command + "\n"},
+                &amp;x.BExp{R: r.Config.Hostname + "#"},
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file25" style="display: none">// Package infrastructure provides data access layer for network device communication.
+package infrastructure
+
+import (
+        "github.com/umatare5/telee/internal/config"
+
+        aireosRepository "github.com/umatare5/telee/internal/infrastructure/repositories/aireos"
+        alliedwareRepository "github.com/umatare5/telee/internal/infrastructure/repositories/alliedware"
+        asasoftwareRepository "github.com/umatare5/telee/internal/infrastructure/repositories/asasoftware"
+        iosRepository "github.com/umatare5/telee/internal/infrastructure/repositories/ios"
+        ironwareRepository "github.com/umatare5/telee/internal/infrastructure/repositories/ironware"
+        junosRepository "github.com/umatare5/telee/internal/infrastructure/repositories/junos"
+        nxosRepository "github.com/umatare5/telee/internal/infrastructure/repositories/nxos"
+        screenosRepository "github.com/umatare5/telee/internal/infrastructure/repositories/screenos"
+        yamahaosRepository "github.com/umatare5/telee/internal/infrastructure/repositories/yamahaos"
+)
+
+// Repository struct.
+type Repository struct {
+        Config *config.Config
+}
+
+// New returns Repository struct.
+func New(c *config.Config) Repository <span class="cov0" title="0">{
+        return Repository{
+                Config: c,
+        }
+}</span>
+
+// InvokeAireOSRepository returns new AireOSRepository.
+func (r *Repository) InvokeAireOSRepository() *aireosRepository.Repository <span class="cov0" title="0">{
+        return &amp;aireosRepository.Repository{
+                Config: r.Config,
+        }
+}</span>
+
+// InvokeAlliedWareRepository returns new AlliedWareRepository.
+func (r *Repository) InvokeAlliedWareRepository() *alliedwareRepository.Repository <span class="cov0" title="0">{
+        return &amp;alliedwareRepository.Repository{
+                Config: r.Config,
+        }
+}</span>
+
+// InvokeASASoftwareRepository returns new ASASoftwareRepository.
+func (r *Repository) InvokeASASoftwareRepository() *asasoftwareRepository.Repository <span class="cov0" title="0">{
+        return &amp;asasoftwareRepository.Repository{
+                Config: r.Config,
+        }
+}</span>
+
+// InvokeIOSRepository returns new IOSRepository.
+func (r *Repository) InvokeIOSRepository() *iosRepository.Repository <span class="cov0" title="0">{
+        return &amp;iosRepository.Repository{
+                Config: r.Config,
+        }
+}</span>
+
+// InvokeIronWareRepository returns new IronWareRepository.
+func (r *Repository) InvokeIronWareRepository() *ironwareRepository.Repository <span class="cov0" title="0">{
+        return &amp;ironwareRepository.Repository{
+                Config: r.Config,
+        }
+}</span>
+
+// InvokeJunOSRepository returns new JunOSRepository.
+func (r *Repository) InvokeJunOSRepository() *junosRepository.Repository <span class="cov0" title="0">{
+        return &amp;junosRepository.Repository{
+                Config: r.Config,
+        }
+}</span>
+
+// InvokeNXOSRepository returns new NXOSRepository.
+func (r *Repository) InvokeNXOSRepository() *nxosRepository.Repository <span class="cov0" title="0">{
+        return &amp;nxosRepository.Repository{
+                Config: r.Config,
+        }
+}</span>
+
+// InvokeScreenOSRepository returns new ScreenOSRepository.
+func (r *Repository) InvokeScreenOSRepository() *screenosRepository.Repository <span class="cov0" title="0">{
+        return &amp;screenosRepository.Repository{
+                Config: r.Config,
+        }
+}</span>
+
+// InvokeYamahaOSRepository returns new YamahaOSRepository.
+func (r *Repository) InvokeYamahaOSRepository() *yamahaosRepository.Repository <span class="cov0" title="0">{
+        return &amp;yamahaosRepository.Repository{
+                Config: r.Config,
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file26" style="display: none">// Package ssh provides SSH client functionality for network device connections.
+package ssh
+
+import (
+        "fmt"
+        "net"
+        "os"
+        "strconv"
+        "time"
+
+        x "github.com/google/goexpect"
+        "golang.org/x/crypto/ssh"
+        "golang.org/x/crypto/ssh/knownhosts"
+)
+
+const (
+        errSSHSpawnFailed = "SSH was failed at spawn(). You can troubleshoot using wireshark.\n"
+        errSSHBatchFailed = "SSH was failed at ExpectBatch(). You can troubleshoot using wireshark.\n"
+)
+
+// SSH struct.
+type SSH struct {
+        host     string
+        port     int
+        protocol string
+        timeout  time.Duration
+}
+
+// New returns SSH struct.
+func New(host string, port int, protocol string, timeout time.Duration) *SSH <span class="cov0" title="0">{
+        return &amp;SSH{
+                host:     host,
+                port:     port,
+                protocol: protocol,
+                timeout:  timeout,
+        }
+}</span>
+
+// GenerateClientConfig returns client config.
+func GenerateClientConfig(username string, password string, hostKeyPath string, hostname string) (*ssh.ClientConfig, error) <span class="cov0" title="0">{
+        hostKeyCallback, err := createHostKeyCallback(hostKeyPath, hostname)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">return &amp;ssh.ClientConfig{
+                User:            username,
+                Auth:            []ssh.AuthMethod{ssh.Password(password)},
+                HostKeyCallback: hostKeyCallback,
+        }, nil</span>
+}
+
+// createHostKeyCallback creates appropriate HostKeyCallback based on hostKeyPath.
+func createHostKeyCallback(hostKeyPath string, hostname string) (ssh.HostKeyCallback, error) <span class="cov0" title="0">{
+        if hostKeyPath != "" </span><span class="cov0" title="0">{
+                return createFixedHostKeyCallback(hostKeyPath)
+        }</span>
+        <span class="cov0" title="0">return createKnownHostsCallback(hostname)</span>
+}
+
+// createFixedHostKeyCallback creates HostKeyCallback from specific host key file.
+func createFixedHostKeyCallback(hostKeyPath string) (ssh.HostKeyCallback, error) <span class="cov0" title="0">{
+        publicKeyBytes, err := os.ReadFile(hostKeyPath)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("failed to read host key file: %w", err)
+        }</span>
+
+        <span class="cov0" title="0">publicKey, err := ssh.ParsePublicKey(publicKeyBytes)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("failed to parse host key: %w", err)
+        }</span>
+
+        <span class="cov0" title="0">return ssh.FixedHostKey(publicKey), nil</span>
+}
+
+// createKnownHostsCallback creates HostKeyCallback using known_hosts file.
+func createKnownHostsCallback(hostname string) (ssh.HostKeyCallback, error) <span class="cov0" title="0">{
+        knownHostsPath, err := getKnownHostsPath()
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("failed to get home directory: %w", err)
+        }</span>
+
+        <span class="cov0" title="0">if _, err := os.Stat(knownHostsPath); err != nil </span><span class="cov0" title="0">{
+                hostOnly := hostname
+                if h, _, err := net.SplitHostPort(hostname); err == nil </span><span class="cov0" title="0">{
+                        hostOnly = h
+                }</span>
+                <span class="cov0" title="0">return nil, fmt.Errorf("~/.ssh/known_hosts not found. Please create it by running: ssh-keyscan %s &gt;&gt; ~/.ssh/known_hosts", hostOnly)</span>
+        }
+
+        <span class="cov0" title="0">knownHostsCallback, err := knownhosts.New(knownHostsPath)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("failed to load known_hosts file: %w", err)
+        }</span>
+
+        <span class="cov0" title="0">return createFallbackCallback(knownHostsCallback), nil</span>
+}
+
+// getKnownHostsPath returns the path to the known_hosts file.
+func getKnownHostsPath() (string, error) <span class="cov0" title="0">{
+        homeDir, err := os.UserHomeDir()
+        if err != nil </span><span class="cov0" title="0">{
+                return "", err
+        }</span>
+        <span class="cov0" title="0">return homeDir + "/.ssh/known_hosts", nil</span>
+}
+
+// createFallbackCallback creates a callback that tries known_hosts first, then provides guidance.
+func createFallbackCallback(knownHostsCallback ssh.HostKeyCallback) ssh.HostKeyCallback <span class="cov0" title="0">{
+        return func(hostname string, remote net.Addr, key ssh.PublicKey) error </span><span class="cov0" title="0">{
+                err := knownHostsCallback(hostname, remote, key)
+                if err != nil </span><span class="cov0" title="0">{
+                        return handleHostKeyVerificationFailure(hostname, err)
+                }</span>
+                <span class="cov0" title="0">return nil</span>
+        }
+}
+
+// handleHostKeyVerificationFailure handles host key verification failure and provides user guidance.
+func handleHostKeyVerificationFailure(hostname string, originalErr error) error <span class="cov0" title="0">{
+        // Extract hostname without port
+        host := extractHostFromAddress(hostname)
+
+        fmt.Fprintf(os.Stderr, "\n[ERROR] Host key verification failed for %s: %v\n", hostname, originalErr)
+        fmt.Fprintln(os.Stderr, "\nTo resolve this issue, you can add the host key to your known_hosts file using one of these methods:")
+        fmt.Fprintf(os.Stderr, "\n1. Run the following command to add the host key:\n")
+
+        // Check if it's a standard SSH port or custom port
+        if isStandardSSHPort(hostname) </span><span class="cov0" title="0">{
+                fmt.Fprintf(os.Stderr, "   ssh-keyscan %s &gt;&gt; ~/.ssh/known_hosts\n", host)
+                fmt.Fprintf(os.Stderr, "\n2. Or connect manually first with ssh to accept the host key:\n")
+                fmt.Fprintf(os.Stderr, "   ssh %s\n", host)
+                fmt.Fprintf(os.Stderr, "\n   For older Cisco IOS devices, you may need additional SSH options:\n")
+                fmt.Fprintf(os.Stderr, "   ssh -o HostKeyAlgorithms=+ssh-rsa -o KexAlgorithms=+diffie-hellman-group14-sha1 %s\n", host)
+        }</span> else<span class="cov0" title="0"> {
+                port := extractPortFromAddress(hostname)
+                fmt.Fprintf(os.Stderr, "   ssh-keyscan -p %s %s &gt;&gt; ~/.ssh/known_hosts\n", port, host)
+                fmt.Fprintf(os.Stderr, "\n2. Or connect manually first with ssh to accept the host key:\n")
+                fmt.Fprintf(os.Stderr, "   ssh -p %s %s\n", port, host)
+                fmt.Fprintf(os.Stderr, "\n   For older Cisco IOS devices, you may need additional SSH options:\n")
+                fmt.Fprintf(os.Stderr, "   ssh -p %s -o HostKeyAlgorithms=+ssh-rsa -o KexAlgorithms=+diffie-hellman-group14-sha1 %s\n", port, host)
+        }</span>
+
+        <span class="cov0" title="0">fmt.Fprintf(os.Stderr, "\n3. Or use the --host-key-path flag to specify a specific host key file\n")
+        fmt.Fprintf(os.Stderr, "\n4. Or set TELEE_HOSTKEYPATH environment variable to specify the host key file path\n")
+        fmt.Fprintln(os.Stderr, "\nConnection canceled for security reasons.")
+
+        return fmt.Errorf("host key verification failed for %s", hostname)</span>
+}
+
+// extractHostFromAddress extracts hostname from "hostname:port" format.
+func extractHostFromAddress(address string) string <span class="cov0" title="0">{
+        host, _, err := net.SplitHostPort(address)
+        if err != nil </span><span class="cov0" title="0">{
+                // If address does not contain a port, return as is
+                return address
+        }</span>
+        <span class="cov0" title="0">return host</span>
+}
+
+// extractPortFromAddress extracts port from "hostname:port" format.
+func extractPortFromAddress(address string) string <span class="cov0" title="0">{
+        _, port, err := net.SplitHostPort(address)
+        if err != nil || port == "" </span><span class="cov0" title="0">{
+                return "22"
+        }</span>
+        <span class="cov0" title="0">return port</span>
+}
+
+// isStandardSSHPort checks if the address uses standard SSH port (22).
+func isStandardSSHPort(address string) bool <span class="cov0" title="0">{
+        port := extractPortFromAddress(address)
+        return port == "22"
+}</span>
+
+// Fetch starts the expect process.
+func (c *SSH) Fetch(batchers *[]x.Batcher, config *ssh.ClientConfig) (string, error) <span class="cov0" title="0">{
+        conn, err := c.dial(config)
+        if err != nil </span><span class="cov0" title="0">{
+                fmt.Print(errSSHSpawnFailed)
+                return "", err
+        }</span>
+        <span class="cov0" title="0">defer conn.Close() //nolint: errcheck
+
+        expecter, _, err := x.SpawnSSH(conn, c.timeout)
+        if err != nil </span><span class="cov0" title="0">{
+                fmt.Print(errSSHSpawnFailed)
+                return "", err
+        }</span>
+        <span class="cov0" title="0">defer expecter.Close() //nolint: errcheck
+
+        stdout, err := expecter.ExpectBatch(*batchers, c.timeout)
+        if err != nil </span><span class="cov0" title="0">{
+                fmt.Print(errSSHBatchFailed)
+                return "", err
+        }</span>
+
+        <span class="cov0" title="0">return stdout[len(stdout)-1].Output, nil</span>
+}
+
+func (c *SSH) dial(config *ssh.ClientConfig) (*ssh.Client, error) <span class="cov0" title="0">{
+        conn, err := ssh.Dial(c.protocol, c.host+":"+strconv.Itoa(c.port), config)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+        <span class="cov0" title="0">return conn, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file27" style="display: none">// Package telnet provides Telnet client functionality for network device connections.
+package telnet
+
+import (
+        "fmt"
+        "strconv"
+        "time"
+
+        x "github.com/google/goexpect"
+        "github.com/ziutek/telnet"
+)
+
+const (
+        errTelnetSpawnFailed = "TelnetClient was failed at spawn(). You can troubleshoot using wireshark.\n"
+        errTelnetBatchFailed = "TelnetClient was failed at ExpectBatch(). You can troubleshoot using wireshark.\n"
+)
+
+// Telnet struct.
+type Telnet struct {
+        host     string
+        port     int
+        protocol string
+        timeout  time.Duration
+}
+
+// New returns Telnet struct.
+func New(host string, port int, protocol string, timeout time.Duration) *Telnet <span class="cov0" title="0">{
+        return &amp;Telnet{
+                host:     host,
+                port:     port,
+                protocol: protocol,
+                timeout:  timeout,
+        }
+}</span>
+
+// Fetch starts the expect process.
+func (t *Telnet) Fetch(x *[]x.Batcher) (string, error) <span class="cov0" title="0">{
+        conn, _, err := t.spawn()
+        if err != nil </span><span class="cov0" title="0">{
+                fmt.Print(errTelnetSpawnFailed)
+                return "", err
+        }</span>
+        <span class="cov0" title="0">defer conn.Close() // nolint: errcheck
+
+        stdout, err := conn.ExpectBatch(*x, t.timeout)
+        if err != nil </span><span class="cov0" title="0">{
+                fmt.Print(errTelnetBatchFailed)
+                return "", err
+        }</span>
+
+        <span class="cov0" title="0">return stdout[len(stdout)-1].Output, nil</span>
+}
+
+func (t *Telnet) spawn() (x.Expecter, &lt;-chan error, error) <span class="cov0" title="0">{
+        conn, err := telnet.Dial(t.protocol, t.host+":"+strconv.Itoa(t.port))
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, nil, err
+        }</span>
+
+        <span class="cov0" title="0">ch := make(chan error)
+
+        return x.SpawnGeneric(
+                &amp;x.GenOptions{
+                        In:    conn,
+                        Out:   conn,
+                        Check: func() bool </span><span class="cov0" title="0">{ return true }</span>,
+                        Wait:  func() error <span class="cov0" title="0">{ return &lt;-ch }</span>,
+                        Close: func() error <span class="cov0" title="0">{
+                                close(ch)
+                                return conn.Close()
+                        }</span>,
+                }, t.timeout)
+}
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>
