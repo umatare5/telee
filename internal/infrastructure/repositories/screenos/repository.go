@@ -18,12 +18,12 @@ const (
 	haSuffix string = "\\(M\\)"
 )
 
-// Repository struct
+// Repository struct.
 type Repository struct {
 	Config *config.Config
 }
 
-// Fetch returns stdout from telnet session
+// Fetch returns stdout from telnet session.
 func (r *Repository) Fetch() (string, error) {
 	var expects []x.Batcher
 	var data string

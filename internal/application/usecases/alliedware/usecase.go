@@ -6,13 +6,13 @@ import (
 	"github.com/umatare5/telee/internal/infrastructure"
 )
 
-// Usecase struct
+// Usecase struct.
 type Usecase struct {
 	Config     *config.Config
 	Repository *infrastructure.Repository
 }
 
-// Fetch returns stdout from the session
+// Fetch returns stdout from the session.
 func (u *Usecase) Fetch() (string, error) {
 	data, err := u.Repository.InvokeAlliedWareRepository().Fetch()
 	if err != nil {
