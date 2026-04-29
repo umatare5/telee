@@ -25,8 +25,14 @@ builds:
       - linux_arm64
       - darwin_amd64
       - darwin_arm64
+    env:
+      - CGO_ENABLED=0
     ldflags:
       - -s -w -X 'github.com/umatare5/telee/cli.version={{ .Version }}'
+    gcflags:
+      - all=-trimpath
+    asmflags:
+      - all=-trimpath
 
 archives:
   - name_template: "{{ .ProjectName }}-v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
