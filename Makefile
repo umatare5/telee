@@ -1,4 +1,4 @@
-.PHONY: help build lint test-unit test-unit-coverage coverage-badge clean
+.PHONY: help build lint test-unit test-unit-coverage clean
 
 # Binary name and paths
 BINARY_NAME := telee
@@ -20,12 +20,10 @@ help:
 	@echo "  lint               - Run linters (golangci-lint)"
 	@echo "  test-unit          - Run unit tests with colored output"
 	@echo "  test-unit-coverage - Generate HTML coverage report"
-	@echo "  coverage-badge     - Generate coverage badge (SVG)"
 	@echo "  clean              - Remove build artifacts and backup files"
 	@echo ""
 	@echo "Requirements:"
 	@echo "  - gotestsum: go install gotest.tools/gotestsum@latest"
-	@echo "  - octocov: go install github.com/k1LoW/octocov/cmd/octocov@latest"
 	@echo "  - golangci-lint: https://golangci-lint.run/usage/install/"
 
 build: $(BINARY_PATH)
@@ -50,12 +48,6 @@ test-unit:
 test-unit-coverage: test-unit
 	go tool cover -html=$(COVERAGE_DIR)/report.out -o $(COVERAGE_DIR)/report.html
 	@echo "Coverage report generated: $(COVERAGE_DIR)/report.html"
-
-# Generate coverage badge (SVG)
-coverage-badge: test-unit
-	@command -v octocov >/dev/null 2>&1 || { echo "Error: octocov is not installed. Run: go install github.com/k1LoW/octocov/cmd/octocov@latest"; exit 1; }
-	octocov badge coverage --out docs/assets/coverage.svg
-	@echo "Coverage badge generated: docs/assets/coverage.svg"
 
 # Clean build artifacts and backup files
 clean:
