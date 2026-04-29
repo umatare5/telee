@@ -60,7 +60,7 @@ func (e *Exec) Run() {
 
 	if err != nil {
 		fmt.Println(err)
-		fmt.Println(domain.HintTelnetFailed)
+		fmt.Print(domain.HintTelnetFailed)
 		return
 	}
 	fmt.Println(data)

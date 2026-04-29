@@ -36,14 +36,14 @@ func New(host string, port int, protocol string, timeout time.Duration) *Telnet 
 func (t *Telnet) Fetch(x *[]x.Batcher) (string, error) {
 	conn, _, err := t.spawn()
 	if err != nil {
-		fmt.Println(errTelnetSpawnFailed)
+		fmt.Print(errTelnetSpawnFailed)
 		return "", err
 	}
 	defer conn.Close() // nolint: errcheck
 
 	stdout, err := conn.ExpectBatch(*x, t.timeout)
 	if err != nil {
-		fmt.Println(errTelnetBatchFailed)
+		fmt.Print(errTelnetBatchFailed)
 		return "", err
 	}
 
