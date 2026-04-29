@@ -142,7 +142,7 @@ func handleHostKeyVerificationFailure(hostname string, originalErr error) error 
 
 	fmt.Fprintf(os.Stderr, "\n3. Or use the --host-key-path flag to specify a specific host key file\n")
 	fmt.Fprintf(os.Stderr, "\n4. Or set TELEE_HOSTKEYPATH environment variable to specify the host key file path\n")
-	fmt.Fprintln(os.Stderr, "\nConnection cancelled for security reasons.")
+	fmt.Fprintln(os.Stderr, "\nConnection canceled for security reasons.")
 
 	return fmt.Errorf("host key verification failed for %s", hostname)
 }
