@@ -1,6 +1,6 @@
 module github.com/umatare5/telee
 
-go 1.25.0
+go 1.25.2
 
 require (
 	github.com/google/goexpect v0.0.0-20210430020637-ab937bf7fd6f

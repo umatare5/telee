@@ -8,15 +8,12 @@
     "no-bare-urls": false,
     "header-increment": false,
     "no-alt-text": false,
-    "no-blanks-blockquote": false,
-    "first-line-heading": false
+    "no-blanks-blockquote": false
   },
   "ignores": [
-    "tmp/**",
     "vendor/**",
     ".copilot_reports/**",
     ".github/instructions/**",
-    ".github/prompts/**",
     ".github/copilot-instructions.md"
   ],
   "globs": [
