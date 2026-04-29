@@ -8,7 +8,7 @@
     "no-bare-urls": false,
     "header-increment": false,
     "no-alt-text": false,
-    "no-blanks-blockquote": false
+    "no-blanks-blockquote": false,
   },
   "ignores": [
     "vendor/**",
@@ -16,9 +16,9 @@
     ".github/instructions/**",
     ".github/copilot-instructions.md",
     ".claude/CLAUDE.md",
-    ".gemini/GEMINI.md"
+    ".gemini/GEMINI.md",
+    "README.md",
+    ".github/prompts/**/*.prompt.md",
   ],
-  "globs": [
-    "**/*.md"
-  ]
+  "globs": ["**/*.md"],
 }
