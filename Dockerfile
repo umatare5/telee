@@ -1,24 +1,18 @@
-# Build stage
-FROM golang:1-alpine AS builder
+# Dockerfile for telee
 
-# Set the working directory
-WORKDIR /tmp/build
+FROM scratch
 
-# Copy go.mod and go.sum first to leverage Docker layer caching
-COPY go.mod go.sum ./
+# Copy ca-certificates for HTTPS/SSH to network devices
+COPY --from=alpine:latest@sha256:5b10f432ef3da1b8d4c7eb6c487f2f5a8f096bc91145e68878dd4a5019afde11 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
-# Download dependencies
-RUN go mod download
+# Copy the pre-built binary from GoReleaser
+COPY telee /telee
 
-# Copy the rest of the application code
-COPY . .
+# Create a non-root user (using numeric ID for scratch image)
+USER 65534:65534
 
-# Build the application
-RUN go build -trimpath -o telee ./cmd/main.go
+# Set the entrypoint
+ENTRYPOINT ["/telee"]
 
-# Final stage
-FROM alpine:3.23.4
-WORKDIR /app
-COPY --from=builder /tmp/build/telee /bin/
-
-ENTRYPOINT [ "/bin/telee" ]
+# Default command shows help
+CMD ["--help"]
