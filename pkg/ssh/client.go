@@ -18,7 +18,7 @@ const (
 	errSSHBatchFailed = "SSH was failed at ExpectBatch(). You can troubleshoot using wireshark.\n"
 )
 
-// SSH struct
+// SSH struct.
 type SSH struct {
 	host     string
 	port     int
@@ -26,7 +26,7 @@ type SSH struct {
 	timeout  time.Duration
 }
 
-// New returns SSH struct
+// New returns SSH struct.
 func New(host string, port int, protocol string, timeout time.Duration) *SSH {
 	return &SSH{
 		host:     host,
@@ -36,7 +36,7 @@ func New(host string, port int, protocol string, timeout time.Duration) *SSH {
 	}
 }
 
-// GenerateClientConfig returns client config
+// GenerateClientConfig returns client config.
 func GenerateClientConfig(username string, password string, hostKeyPath string, hostname string) (*ssh.ClientConfig, error) {
 	hostKeyCallback, err := createHostKeyCallback(hostKeyPath, hostname)
 	if err != nil {
@@ -50,7 +50,7 @@ func GenerateClientConfig(username string, password string, hostKeyPath string, 
 	}, nil
 }
 
-// createHostKeyCallback creates appropriate HostKeyCallback based on hostKeyPath
+// createHostKeyCallback creates appropriate HostKeyCallback based on hostKeyPath.
 func createHostKeyCallback(hostKeyPath string, hostname string) (ssh.HostKeyCallback, error) {
 	if hostKeyPath != "" {
 		return createFixedHostKeyCallback(hostKeyPath)
@@ -58,7 +58,7 @@ func createHostKeyCallback(hostKeyPath string, hostname string) (ssh.HostKeyCall
 	return createKnownHostsCallback(hostname)
 }
 
-// createFixedHostKeyCallback creates HostKeyCallback from specific host key file
+// createFixedHostKeyCallback creates HostKeyCallback from specific host key file.
 func createFixedHostKeyCallback(hostKeyPath string) (ssh.HostKeyCallback, error) {
 	publicKeyBytes, err := os.ReadFile(hostKeyPath)
 	if err != nil {
@@ -73,7 +73,7 @@ func createFixedHostKeyCallback(hostKeyPath string) (ssh.HostKeyCallback, error)
 	return ssh.FixedHostKey(publicKey), nil
 }
 
-// createKnownHostsCallback creates HostKeyCallback using known_hosts file
+// createKnownHostsCallback creates HostKeyCallback using known_hosts file.
 func createKnownHostsCallback(hostname string) (ssh.HostKeyCallback, error) {
 	knownHostsPath, err := getKnownHostsPath()
 	if err != nil {
@@ -96,7 +96,7 @@ func createKnownHostsCallback(hostname string) (ssh.HostKeyCallback, error) {
 	return createFallbackCallback(knownHostsCallback), nil
 }
 
-// getKnownHostsPath returns the path to the known_hosts file
+// getKnownHostsPath returns the path to the known_hosts file.
 func getKnownHostsPath() (string, error) {
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
@@ -105,7 +105,7 @@ func getKnownHostsPath() (string, error) {
 	return homeDir + "/.ssh/known_hosts", nil
 }
 
-// createFallbackCallback creates a callback that tries known_hosts first, then provides guidance
+// createFallbackCallback creates a callback that tries known_hosts first, then provides guidance.
 func createFallbackCallback(knownHostsCallback ssh.HostKeyCallback) ssh.HostKeyCallback {
 	return func(hostname string, remote net.Addr, key ssh.PublicKey) error {
 		err := knownHostsCallback(hostname, remote, key)
@@ -116,7 +116,7 @@ func createFallbackCallback(knownHostsCallback ssh.HostKeyCallback) ssh.HostKeyC
 	}
 }
 
-// handleHostKeyVerificationFailure handles host key verification failure and provides user guidance
+// handleHostKeyVerificationFailure handles host key verification failure and provides user guidance.
 func handleHostKeyVerificationFailure(hostname string, originalErr error) error {
 	// Extract hostname without port
 	host := extractHostFromAddress(hostname)
@@ -148,7 +148,7 @@ func handleHostKeyVerificationFailure(hostname string, originalErr error) error 
 	return fmt.Errorf("host key verification failed for %s", hostname)
 }
 
-// extractHostFromAddress extracts hostname from "hostname:port" format
+// extractHostFromAddress extracts hostname from "hostname:port" format.
 func extractHostFromAddress(address string) string {
 	host, _, err := net.SplitHostPort(address)
 	if err != nil {
@@ -158,7 +158,7 @@ func extractHostFromAddress(address string) string {
 	return host
 }
 
-// extractPortFromAddress extracts port from "hostname:port" format
+// extractPortFromAddress extracts port from "hostname:port" format.
 func extractPortFromAddress(address string) string {
 	_, port, err := net.SplitHostPort(address)
 	if err != nil || port == "" {
@@ -167,7 +167,7 @@ func extractPortFromAddress(address string) string {
 	return port
 }
 
-// isStandardSSHPort checks if the address uses standard SSH port (22)
+// isStandardSSHPort checks if the address uses standard SSH port (22).
 func isStandardSSHPort(address string) bool {
 	port := extractPortFromAddress(address)
 	return port == "22"

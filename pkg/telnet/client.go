@@ -15,7 +15,7 @@ const (
 	errTelnetBatchFailed = "TelnetClient was failed at ExpectBatch(). You can troubleshoot using wireshark.\n"
 )
 
-// Telnet struct
+// Telnet struct.
 type Telnet struct {
 	host     string
 	port     int
@@ -23,7 +23,7 @@ type Telnet struct {
 	timeout  time.Duration
 }
 
-// New returns Telnet struct
+// New returns Telnet struct.
 func New(host string, port int, protocol string, timeout time.Duration) *Telnet {
 	return &Telnet{
 		host:     host,
