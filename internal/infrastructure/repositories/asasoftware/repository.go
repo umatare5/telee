@@ -1,3 +1,4 @@
+// Package repository implements Cisco ASA Software-specific data access layer.
 package repository
 
 import (
@@ -9,6 +10,7 @@ import (
 	"github.com/umatare5/telee/pkg/telnet"
 
 	x "github.com/google/goexpect"
+	cryptossh "golang.org/x/crypto/ssh"
 )
 
 const (
@@ -16,12 +18,12 @@ const (
 	haSuffix string = "/pri/act"
 )
 
-// Repository struct
+// Repository struct.
 type Repository struct {
 	Config *config.Config
 }
 
-// Fetch returns stdout from telnet session
+// Fetch returns stdout from telnet session.
 func (r *Repository) Fetch() (string, error) {
 	var expects []x.Batcher
 	var data string
@@ -56,7 +58,8 @@ func (r *Repository) Fetch() (string, error) {
 	}
 
 	if r.Config.SecureMode {
-		clientConfig, err := ssh.GenerateClientConfig(r.Config.Username, r.Config.Password, r.Config.HostKeyPath, r.Config.Hostname)
+		var clientConfig *cryptossh.ClientConfig
+		clientConfig, err = ssh.GenerateClientConfig(r.Config.Username, r.Config.Password, r.Config.HostKeyPath, r.Config.Hostname)
 		if err != nil {
 			return "", err
 		}
@@ -75,7 +78,7 @@ func (r *Repository) Fetch() (string, error) {
 	return data, nil
 }
 
-// [platform: asa] buildPrivilegedRequest returns the expects
+// [platform: asa] buildPrivilegedRequest returns the expects.
 func (r *Repository) buildPrivilegedRequest(suffix string) []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "Username:"},
@@ -94,7 +97,7 @@ func (r *Repository) buildPrivilegedRequest(suffix string) []x.Batcher {
 	}
 }
 
-// [platform: asa] buildDefaultPrivilegedRequest returns the expects
+// [platform: asa] buildDefaultPrivilegedRequest returns the expects.
 func (r *Repository) buildDefaultPrivilegedRequest(suffix string) []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "Username:"},
@@ -109,7 +112,7 @@ func (r *Repository) buildDefaultPrivilegedRequest(suffix string) []x.Batcher {
 	}
 }
 
-// [platform: asa] buildPrivilegedSecureRequest returns the expects
+// [platform: asa] buildPrivilegedSecureRequest returns the expects.
 func (r *Repository) buildPrivilegedSecureRequest(suffix string) []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + suffix + ">"},
@@ -124,7 +127,7 @@ func (r *Repository) buildPrivilegedSecureRequest(suffix string) []x.Batcher {
 	}
 }
 
-// [platform: asa] buildDefaultPrivilegedSecureRequest returns the expects
+// [platform: asa] buildDefaultPrivilegedSecureRequest returns the expects.
 func (r *Repository) buildDefaultPrivilegedSecureRequest(suffix string) []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + suffix + "#"},

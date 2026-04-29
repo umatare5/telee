@@ -1,6 +1,6 @@
 package domain
 
-// Used for routing in usecases
+// Used for routing in usecases.
 const (
 	AireOSPlatformName      string = "aireos"
 	AlliedWarePlatformName  string = "allied"
@@ -13,7 +13,7 @@ const (
 	YamahaOSPlatformName    string = "yamaha"
 )
 
-// Used for config validation
+// Used for config validation.
 var (
 	Platforms = []string{
 		AireOSPlatformName,

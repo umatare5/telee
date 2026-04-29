@@ -1,6 +1,6 @@
 module github.com/umatare5/telee
 
-go 1.25.0
+go 1.25.2
 
 require (
 	github.com/google/goexpect v0.0.0-20210430020637-ab937bf7fd6f
@@ -13,7 +13,6 @@ require (
 require (
 	github.com/BurntSushi/toml v1.5.0 // indirect
 	github.com/google/goterm v0.0.0-20200907032337-555d40f16ae2 // indirect
-	golang.org/x/net v0.52.0 // indirect
 	golang.org/x/sys v0.43.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250409194420-de1ac958c67a // indirect
 	google.golang.org/grpc v1.71.1 // indirect

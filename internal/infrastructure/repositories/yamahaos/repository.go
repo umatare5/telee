@@ -1,3 +1,4 @@
+// Package repository implements YAMAHA RT OS-specific data access layer.
 package repository
 
 import (
@@ -9,14 +10,15 @@ import (
 	"github.com/umatare5/telee/pkg/telnet"
 
 	x "github.com/google/goexpect"
+	cryptossh "golang.org/x/crypto/ssh"
 )
 
-// Repository struct
+// Repository struct.
 type Repository struct {
 	Config *config.Config
 }
 
-// Fetch returns stdout from telnet session
+// Fetch returns stdout from telnet session.
 func (r *Repository) Fetch() (string, error) {
 	var expects []x.Batcher
 	var data string
@@ -40,7 +42,8 @@ func (r *Repository) Fetch() (string, error) {
 	}
 
 	if r.Config.SecureMode {
-		clientConfig, err := ssh.GenerateClientConfig(r.Config.Username, r.Config.Password, r.Config.HostKeyPath, r.Config.Hostname)
+		var clientConfig *cryptossh.ClientConfig
+		clientConfig, err = ssh.GenerateClientConfig(r.Config.Username, r.Config.Password, r.Config.HostKeyPath, r.Config.Hostname)
 		if err != nil {
 			return "", err
 		}
@@ -59,7 +62,7 @@ func (r *Repository) Fetch() (string, error) {
 	return data, nil
 }
 
-// [platform: yamaha] buildRequest returns the expects
+// [platform: yamaha] buildRequest returns the expects.
 func (r *Repository) buildUserModeRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "Password:"},
@@ -72,7 +75,7 @@ func (r *Repository) buildUserModeRequest() []x.Batcher {
 	}
 }
 
-// [platform: yamaha] buildPrivilegedRequest returns the expects
+// [platform: yamaha] buildPrivilegedRequest returns the expects.
 func (r *Repository) buildPrivilegedRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "Password:"},
@@ -89,7 +92,7 @@ func (r *Repository) buildPrivilegedRequest() []x.Batcher {
 	}
 }
 
-// [platform: yamaha] buildUserModeSecureRequest returns the expects
+// [platform: yamaha] buildUserModeSecureRequest returns the expects.
 func (r *Repository) buildUserModeSecureRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + ">"},
@@ -100,7 +103,7 @@ func (r *Repository) buildUserModeSecureRequest() []x.Batcher {
 	}
 }
 
-// [platform: yamaha] buildPrivilegedSecureRequest returns the expects
+// [platform: yamaha] buildPrivilegedSecureRequest returns the expects.
 func (r *Repository) buildPrivilegedSecureRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + ">"},

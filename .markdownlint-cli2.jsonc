@@ -1,25 +1,22 @@
 {
   "config": {
     "default": true,
+    "first-line-h1": false,
+    "header-increment": false,
     "line_length": false,
+    "no-alt-text": false,
+    "no-bare-urls": false,
+    "no-blanks-blockquote": false,
+    "no-duplicate-heading": false,
     "no-inline-html": false,
     "no-trailing-punctuation": false,
-    "no-duplicate-heading": false,
-    "no-bare-urls": false,
-    "header-increment": false,
-    "no-alt-text": false,
-    "no-blanks-blockquote": false,
-    "first-line-heading": false
   },
   "ignores": [
-    "tmp/**",
     "vendor/**",
-    ".copilot_reports/**",
     ".github/instructions/**",
-    ".github/prompts/**",
-    ".github/copilot-instructions.md"
+    ".github/copilot-instructions.md",
+    ".claude/CLAUDE.md",
+    ".gemini/GEMINI.md",
   ],
-  "globs": [
-    "**/*.md"
-  ]
+  "globs": ["**/*.md"],
 }

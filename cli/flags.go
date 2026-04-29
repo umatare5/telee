@@ -6,7 +6,7 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-// Register all flags
+// Register all flags.
 func registerFlags() []cli.Flag {
 	flags := []cli.Flag{}
 	flags = append(flags, registerHostNameFlag()...)
@@ -25,7 +25,7 @@ func registerFlags() []cli.Flag {
 	return flags
 }
 
-// Declare hostname flag
+// Declare hostname flag.
 func registerHostNameFlag() []cli.Flag {
 	return []cli.Flag{
 		&cli.StringFlag{
@@ -38,7 +38,7 @@ func registerHostNameFlag() []cli.Flag {
 	}
 }
 
-// Declare port flag
+// Declare port flag.
 func registerPortFlag() []cli.Flag {
 	return []cli.Flag{
 		&cli.IntFlag{
@@ -50,7 +50,7 @@ func registerPortFlag() []cli.Flag {
 	}
 }
 
-// Declare timeout flag
+// Declare timeout flag.
 func registerTimeoutFlag() []cli.Flag {
 	return []cli.Flag{
 		&cli.IntFlag{
@@ -62,7 +62,7 @@ func registerTimeoutFlag() []cli.Flag {
 	}
 }
 
-// Declare command flag
+// Declare command flag.
 func registerCommandFlag() []cli.Flag {
 	return []cli.Flag{
 		&cli.StringFlag{
@@ -75,7 +75,7 @@ func registerCommandFlag() []cli.Flag {
 	}
 }
 
-// Declare exec-platform flag
+// Declare exec-platform flag.
 func registerExecPlatformFlag() []cli.Flag {
 	return []cli.Flag{
 		&cli.StringFlag{
@@ -87,7 +87,7 @@ func registerExecPlatformFlag() []cli.Flag {
 	}
 }
 
-// Declare enable-mode flag
+// Declare enable-mode flag.
 func registerEnableModeFlag() []cli.Flag {
 	return []cli.Flag{
 		&cli.BoolFlag{
@@ -99,7 +99,7 @@ func registerEnableModeFlag() []cli.Flag {
 	}
 }
 
-// Declare redundant-mode flag
+// Declare redundant-mode flag.
 func registerRedundantModeFlag() []cli.Flag {
 	return []cli.Flag{
 		&cli.BoolFlag{
@@ -111,7 +111,7 @@ func registerRedundantModeFlag() []cli.Flag {
 	}
 }
 
-// Declare secure-mode flag
+// Declare secure-mode flag.
 func registerSecureModeFlag() []cli.Flag {
 	return []cli.Flag{
 		&cli.BoolFlag{
@@ -123,7 +123,7 @@ func registerSecureModeFlag() []cli.Flag {
 	}
 }
 
-// Declare priv-mode flag
+// Declare priv-mode flag.
 func registerDefaultPrivModeFlag() []cli.Flag {
 	return []cli.Flag{
 		&cli.BoolFlag{
@@ -135,7 +135,7 @@ func registerDefaultPrivModeFlag() []cli.Flag {
 	}
 }
 
-// Declare username flag
+// Declare username flag.
 func registerUsernameFlag() []cli.Flag {
 	return []cli.Flag{
 		&cli.StringFlag{
@@ -148,7 +148,7 @@ func registerUsernameFlag() []cli.Flag {
 	}
 }
 
-// Declare password flag
+// Declare password flag.
 func registerPasswordFlag() []cli.Flag {
 	return []cli.Flag{
 		&cli.StringFlag{
@@ -161,7 +161,7 @@ func registerPasswordFlag() []cli.Flag {
 	}
 }
 
-// Declare priv-password flag
+// Declare priv-password flag.
 func registerPrivPasswordFlag() []cli.Flag {
 	return []cli.Flag{
 		&cli.StringFlag{
@@ -174,7 +174,7 @@ func registerPrivPasswordFlag() []cli.Flag {
 	}
 }
 
-// Declare host-key-path flag
+// Declare host-key-path flag.
 func registerHostKeyPathFlag() []cli.Flag {
 	return []cli.Flag{
 		&cli.StringFlag{

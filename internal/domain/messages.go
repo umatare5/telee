@@ -1,6 +1,6 @@
 package domain
 
-// HintTelnetFailed invoked when expect was failed
+// HintTelnetFailed invoked when expect was failed.
 const HintTelnetFailed = `
 [Hint]
 - Are your username and password correct?

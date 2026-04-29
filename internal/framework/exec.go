@@ -1,3 +1,4 @@
+// Package framework provides the execution framework for network device commands.
 package framework
 
 import (
@@ -9,14 +10,14 @@ import (
 	"github.com/umatare5/telee/internal/infrastructure"
 )
 
-// Exec struct
+// Exec struct.
 type Exec struct {
 	Config     *config.Config
 	Repository *infrastructure.Repository
 	Usecase    *application.Usecase
 }
 
-// New returns Exec struct
+// New returns Exec struct.
 func New(c *config.Config, r *infrastructure.Repository, u *application.Usecase) Exec {
 	return Exec{
 		Config:     c,
@@ -25,7 +26,7 @@ func New(c *config.Config, r *infrastructure.Repository, u *application.Usecase)
 	}
 }
 
-// Run displays the command result
+// Run displays the command result.
 func (e *Exec) Run() {
 	var err error
 	var data string
@@ -60,7 +61,7 @@ func (e *Exec) Run() {
 
 	if err != nil {
 		fmt.Println(err)
-		fmt.Println(domain.HintTelnetFailed)
+		fmt.Print(domain.HintTelnetFailed)
 		return
 	}
 	fmt.Println(data)

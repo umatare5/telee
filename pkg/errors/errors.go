@@ -1,8 +1,9 @@
+// Package errors provides custom error types for configuration validation.
 package errors
 
 import "errors"
 
-// Used for config validation
+// Used for config validation.
 var (
 	ErrMissingUsername            = errors.New("TELEE_USERNAME must be set")
 	ErrMissingPassword            = errors.New("TELEE_PASSWORD must be set")
@@ -17,7 +18,7 @@ var (
 	ErrUnsupportedUnsecureMode    = errors.New("non secure-mode is not supported in this platform")
 )
 
-// Used for useca
+// Used for usecase.
 var (
 	ErrTermLengthIsEnforced = errors.New("EnableMode must be set. Terminal length expansion in user-level is not supporting.") // nolint
 )

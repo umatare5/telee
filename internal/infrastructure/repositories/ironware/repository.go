@@ -1,3 +1,4 @@
+// Package repository implements Brocade IronWare-specific data access layer.
 package repository
 
 import (
@@ -10,12 +11,12 @@ import (
 	x "github.com/google/goexpect"
 )
 
-// Repository struct
+// Repository struct.
 type Repository struct {
 	Config *config.Config
 }
 
-// Fetch returns stdout from telnet session
+// Fetch returns stdout from telnet session.
 func (r *Repository) Fetch() (string, error) {
 	var expects []x.Batcher
 	var data string
@@ -38,7 +39,7 @@ func (r *Repository) Fetch() (string, error) {
 	return data, nil
 }
 
-// [platform: foundry] buildUserModeRequest returns the expects
+// [platform: foundry] buildUserModeRequest returns the expects.
 func (r *Repository) buildUserModeRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "Please Enter Login Name:"},
@@ -53,7 +54,7 @@ func (r *Repository) buildUserModeRequest() []x.Batcher {
 	}
 }
 
-// [platform: foundry] buildPrivilegedRequest returns the expects
+// [platform: foundry] buildPrivilegedRequest returns the expects.
 func (r *Repository) buildPrivilegedRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "Please Enter Login Name:"},

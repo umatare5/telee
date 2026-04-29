@@ -2,7 +2,7 @@ package cli
 
 import (
 	"context"
-	"log"
+	"log/slog"
 	"os"
 
 	"github.com/umatare5/telee/internal/application"
@@ -13,14 +13,14 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-// Preset parameters for this command
+// Preset parameters for this command.
 const (
 	cmdName      string = "telee"
 	cmdUsage     string = "One-line command executor"
 	cmdUsageText string = "telee -H HOSTNAME -C COMMAND [options...]"
 )
 
-// Start executes this command
+// Start executes this command.
 func Start() {
 	cmd := &cli.Command{
 		Name:      cmdName,
@@ -39,6 +39,7 @@ func Start() {
 	}
 
 	if err := cmd.Run(context.Background(), os.Args); err != nil {
-		log.Fatal(err)
+		slog.Error("command execution failed", "error", err)
+		os.Exit(1)
 	}
 }

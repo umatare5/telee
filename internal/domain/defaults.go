@@ -1,6 +1,7 @@
+// Package domain defines core business domain types, constants, and messages.
 package domain
 
-// Defaults
+// Defaults.
 const (
 	EmptyString = ""
 	EmptyArray  = 0

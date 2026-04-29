@@ -1,3 +1,4 @@
+// Package repository implements Cisco AireOS-specific data access layer.
 package repository
 
 import (
@@ -9,14 +10,15 @@ import (
 	"github.com/umatare5/telee/pkg/telnet"
 
 	x "github.com/google/goexpect"
+	cryptossh "golang.org/x/crypto/ssh"
 )
 
-// Repository struct
+// Repository struct.
 type Repository struct {
 	Config *config.Config
 }
 
-// Fetch returns stdout from telnet session
+// Fetch returns stdout from telnet session.
 func (r *Repository) Fetch() (string, error) {
 	var expects []x.Batcher
 	var data string
@@ -26,7 +28,8 @@ func (r *Repository) Fetch() (string, error) {
 	expects = r.buildRequest()
 
 	if r.Config.SecureMode {
-		clientConfig, err := ssh.GenerateClientConfig(r.Config.Username, r.Config.Password, r.Config.HostKeyPath, r.Config.Hostname)
+		var clientConfig *cryptossh.ClientConfig
+		clientConfig, err = ssh.GenerateClientConfig(r.Config.Username, r.Config.Password, r.Config.HostKeyPath, r.Config.Hostname)
 		if err != nil {
 			return "", err
 		}
@@ -45,7 +48,7 @@ func (r *Repository) Fetch() (string, error) {
 	return data, nil
 }
 
-// [platform: aireos] buildRequest returns the expects
+// [platform: aireos] buildRequest returns the expects.
 func (r *Repository) buildRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "User:"},

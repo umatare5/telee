@@ -1,25 +1,53 @@
-# Makefile
+.PHONY: help build lint test-unit test-unit-coverage clean
 
-.PHONY: image force-image build
+# Binary name and paths
+BINARY_NAME := telee
+BUILD_DIR := ./tmp
+BINARY_PATH := $(BUILD_DIR)/$(BINARY_NAME)
+COVERAGE_DIR := ./coverage
 
-bin := telee
-src := $(wildcard *.go)
+# Go build flags
+LDFLAGS := -X github.com/umatare5/telee/cli.version=$(shell cat VERSION)
+BUILD_FLAGS := -ldflags "$(LDFLAGS)"
 
 # Default target
-${bin}: Makefile ${src}
-	go build -v -o "${bin}"
+.DEFAULT_GOAL := help
 
-# Docker targets
-image:
-	docker build -t ${USER}/telee .
+# Show available targets
+help:
+	@echo "Available targets:"
+	@echo "  build              - Build the binary"
+	@echo "  lint               - Run linters (golangci-lint)"
+	@echo "  test-unit          - Run unit tests with colored output"
+	@echo "  test-unit-coverage - Generate HTML coverage report"
+	@echo "  clean              - Remove build artifacts and backup files"
+	@echo ""
+	@echo "Requirements:"
+	@echo "  - gotestsum: go install gotest.tools/gotestsum@latest"
+	@echo "  - golangci-lint: https://golangci-lint.run/usage/install/"
 
-force-image:
-	docker build --no-cache -t ${USER}/telee .
+# Build the binary
+build:
+	@mkdir -p $(BUILD_DIR)
+	go build $(BUILD_FLAGS) -o $(BINARY_PATH) ./cmd
 
-.PHONY: goreleaser-build
-goreleaser-build:
-	goreleaser release --snapshot --clean
+# Lint the code
+lint:
+	golangci-lint run
+	go mod tidy
 
-.PHONY: test
-test:
-	go test -v -race ./cmd/main.go
+# Run unit tests with gotestsum (shows individual test results with color)
+test-unit:
+	@command -v gotestsum >/dev/null 2>&1 || { echo "Error: gotestsum is not installed. Run: go install gotest.tools/gotestsum@latest"; exit 1; }
+	mkdir -p $(COVERAGE_DIR)
+	gotestsum --format testname -- -coverprofile=$(COVERAGE_DIR)/report.out ./...
+
+# Generate coverage report (HTML)
+test-unit-coverage: test-unit
+	go tool cover -html=$(COVERAGE_DIR)/report.out -o $(COVERAGE_DIR)/report.html
+	@echo "Coverage report generated: $(COVERAGE_DIR)/report.html"
+
+# Clean build artifacts and backup files
+clean:
+	rm -rf $(BUILD_DIR) $(COVERAGE_DIR)
+	find . -name "*.bak*" -type f -delete 2>/dev/null || true

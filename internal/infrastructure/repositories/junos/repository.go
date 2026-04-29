@@ -1,3 +1,4 @@
+// Package repository implements Juniper JunOS-specific data access layer.
 package repository
 
 import (
@@ -10,12 +11,12 @@ import (
 	x "github.com/google/goexpect"
 )
 
-// Repository struct
+// Repository struct.
 type Repository struct {
 	Config *config.Config
 }
 
-// Fetch returns stdout from telnet session
+// Fetch returns stdout from telnet session.
 func (r *Repository) Fetch() (string, error) {
 	var expects []x.Batcher
 	var data string
@@ -38,7 +39,7 @@ func (r *Repository) Fetch() (string, error) {
 	return data, nil
 }
 
-// [platform: junos] buildUserModeSecureRequest returns the expects
+// [platform: junos] buildUserModeSecureRequest returns the expects.
 func (r *Repository) buildUserModeSecureRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Username + "@" + r.Config.Hostname + ">"},

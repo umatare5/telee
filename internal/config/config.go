@@ -1,8 +1,10 @@
+// Package config provides configuration management for CLI flags and environment variables.
 package config
 
 import (
 	"fmt"
-	"log"
+	"log/slog"
+	"os"
 
 	"github.com/umatare5/telee/internal/domain"
 	"github.com/umatare5/telee/pkg/errors"
@@ -15,7 +17,7 @@ const (
 	infoEnableModeIgnored = "[INFO] enable-mode is ignored. It's not supported."
 )
 
-// Config struct
+// Config struct.
 type Config struct {
 	Hostname        string
 	Port            int
@@ -32,12 +34,12 @@ type Config struct {
 	HostKeyPath     string
 }
 
-// New returns Config struct
+// New returns Config struct.
 func New(cli *cli.Command) Config {
 	cfg := Config{
 		Hostname:        cli.String(domain.HostnameFlagName),
-		Port:            int(cli.Int(domain.PortFlagName)),
-		Timeout:         int(cli.Int(domain.TimeoutFlagName)),
+		Port:            cli.Int(domain.PortFlagName),
+		Timeout:         cli.Int(domain.TimeoutFlagName),
 		Command:         cli.String(domain.CommandFlagName),
 		ExecPlatform:    cli.String(domain.ExecPlatformFlagName),
 		EnableMode:      cli.Bool(domain.EnableModeFlagName),
@@ -52,12 +54,14 @@ func New(cli *cli.Command) Config {
 
 	err := configor.New(&configor.Config{}).Load(&cfg)
 	if err != nil {
-		log.Fatal(err)
+		slog.Error("failed to load configuration", "error", err)
+		os.Exit(1)
 	}
 
 	err = checkArguments(&cfg)
 	if err != nil {
-		log.Fatal(err)
+		slog.Error("failed to validate arguments", "error", err)
+		os.Exit(1)
 	}
 
 	return cfg

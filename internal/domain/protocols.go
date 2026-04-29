@@ -1,11 +1,11 @@
 package domain
 
-// protocols
+// Protocols.
 const (
 	ProtocolTCP string = "tcp"
 )
 
-// ports
+// Ports.
 const (
 	SSHPort    int = 22
 	TelnetPort int = 23
