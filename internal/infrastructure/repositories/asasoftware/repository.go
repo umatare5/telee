@@ -14,8 +14,11 @@ import (
 )
 
 const (
-	noSuffix string = ""
-	haSuffix string = "/pri/act"
+	promptUsername   string = "Username:"
+	promptPassword   string = "Password:"
+	cmdDisablePaging string = "terminal pager 0\n"
+	noSuffix         string = ""
+	haSuffix         string = "/pri/act"
 )
 
 // Repository struct.
@@ -81,16 +84,16 @@ func (r *Repository) Fetch() (string, error) {
 // [platform: asa] buildPrivilegedRequest returns the expects.
 func (r *Repository) buildPrivilegedRequest(suffix string) []x.Batcher {
 	return []x.Batcher{
-		&x.BExp{R: "Username:"},
+		&x.BExp{R: promptUsername},
 		&x.BSnd{S: r.Config.Username + "\n"},
-		&x.BExp{R: "Password:"},
+		&x.BExp{R: promptPassword},
 		&x.BSnd{S: r.Config.Password + "\n"},
 		&x.BExp{R: r.Config.Hostname + suffix + ">"},
 		&x.BSnd{S: "enable\n"},
-		&x.BExp{R: "Password:"},
+		&x.BExp{R: promptPassword},
 		&x.BSnd{S: r.Config.PrivPassword + "\n"},
 		&x.BExp{R: r.Config.Hostname + suffix + "#"},
-		&x.BSnd{S: "terminal pager 0\n"},
+		&x.BSnd{S: cmdDisablePaging},
 		&x.BExp{R: r.Config.Hostname + suffix + "#"},
 		&x.BSnd{S: r.Config.Command + "\n"},
 		&x.BExp{R: r.Config.Hostname + suffix + "#"},
@@ -100,12 +103,12 @@ func (r *Repository) buildPrivilegedRequest(suffix string) []x.Batcher {
 // [platform: asa] buildDefaultPrivilegedRequest returns the expects.
 func (r *Repository) buildDefaultPrivilegedRequest(suffix string) []x.Batcher {
 	return []x.Batcher{
-		&x.BExp{R: "Username:"},
+		&x.BExp{R: promptUsername},
 		&x.BSnd{S: r.Config.Username + "\n"},
-		&x.BExp{R: "Password:"},
+		&x.BExp{R: promptPassword},
 		&x.BSnd{S: r.Config.Password + "\n"},
 		&x.BExp{R: r.Config.Hostname + suffix + "#"},
-		&x.BSnd{S: "terminal pager 0\n"},
+		&x.BSnd{S: cmdDisablePaging},
 		&x.BExp{R: r.Config.Hostname + suffix + "#"},
 		&x.BSnd{S: r.Config.Command + "\n"},
 		&x.BExp{R: r.Config.Hostname + suffix + "#"},
@@ -117,10 +120,10 @@ func (r *Repository) buildPrivilegedSecureRequest(suffix string) []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + suffix + ">"},
 		&x.BSnd{S: "enable\n"},
-		&x.BExp{R: "Password:"},
+		&x.BExp{R: promptPassword},
 		&x.BSnd{S: r.Config.PrivPassword + "\n"},
 		&x.BExp{R: r.Config.Hostname + suffix + "#"},
-		&x.BSnd{S: "terminal pager 0\n"},
+		&x.BSnd{S: cmdDisablePaging},
 		&x.BExp{R: r.Config.Hostname + suffix + "#"},
 		&x.BSnd{S: r.Config.Command + "\n"},
 		&x.BExp{R: r.Config.Hostname + suffix + "#"},
@@ -131,7 +134,7 @@ func (r *Repository) buildPrivilegedSecureRequest(suffix string) []x.Batcher {
 func (r *Repository) buildDefaultPrivilegedSecureRequest(suffix string) []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + suffix + "#"},
-		&x.BSnd{S: "terminal pager 0\n"},
+		&x.BSnd{S: cmdDisablePaging},
 		&x.BExp{R: r.Config.Hostname + suffix + "#"},
 		&x.BSnd{S: r.Config.Command + "\n"},
 		&x.BExp{R: r.Config.Hostname + suffix + "#"},

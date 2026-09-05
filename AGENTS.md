@@ -5,7 +5,7 @@
 
 ## Tech Stack
 
-- Go 1.25+ (see [go.mod](go.mod))
+- Go 1.27+ (see [go.mod](go.mod))
 - Clean Architecture (`cmd/` → `cli/` → `internal/` → `pkg/`)
 - Minimal dependencies (prefer standard library)
 

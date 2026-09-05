@@ -13,6 +13,10 @@ import (
 	cryptossh "golang.org/x/crypto/ssh"
 )
 
+const (
+	promptController string = "\\(Cisco Controller\\) >"
+)
+
 // Repository struct.
 type Repository struct {
 	Config *config.Config
@@ -55,10 +59,10 @@ func (r *Repository) buildRequest() []x.Batcher {
 		&x.BSnd{S: r.Config.Username + "\n"},
 		&x.BExp{R: "Password:"},
 		&x.BSnd{S: r.Config.Password + "\n"},
-		&x.BExp{R: "\\(Cisco Controller\\) >"},
+		&x.BExp{R: promptController},
 		&x.BSnd{S: "config paging disable\n"},
-		&x.BExp{R: "\\(Cisco Controller\\) >"},
+		&x.BExp{R: promptController},
 		&x.BSnd{S: r.Config.Command + "\n"},
-		&x.BExp{R: "\\(Cisco Controller\\) >"},
+		&x.BExp{R: promptController},
 	}
 }

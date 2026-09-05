@@ -13,6 +13,11 @@ import (
 	cryptossh "golang.org/x/crypto/ssh"
 )
 
+const (
+	promptPassword   string = "Password:"
+	cmdDisablePaging string = "console lines infinity\n"
+)
+
 // Repository struct.
 type Repository struct {
 	Config *config.Config
@@ -65,10 +70,10 @@ func (r *Repository) Fetch() (string, error) {
 // [platform: yamaha] buildRequest returns the expects.
 func (r *Repository) buildUserModeRequest() []x.Batcher {
 	return []x.Batcher{
-		&x.BExp{R: "Password:"},
+		&x.BExp{R: promptPassword},
 		&x.BSnd{S: r.Config.Password + "\n"},
 		&x.BExp{R: r.Config.Hostname + ">"},
-		&x.BSnd{S: "console lines infinity\n"},
+		&x.BSnd{S: cmdDisablePaging},
 		&x.BExp{R: r.Config.Hostname + ">"},
 		&x.BSnd{S: r.Config.Command + "\n"},
 		&x.BExp{R: r.Config.Hostname + ">"},
@@ -78,14 +83,14 @@ func (r *Repository) buildUserModeRequest() []x.Batcher {
 // [platform: yamaha] buildPrivilegedRequest returns the expects.
 func (r *Repository) buildPrivilegedRequest() []x.Batcher {
 	return []x.Batcher{
-		&x.BExp{R: "Password:"},
+		&x.BExp{R: promptPassword},
 		&x.BSnd{S: r.Config.Password + "\n"},
 		&x.BExp{R: r.Config.Hostname + ">"},
 		&x.BSnd{S: "administrator\n"},
-		&x.BExp{R: "Password:"},
+		&x.BExp{R: promptPassword},
 		&x.BSnd{S: r.Config.PrivPassword + "\n"},
 		&x.BExp{R: r.Config.Hostname + "#"},
-		&x.BSnd{S: "console lines infinity\n"},
+		&x.BSnd{S: cmdDisablePaging},
 		&x.BExp{R: r.Config.Hostname + "#"},
 		&x.BSnd{S: r.Config.Command + "\n"},
 		&x.BExp{R: r.Config.Hostname + "#"},
@@ -96,7 +101,7 @@ func (r *Repository) buildPrivilegedRequest() []x.Batcher {
 func (r *Repository) buildUserModeSecureRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + ">"},
-		&x.BSnd{S: "console lines infinity\n"},
+		&x.BSnd{S: cmdDisablePaging},
 		&x.BExp{R: r.Config.Hostname + ">"},
 		&x.BSnd{S: r.Config.Command + "\n"},
 		&x.BExp{R: r.Config.Hostname + ">"},
@@ -108,10 +113,10 @@ func (r *Repository) buildPrivilegedSecureRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + ">"},
 		&x.BSnd{S: "administrator\n"},
-		&x.BExp{R: "Password:"},
+		&x.BExp{R: promptPassword},
 		&x.BSnd{S: r.Config.PrivPassword + "\n"},
 		&x.BExp{R: r.Config.Hostname + "#"},
-		&x.BSnd{S: "console lines infinity\n"},
+		&x.BSnd{S: cmdDisablePaging},
 		&x.BExp{R: r.Config.Hostname + "#"},
 		&x.BSnd{S: r.Config.Command + "\n"},
 		&x.BExp{R: r.Config.Hostname + "#"},
