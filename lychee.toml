@@ -1,0 +1,10 @@
+include_fragments = "full"
+require_https = true
+exclude_all_private = true
+# CHANGELOG.md names the tag that the merge of the release pull request creates,
+# and rebases the Unreleased comparison onto it, so both links 404 for as long as
+# that pull request is open: go-release.yml tags only on the push to main.
+exclude = [
+  "^https://github\\.com/umatare5/telee/releases/tag/",
+  "^https://github\\.com/umatare5/telee/compare/",
+]
