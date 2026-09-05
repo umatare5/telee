@@ -7,7 +7,7 @@ require (
 	github.com/jinzhu/configor v1.2.2
 	github.com/urfave/cli/v3 v3.11.0
 	github.com/ziutek/telnet v0.1.0
-	golang.org/x/crypto v0.55.0
+	golang.org/x/crypto v0.56.0
 )
 
 require (
