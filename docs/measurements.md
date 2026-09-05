@@ -1,61 +1,64 @@
-# Performance Comparison: telee and napalm
+# Measurements
 
-## Introduction
+Every timing taken against the lab switch sits here once, with the scripts that produced it.
 
-- Use following software versions.
+## Conditions
 
-  - ```console
-    $ telee -v
-    version 1.6.5
-    ```
+The two clients, the device they were pointed at, and how the runs were driven.
 
-  - ```console
-    $ python --version
-    Python 3.9.5
-    $ pip show napalm | grep "Version"
-    Version: 3.3.0
-    ```
+| Component | Version |
+| :-------- | :------ |
+| telee     | 1.6.5   |
+| napalm    | 3.3.0   |
+| Python    | 3.9.5   |
 
-- Use following switch.
+The device is a `WS-C2960L-8TS-LL` running `C2960L-UNIVERSALK9-M` version `15.2(5c)E`, and a LAN cable connected the client to it directly, so nothing switched sits between them. Each case ran its command 100 times with a 3-second sleep between runs, and the comparison reads the 95th percentile of those 100 samples. Every run is a whole process, so each figure covers the login, the paging command and the teardown as well as the command itself.
 
-  - ```console
-    Cisco IOS Software, C2960L Software (C2960L-UNIVERSALK9-M),
-    Version 15.2(5c)E, RELEASE SOFTWARE (fc1)
-    Model number : WS-C2960L-8TS-LL
-    ```
+> [!NOTE]
+> Nothing here has been re-measured since. [`VERSION`](../VERSION) now reads 1.10.2, so every figure below describes telee 1.6.5 rather than the release in the tree.
 
-- Connect LAN cable to target switch directly.
+## Cases
 
-- Measure the time 100 times with the following command.
+Seven cases over three scripts, and the letter each report below carries.
 
-  - (A) `./telee_command.sh "show tech-support"`
-  - (B) `./telee_command.sh "show running-config"`
-  - (C) `./telee_command.sh "show version"`
-  - (D) `./telee_command_without_enable.sh "show version"`
-    - "show version" doesn't need privileged EXEC mode.
-  - (E) `./napalm_command.sh "show tech-support"`
-  - (F) `./napalm_command.sh "show running-config"`
-  - (G) `./napalm_command.sh "show version"`
-    - napalm cannot be deactivated privileged EXEC mode.
+| Case | Command                                            |
+| :--- | :------------------------------------------------- |
+| (A)  | `./telee_command.sh "show tech-support"`           |
+| (B)  | `./telee_command.sh "show running-config"`         |
+| (C)  | `./telee_command.sh "show version"`                |
+| (D)  | `./telee_command_without_enable.sh "show version"` |
+| (E)  | `./napalm_command.sh "show tech-support"`          |
+| (F)  | `./napalm_command.sh "show running-config"`        |
+| (G)  | `./napalm_command.sh "show version"`               |
 
-- Compare 95 percentiled times.
+The three scripts stayed at [`performance_comparison/`](performance_comparison/), and each was run from that directory.
+
+- [`telee_command.sh`](performance_comparison/telee_command.sh) — passes `--enable`, which adds the `enable` command and the privileged password to the batch
+- [`telee_command_without_enable.sh`](performance_comparison/telee_command_without_enable.sh) — drops it, because `show version` needs no privileged EXEC mode
+- [`napalm_command.sh`](performance_comparison/napalm_command.sh) — passes `secret=` and has no arm that skips the escalation, so (G) is the counterpart of both (C) and (D)
 
 ## Results
 
-- (A) 1.221s (Avg: 1.204s)
-- (B) 0.218s (Avg: 0.212s)
-- (C) 0.067s (Avg: 0.063s)
-- (D) 0.056s (Avg: 0.053s)
-- (E) 7.023s (Avg: 6.844s)
-- (F) 4.095s (Avg: 3.860s)
-- (G) 4.028s (Avg: 3.788s)
+The 95th percentile and the mean of 100 samples, in seconds.
 
-| Case        | Result                             |
-| :---------- | :--------------------------------- |
-| (A) and (E) | About 6 times faster than Napalm.  |
-| (B) and (F) | About 19 times faster than Napalm. |
-| (C) and (G) | About 60 times faster than Napalm. |
-| (D) and (G) | About 72 times faster than Napalm. |
+| Case | 95th percentile | Mean  |
+| :--- | :-------------- | :---- |
+| (A)  | 1.221           | 1.204 |
+| (B)  | 0.218           | 0.212 |
+| (C)  | 0.067           | 0.063 |
+| (D)  | 0.056           | 0.053 |
+| (E)  | 7.023           | 6.844 |
+| (F)  | 4.095           | 3.860 |
+| (G)  | 4.028           | 3.788 |
+
+Each pair below reads the same command through the two clients against the same switch.
+
+| Pair        | Reading                           |
+| :---------- | :-------------------------------- |
+| (A) and (E) | About 6 times faster than napalm  |
+| (B) and (F) | About 19 times faster than napalm |
+| (C) and (G) | About 60 times faster than napalm |
+| (D) and (G) | About 72 times faster than napalm |
 
 ## Reports
 

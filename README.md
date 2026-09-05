@@ -1,20 +1,19 @@
 <div align="center">
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/logo_dark.png" width="115px">
-  <source media="(prefers-color-scheme: light)" srcset="docs/assets/logo.png" width="115px">
-  <img src="docs/assets/logo.png" width="115px">
-</picture>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/umatare5/telee/main/docs/assets/logo_dark.png" width="115px" />
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/umatare5/telee/main/docs/assets/logo.png" width="115px" />
+    <img alt="telee" src="https://raw.githubusercontent.com/umatare5/telee/main/docs/assets/logo.png" width="115px" />
+  </picture>
 
   <h1>telee</h1>
 
-  <p>A CLI works on terminal execute a command on networking device through the user authentication.</p>
+  <p>A command-line interface that logs in to one network device and runs one command on it.</p>
 
   <p>
     <img alt="GitHub Tag" src="https://img.shields.io/github/v/tag/umatare5/telee?label=Latest%20version" />
     <a href="https://github.com/umatare5/telee/actions/workflows/go-test-build.yml"><img alt="Test and Build" src="https://github.com/umatare5/telee/actions/workflows/go-test-build.yml/badge.svg?branch=main" /></a>
-    <img alt="Test Coverage" src="docs/assets/coverage.svg" />
-    <a href="https://goreportcard.com/report/github.com/umatare5/telee"><img alt="Go Report Card" src="https://goreportcard.com/badge/github.com/umatare5/telee?style=flat-square" /></a><br/>
+    <img alt="Test Coverage" src="https://raw.githubusercontent.com/umatare5/telee/main/docs/assets/coverage.svg" /><br/>
     <a href="https://www.bestpractices.dev/projects/10968"><img alt="OpenSSF Best Practices" src="https://www.bestpractices.dev/projects/10968/badge" /></a>
     <a href="./LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" /></a>
     <a href="https://developer.cisco.com/codeexchange/github/repo/umatare5/telee"><img alt="Published" src="https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg" /></a>
@@ -24,76 +23,84 @@
 
 ## Overview
 
-This CLI has following advantages compared to use standard telnet and SSH.
+This CLI opens one telnet or SSH session, logs in, disables paging, runs one command and prints what came back.
 
-- Reduces login and logout operations.
+- 🔑 **One login**: Credentials arrive from `TELEE_*` variables, so no prompt interrupts a loop over many devices
+- 🧭 **Nine platforms**: `-x` picks the prompt, paging and escalation dialect, from Cisco IOS to YAMAHA RT
+- 🚿 **Shell-friendly**: Device output is the only thing on stdout, so a pipe or a redirect needs no filtering
+- ⚡ **Fast**: 6 to 72 times faster than napalm on one Catalyst 2960L, measured on telee 1.6.5
 
-  No longer have to enter username and password every time! 🎉
+Where a fleet is driven by `expect` scripts or TeraTerm macros, telee replaces the script with a single invocation. [`docs/measurements.md`](docs/measurements.md) carries the timings behind the figure above, and [umatare5/my-infra-network](https://github.com/umatare5/my-infra-network) is one repository that uses the CLI.
 
-- Realizes centralized operation from single host.
+![telee demonstration](https://raw.githubusercontent.com/umatare5/telee/images/promo.gif)
 
-  Able to get and compare the status, configuration and others easily! 🎉
+## Supported Environment
 
-For those who use many "expect" scripts and "TeraTerm Macro", telee may be a simple alternative.
+telee ships as a static binary and as a `scratch`-based image:
 
-In additional, the execution performance of telee is 6 to 72 times faster than [napalm](https://napalm.readthedocs.io/en/latest/cli.html)! 🚀
+- **Binaries** — `linux_amd64`, `linux_arm64`, `darwin_amd64` and `darwin_arm64`
+- **Images** — `ghcr.io/umatare5/telee` for `linux/amd64` and `linux/arm64`, running as UID 65534
 
-![](https://github.com/umatare5/telee/blob/images/promo.gif)
+Devices are reached over telnet or SSH, and nine exec-platforms cover the prompt and paging dialects between them. The [Exec Platform](#exec-platform) matrix names the OS version each path was verified on.
 
-## Installation
+## Quick Start
+
+### 1. Install the CLI
 
 ```bash
-docker run ghcr.io/umatare5/telee
+docker run --rm ghcr.io/umatare5/telee:latest --help
 ```
 
-> [!Tip]
-> If you prefer using binaries, download them from the [release page](https://github.com/umatare5/telee/releases).
->
-> - Supported Platforms: `linux_amd64`, `linux_arm64`, `darwin_amd64` and `darwin_arm64`
+> [!TIP]
+> If you prefer using binaries, download them from the [Release](https://github.com/umatare5/telee/releases) page.
+
+### 2. Export the credentials
+
+A password passed as a flag lands in the process arguments and the shell history, so read it into the environment instead.
+
+```bash
+export TELEE_USERNAME="telee"
+read -rs TELEE_PASSWORD && export TELEE_PASSWORD
+```
+
+### 3. Run one command
+
+```bash
+telee -H switch.example.internal -C "show interfaces description"
+```
+
+> [!NOTE]
+> Every platform but AireOS builds the prompt it waits for out of the value of `-H`, so that value has to match the hostname the device prints rather than merely resolve to its address.
 
 ## Syntax
 
+One invocation runs one command on one device, and there are no subcommands.
+
 ```bash
-NAME:
-   telee - One-line command executor
-
-USAGE:
-   telee -H HOSTNAME -C COMMAND [options...]
-
-VERSION:
-   1.8.0
-
-COMMANDS:
-   help, h  Shows a list of commands or help for one command
-
-GLOBAL OPTIONS:
-   --hostname value, -H value          Set hostname or IP address. [$TELEE_HOSTNAME]
-   --port value, -P value              Set port number. (default: 0)
-   --timeout value, -t value           Set timeout seconds. (default: 5)
-   --command value, -C value           Set a command. [$TELEE_COMMAND]
-   --exec-platform value, -x value     Set exec-platform. Refer to README.md what to be set. (default: "ios")
-   --enable-mode, -e, --ena, --enable  Raise to privileged EXEC mode. (default: false)
-   --redundant-mode, -r, --redundant   Use redundant prompt mode. (default: false)
-   --secure-mode, -s, --sec, --secure  Use ssh mode. (default: false)
-   --default-privilege-mode, -d        Use default privileged mode assinged by RADIUS attribute. (default: false)
-   --username value, -u value          Set username. (default: "admin") [$TELEE_USERNAME]
-   --password value, -p value          Set password. (default: "cisco") [$TELEE_PASSWORD]
-   --priv-password value, --pp value   Set password to raise to privileged EXEC mode. (default: "enable") [$TELEE_PRIVPASSWORD]
-   --help, -h                          show help (default: false)
-   --version, -v                       print the version (default: false)
+telee -H HOSTNAME -C COMMAND [options...]
 ```
+
+| Flag                             | What it sets                                              |
+| :------------------------------- | :-------------------------------------------------------- |
+| `--hostname`, `-H`               | Target host, which also builds the prompt telee expects   |
+| `--command`, `-C`                | The single command line sent to the device                |
+| `--exec-platform`, `-x`          | Platform dialect, `ios` unless set                        |
+| `--port`, `-P`                   | TCP port, completed to 22 under `-s` and to 23 otherwise  |
+| `--timeout`, `-t`                | Seconds one expect step may wait, 5 unless set            |
+| `--secure-mode`, `-s`            | Use SSH in place of telnet                                |
+| `--enable-mode`, `-e`            | Send the escalation command and the privileged password   |
+| `--default-privilege-mode`, `-d` | Expect a privileged prompt at login and escalate nothing  |
+| `--redundant-mode`, `-r`         | Append the failover suffix to every expected prompt       |
+| `--username`, `-u`               | Account name, `admin` unless set                          |
+| `--password`, `-p`               | Account password, `cisco` unless set                      |
+| `--priv-password`, `--pp`        | Privileged password, `enable` unless set                  |
+| `--host-key-path`, `--hkp`       | Public key file replacing `~/.ssh/known_hosts` under `-s` |
+
+`telee --help` prints the same flags with their aliases, [`docs/configuration.md`](docs/configuration.md) carries every default and environment variable, and [`docs/README.md`](docs/README.md) indexes the reference pages.
 
 ## Usage
 
-- Set credentials as environment variable.
-
-```bash
-export TELEE_USERNAME=telee
-export TELEE_PASSWORD=Teleedev!
-export TELEE_PRIVPASSWORD=Teleedev!!
-```
-
-- Run the command with hostname.
+- **Default platform** — `ios` over telnet needs nothing but a hostname and a command.
 
 ```console
 $ telee --hostname lab-cat29l-02f99-01 --command "show int descr"
@@ -117,7 +124,7 @@ Gi0/10                         admin down     down
 lab-cat29l-02f99-01>
 ```
 
-- Be able to grep the stdout.
+- **Only device output on stdout** — a pipe sees exactly what the device printed.
 
 ```console
 $ telee --hostname lab-cat29l-02f99-01 --command "show int descr" | grep "Interface\|down"
@@ -130,7 +137,7 @@ Gi0/9                          admin down     down
 Gi0/10                         admin down     down
 ```
 
-- Also able to redirect to file.
+- **Redirect** — the same bytes land in a file, and `-e` raises the session first once `TELEE_PRIVPASSWORD` is exported.
 
 ```console
 $ telee --hostname lab-cat29l-02f99-01 --command "show run" --enable > telee.log
@@ -147,7 +154,7 @@ Current configuration : 18687 bytes
 !
 ```
 
-- When use on other than IOS, need to set `--exec-platform` (`-x`) option.
+- **Other platforms** — `-x` selects the dialect for anything that is not IOS.
 
   <details><summary><u>Click to show example</u></summary><p>
 
@@ -176,7 +183,7 @@ Current configuration : 18687 bytes
 
   </p></details>
 
-- When use ASA, need to set `--enable-mode` option. It doesn't support `ter pag 0` in user-level.
+- **ASA** — `terminal pager 0` is refused from a user-level session, so an `asa` run has to start privileged through either `-e` or `-d`.
 
   <details><summary><u>Click to show example</u></summary><p>
 
@@ -205,7 +212,7 @@ Current configuration : 18687 bytes
 
   </p></details>
 
-- When use SSH, need to set `--secure` option.
+- **SSH** — `-s` replaces telnet, and its aliases `--sec` and `--secure` name the same flag.
 
   <details><summary><u>Click to show example</u></summary><p>
 
@@ -234,7 +241,7 @@ Current configuration : 18687 bytes
 
   </p></details>
 
-- When use RADIUS to raise the privilege, need to set `--default-privilege-mode` option.
+- **RADIUS privilege** — `-d` expects the privileged prompt straight after login, so nothing is escalated and no privileged password is read.
 
   <details><summary><u>Click to show example</u></summary><p>
 
@@ -265,7 +272,7 @@ Current configuration : 18687 bytes
 
   </p></details>
 
-- When face the timeout, be able to extend the time using `--timeout` option.
+- **Slow devices** — `-t` widens the window each expect step waits in.
 
   <details><summary><u>Click to show example</u></summary><p>
 
@@ -294,34 +301,37 @@ Current configuration : 18687 bytes
 
   </p></details>
 
-## Usecase
-
-- [umatare5/my-infra-network](https://github.com/umatare5/my-infra-network)
-
 ## Exec Platform
 
-- telee works for several operating systems. These are called exec-platform.
-- The following table shows each exec-platform was verified on which OS version.
+telee speaks nine platform dialects, and `-x` selects one. Each decides the prompt telee waits for and the command that disables paging, and five of the nine add an escalation path on top.
 
 ### Matrix
 
-| Name (`-x`) | Description              | Enable Mode (`-e`) | Redundant Mode (`-r`) |
-| :---------- | :----------------------- | ------------------ | --------------------- |
-| aireos      | Cisco AireOS             | Optional           | Not Available         |
-| allied      | AlliedTelesis AlliedWare | Not Available      | Not Available         |
-| asa         | Cisco ASA Software       | **REQUIRED**       | Optional              |
-| foundry     | Brocade IronWare         | Optional           | Not Available         |
-| ios         | Cisco IOS, IOS-XE        | Optional           | Not Available         |
-| nxos        | Cisco NX-OS              | Optional           | Not Available         |
-| srx         | JuniperNetworks JunOS    | Not Available      | Not Available         |
-| ssg         | JuniperNetworks ScreenOS | Not Available      | Optional              |
-| yamaha      | YAMAHA RT OS             | Optional           | Not Available         |
+| Name (`-x`) | Description              | Enable Mode (`-e`)  | Redundant Mode (`-r`) |
+| :---------- | :----------------------- | :------------------ | :-------------------- |
+| aireos      | Cisco AireOS             | Not Available       | Not Available         |
+| allied      | AlliedTelesis AlliedWare | Not Available       | Not Available         |
+| asa         | Cisco ASA Software       | Either `-e` or `-d` | Optional              |
+| foundry     | Brocade IronWare         | Optional            | Not Available         |
+| ios         | Cisco IOS/IOS-XE         | Optional            | Not Available         |
+| nxos        | Cisco NX-OS              | Optional            | Not Available         |
+| srx         | Juniper JunOS            | Not Available       | Not Available         |
+| ssg         | Juniper ScreenOS         | Not Available       | Optional              |
+| yamaha      | YAMAHA RT                | Optional            | Not Available         |
+
+"Not Available" means the repository for that platform builds no privileged batch, so `-e` is taken and then ignored: a notice reaches stderr and the session stays where the login left it.
+
+`asa` is the one platform whose paging command needs a privileged session, so a run setting neither `-e` nor `-d` is refused with `EnableMode must be set. Terminal length expansion in user-level is not supporting.`
+
+`-r` appends the suffix a redundant pair prints — `/pri/act` on ASA, `(M)` on ScreenOS — to every prompt telee expects, which is why the two platforms that accept it are the two that print one.
 
 ### Verified On
 
-- "⚠ Not Verified" means "implemented but not checked". I'm waiting your report! 💓
+Each version below is the OS that path was exercised against. "⚠ Not Verified" marks a path that is implemented and reachable but never run on hardware.
 
-| Name (`-x`)          | Telnet          | SSH (--secure)   | Default PrivMode (`-d`) |
+ASA under `-d` is one of them. The mode guard rejected that combination until the guards were aligned with what the repositories implement, so it is reachable now and still unverified.
+
+| Name (`-x`)          | Telnet          | SSH (`-s`)       | Default PrivMode (`-d`) |
 | :------------------- | :-------------- | :--------------- | ----------------------- |
 | aireos               | ✅ 8.5.120.0    | ✅ 8.5.120.0     | Not Supported           |
 | allied               | ✅ 1.6.14B02    | Not Supported    | Not Supported           |
@@ -335,33 +345,36 @@ Current configuration : 18687 bytes
 | ssg (redundant-mode) | ✅ 6.3.0r22.0   | ⚠ Not Verified   | Not Supported           |
 | yamaha               | ✅ Rev.8.03.94  | ✅ Rev.10.01.78  | Not Supported           |
 
-### Build
+## Configuration
 
-The repository includes a ready to use `Dockerfile`. To build a new Docker image:
+Six environment variables reach the flags below, and nothing else in the environment is read.
 
-```bash
-make goreleaser-image
-```
+| Variable             | Flag                       | Default  |
+| :------------------- | :------------------------- | :------- |
+| `TELEE_HOSTNAME`     | `--hostname`, `-H`         | —        |
+| `TELEE_COMMAND`      | `--command`, `-C`          | —        |
+| `TELEE_USERNAME`     | `--username`, `-u`         | `admin`  |
+| `TELEE_PASSWORD`     | `--password`, `-p`         | `cisco`  |
+| `TELEE_PRIVPASSWORD` | `--priv-password`, `--pp`  | `enable` |
+| `TELEE_HOSTKEYPATH`  | `--host-key-path`, `--hkp` | —        |
 
-This creates an image named `ghcr.io/$USER/telee`.
+Under `-s` the host key is checked against `~/.ssh/known_hosts`, and `--host-key-path` narrows that to one public key file. No flag disables the check. [`docs/configuration.md`](docs/configuration.md) carries the precedence between a flag and its variable, and which flags each platform accepts.
 
-### Release
+> [!IMPORTANT]
+> `-e` is refused with `TELEE_PRIVPASSWORD must be set` while the privileged password still equals the default `enable`, because the guard compares it against that default rather than testing it for emptiness.
 
-To release a new version, follow these steps:
+## Troubleshooting
 
-1. Update the version in the `VERSION` file.
-2. Submit a pull request with the updated `VERSION` file.
+A rejected argument prints one `ERROR failed to validate arguments error="…"` line and exits 1, and a failed session prints the transport error followed by a `[Hint]` block. Both go to stderr, so a redirect that would have captured device output holds nothing after a failure.
 
-Once the pull request is merged, the GitHub Workflow will automatically:
+[`docs/troubleshooting.md`](docs/troubleshooting.md) maps each message to the condition that produced it.
 
-- Create and push a new tag based on the `VERSION` file.
+## Contributing
 
-After that, I will manually release using [GitHub Actions: release workflow](https://github.com/umatare5/controld-exporter/actions/workflows/release.yaml).
+[`CONTRIBUTING.md`](CONTRIBUTING.md) carries the `make` targets, the container build and the release process.
+
+No manual release trigger exists. Pushing a change to [`VERSION`](VERSION) on `main` runs [`.github/workflows/go-release.yml`](.github/workflows/go-release.yml), which tags the commit from that file and then has goreleaser build the archives and push the images.
 
 ## Licence
 
-[MIT](LICENSE)
-
-## Author
-
-[umatare5](https://github.com/umatare5)
+MIT. The binary statically links MIT, BSD 3-Clause and Apache 2.0 dependencies, whose notices are reproduced in [`NOTICE`](NOTICE) and shipped alongside [`LICENSE`](LICENSE) in every release archive and container image.
