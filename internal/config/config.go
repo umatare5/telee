@@ -9,7 +9,6 @@ import (
 	"github.com/umatare5/telee/internal/domain"
 	"github.com/umatare5/telee/pkg/errors"
 
-	"github.com/jinzhu/configor"
 	"github.com/urfave/cli/v3"
 )
 
@@ -52,13 +51,7 @@ func New(cli *cli.Command) Config {
 		HostKeyPath:     cli.String(domain.HostKeyPathFlagName),
 	}
 
-	err := configor.New(&configor.Config{}).Load(&cfg)
-	if err != nil {
-		slog.Error("failed to load configuration", "error", err)
-		os.Exit(1)
-	}
-
-	err = checkArguments(&cfg)
+	err := checkArguments(&cfg)
 	if err != nil {
 		slog.Error("failed to validate arguments", "error", err)
 		os.Exit(1)
@@ -198,6 +191,9 @@ func isUsableEnableMode(platform string) bool {
 		return false
 	}
 	if platform == domain.AlliedWarePlatformName {
+		return false
+	}
+	if platform == domain.JunOSPlatformName {
 		return false
 	}
 	if platform == domain.ScreenOSPlatformName {
