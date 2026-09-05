@@ -1,6 +1,8 @@
-.*
-!go.mod
-!go.sum
-!main.go
-!internal/
-telee
+# goreleaser assembles the Docker build context itself, in a temporary directory holding
+# the binaries laid out as <os>/<arch>/telee plus the files named in
+# dockers_v2.extra_files, so nothing in this repository needs to be sent. The
+# re-includes name that layout rather than any path this repository holds.
+*
+!*/*/telee
+!LICENSE
+!NOTICE

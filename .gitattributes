@@ -1,0 +1,5 @@
+# Treat everything under coverage/ as generated files (default collapsed in PR diffs)
+coverage/** linguist-generated=true
+
+# Disable diffs completely for certain file types (treat as binary)
+coverage/*.out  -diff

@@ -2,9 +2,6 @@
 tmp/
 vendor/
 
-# Test data files
-testdata/
-
 # Build artifacts
 *.exe
 *.dll
@@ -20,7 +17,6 @@ dist
 *.out
 coverage/*
 !coverage/report.out
-!coverage/report.html
 
 # IDE files
 .idea/

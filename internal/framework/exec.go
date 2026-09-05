@@ -3,6 +3,7 @@ package framework
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/umatare5/telee/internal/application"
 	"github.com/umatare5/telee/internal/config"
@@ -27,7 +28,7 @@ func New(c *config.Config, r *infrastructure.Repository, u *application.Usecase)
 }
 
 // Run displays the command result.
-func (e *Exec) Run() {
+func (e *Exec) Run() error {
 	var err error
 	var data string
 
@@ -60,9 +61,10 @@ func (e *Exec) Run() {
 	}
 
 	if err != nil {
-		fmt.Println(err)
-		fmt.Print(domain.HintTelnetFailed)
-		return
+		fmt.Fprintln(os.Stderr, err)
+		fmt.Fprint(os.Stderr, domain.HintTelnetFailed)
+		return err
 	}
 	fmt.Println(data)
+	return nil
 }

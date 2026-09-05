@@ -1,19 +1,30 @@
 ---
-# See https://pre-commit.com for more information
-# See https://pre-commit.com/hooks.html for more hooks
+# The golangci-lint rev below must match golangci_lint_version in
+# .github/workflows/go-test-fmt.yml. Renovate updates the two through different
+# datasources, so nothing forces them onto the same pull request.
 repos:
+  - repo: local
+    hooks:
+      - id: no-commit-to-main
+        name: no-commit-to-main
+        entry: scripts/no-commit-to-main.sh
+        language: script
+        pass_filenames: false
+        always_run: true
+        fail_fast: true
+
   - repo: https://github.com/golangci/golangci-lint
     rev: v2.13.2
     hooks:
-      - id: golangci-lint
-        name: golangci-lint
-        entry: golangci-lint run --fix
-        types: [go]
-        language: golang
-        pass_filenames: false
+      # The full variant runs on the whole module, so the linters that need to
+      # see every file — unused above all — report what they actually would.
+      - id: golangci-lint-full
 
   - repo: local
     hooks:
+      # .golangci.yml declares no formatters block, so `golangci-lint run --fix`
+      # above rewrites logic but never formatting. This hook is what keeps the
+      # tree gofmt-clean and retires the day that block lands.
       - id: gofmt
         name: gofmt
         entry: gofmt -l -w
@@ -21,14 +32,28 @@ repos:
         types: [go]
         pass_filenames: true
 
-      - id: markdownlint-cli2
-        name: markdownlint-cli2
-        entry: markdownlint-cli2 --fix
-        language: system
-        types: [markdown]
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.12
+    hooks:
+      - id: actionlint
 
-      - id: gitleaks
-        name: gitleaks
-        entry: gitleaks protect --staged
-        language: system
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.1
+    hooks:
+      - id: gitleaks-system
+        # The upstream hook definition omits this, and gitleaks takes a lone
+        # positional argument as the repository path
+        pass_filenames: false
+
+  - repo: https://github.com/DavidAnson/markdownlint-cli2
+    rev: v0.23.2
+    hooks:
+      # markdownlint-cli2 unions the filenames it is handed with the globs in
+      # .markdownlint-cli2.jsonc rather than replacing them, so passing them
+      # only makes pre-commit repeat the same whole-tree lint once per batch.
+      # --fix is withheld for the same reason: those globs still reach tmp/,
+      # where the sibling worktrees live, and rewriting their Markdown from a
+      # commit here is not this hook's business. Restore it once that config
+      # ignores tmp/**.
+      - id: markdownlint-cli2
         pass_filenames: false

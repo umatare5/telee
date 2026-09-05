@@ -9,7 +9,6 @@ import (
 	"github.com/umatare5/telee/internal/domain"
 	"github.com/umatare5/telee/pkg/errors"
 
-	"github.com/jinzhu/configor"
 	"github.com/urfave/cli/v3"
 )
 
@@ -52,13 +51,7 @@ func New(cli *cli.Command) Config {
 		HostKeyPath:     cli.String(domain.HostKeyPathFlagName),
 	}
 
-	err := configor.New(&configor.Config{}).Load(&cfg)
-	if err != nil {
-		slog.Error("failed to load configuration", "error", err)
-		os.Exit(1)
-	}
-
-	err = checkArguments(&cfg)
+	err := checkArguments(&cfg)
 	if err != nil {
 		slog.Error("failed to validate arguments", "error", err)
 		os.Exit(1)
@@ -89,7 +82,8 @@ func checkArguments(cfg *Config) error {
 	if cfg.DefaultPrivMode && !isUsableDefaultPrivMode(cfg.ExecPlatform) {
 		return errors.ErrUnsupportedDefaultPrivMode
 	}
-	if !cfg.EnableMode && !isExpandableTermLength(cfg.ExecPlatform) {
+	// Paging cannot be disabled from an unprivileged ASA session; default-priv-mode already starts privileged.
+	if !cfg.EnableMode && !cfg.DefaultPrivMode && !isExpandableTermLength(cfg.ExecPlatform) {
 		return errors.ErrTermLengthIsEnforced
 	}
 	if cfg.Hostname == domain.EmptyString {
@@ -108,7 +102,7 @@ func checkArguments(cfg *Config) error {
 		return errors.ErrMissingPrivPassword
 	}
 	if cfg.EnableMode && !isUsableEnableMode(cfg.ExecPlatform) {
-		fmt.Println(infoEnableModeIgnored)
+		fmt.Fprintln(os.Stderr, infoEnableModeIgnored)
 	}
 
 	return nil
@@ -198,6 +192,9 @@ func isUsableEnableMode(platform string) bool {
 		return false
 	}
 	if platform == domain.AlliedWarePlatformName {
+		return false
+	}
+	if platform == domain.JunOSPlatformName {
 		return false
 	}
 	if platform == domain.ScreenOSPlatformName {
