@@ -25,9 +25,9 @@
 Install required tools (one-time):
 
 - `go install gotest.tools/gotestsum@latest`
-- `golangci-lint` - See <https://golangci-lint.run/docs/welcome/install/local//>
+- `golangci-lint` - See <https://golangci-lint.run/docs/welcome/install/>
 - `goreleaser` release builds (see [.goreleaser.yml](.goreleaser.yml))
-- `pre-commit install` wires `golangci-lint`, `gofmt`, `markdownlint-cli2`, `gitleaks` (see [.pre-commit-config.yaml](.pre-commit-config.yaml))
+- `make pre-commit-install` wires every hook in [.pre-commit-config.yaml](.pre-commit-config.yaml)
 
 Make targets ([Makefile](Makefile)):
 
@@ -40,9 +40,8 @@ Make targets ([Makefile](Makefile)):
 ## Code Style
 
 - `gofmt` and `golangci-lint` are enforced by the pre-commit hook (see [.pre-commit-config.yaml](.pre-commit-config.yaml)).
-- Follow [.github/instructions/go.instructions.md](.github/instructions/go.instructions.md) for idiomatic Go.
 
-## Testing Instructions
+## Testing
 
 - Run `make test-unit` before committing.
 - Place tests next to code under test (`*_test.go`).
@@ -66,10 +65,3 @@ Reference `internal/application/usecases/` and `internal/infrastructure/reposito
 - **Cisco AireOS**: No enable mode, WLC-specific prompts
 - **Juniper SRX/SSG**: CLI vs config mode, prompts `>` / `#`
 - **YAMAHA RT**: Japanese vendor, unique syntax
-
-## References
-
-- [.github/instructions/go.instructions.md](.github/instructions/go.instructions.md) - Idiomatic Go practices
-- [.github/instructions/markdown.instructions.md](.github/instructions/markdown.instructions.md) - CommonMark (0.31.2)
-- [.github/instructions/markdown-gfm.instructions.md](.github/instructions/markdown-gfm.instructions.md) - GitHub-flavored Markdown
-- [.github/instructions/github-actions-ci-cd-best-practices.instructions.md](.github/instructions/github-actions-ci-cd-best-practices.instructions.md) - GitHub Actions CI/CD best practices
