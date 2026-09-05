@@ -1,22 +1,182 @@
 {
   "config": {
     "default": true,
-    "first-line-h1": false,
-    "header-increment": false,
-    "line_length": false,
-    "no-alt-text": false,
-    "no-bare-urls": false,
-    "no-blanks-blockquote": false,
-    "no-duplicate-heading": false,
-    "no-inline-html": false,
-    "no-trailing-punctuation": false,
+    "MD013": false,
+    // `### Changed`, `### Added` and `### Fixed` recur under successive releases
+    "MD024": false,
+    "MD026": false,
+    "MD028": false,
+    "MD033": false,
+    "MD034": false,
+    "MD041": false,
+    "MD045": false
   },
-  "ignores": [
-    "vendor/**",
-    ".github/instructions/**",
-    ".github/copilot-instructions.md",
-    ".claude/CLAUDE.md",
-    ".gemini/GEMINI.md",
+  "overrides": [
+    {
+      "filter": ["AGENTS.md"],
+      "combine": "merge",
+      "config": {
+        "MD043": {
+          "match_case": true,
+          "headings": [
+            "# Repository Instructions",
+            "## Tech Stack", "*",
+            "## Repository Structure", "*",
+            "## Setup and Commands", "*",
+            "## Code Style", "*",
+            "## Testing", "*",
+            "## Commits and PRs", "*",
+            "## Domain Knowledge", "*"
+          ]
+        }
+      }
+    },
+    {
+      "filter": ["CHANGELOG.md"],
+      "combine": "merge",
+      "config": {
+        // Release headings accrue and this repository opens each one directly as
+        // `## [vX.Y.Z]`, so only the title is pinned
+        "MD043": {
+          "match_case": true,
+          "headings": [
+            "# Changelog",
+            "*"
+          ]
+        }
+      }
+    },
+    {
+      "filter": ["CONTRIBUTING.md"],
+      "combine": "merge",
+      "config": {
+        "MD043": {
+          "match_case": true,
+          "headings": [
+            "# Contributing",
+            "## Commands", "*",
+            "## Build", "*",
+            "## Release", "*",
+            "## Pull requests"
+          ]
+        }
+      }
+    },
+    {
+      "filter": ["README.md"],
+      "combine": "merge",
+      "config": {
+        // The logo, badges and title block are HTML and the heading they carry is an
+        // <h1>; `details`, `summary` and `u` are the collapsed examples under Usage
+        "MD033": {
+          "allowed_elements": [
+            "a", "br", "details", "div", "h1",
+            "img", "p", "picture", "source", "summary", "u"
+          ]
+        },
+        "MD041": { "allow_preamble": true },
+        "MD043": {
+          "match_case": true,
+          "headings": [
+            "## Overview", "*",
+            "## Supported Environment", "*",
+            "## Quick Start", "*",
+            "## Syntax", "*",
+            "## Usage", "*",
+            "## Exec Platform", "*",
+            "## Configuration", "*",
+            "## Troubleshooting", "*",
+            "## Contributing", "*",
+            "## Licence"
+          ]
+        }
+      }
+    },
+    {
+      // The policy sections the OSS corpus settles on, pinned exactly: this file states
+      // what is reported and how, and never how to operate the CLI. Hardening guidance
+      // belongs to docs/configuration.md and docs/troubleshooting.md.
+      "filter": ["SECURITY.md"],
+      "combine": "merge",
+      "config": {
+        "MD043": {
+          "match_case": true,
+          "headings": [
+            "# Security Policy",
+            "## Supported Versions",
+            "## Reporting a Vulnerability",
+            "## What to Include",
+            "## Scope"
+          ]
+        }
+      }
+    },
+    {
+      // An index, then the contracts no single page owns. A section beyond those
+      // two would be a fact the page it points at already carries.
+      "filter": ["docs/README.md"],
+      "combine": "merge",
+      "config": {
+        "MD043": {
+          "match_case": true,
+          "headings": ["# Documentation", "## Technical Information", "*"]
+        }
+      }
+    },
+    {
+      "filter": ["docs/configuration.md"],
+      "combine": "merge",
+      "config": {
+        "MD043": {
+          "match_case": true,
+          "headings": [
+            "# Configuration",
+            "## Flags", "*",
+            "## Environment Variables", "*",
+            "## Precedence", "*",
+            "## Hardening"
+          ]
+        }
+      }
+    },
+    {
+      // The sole owner of every reading taken against a device. The subject sections
+      // are closed; only Reports grows, one heading per measured case.
+      "filter": ["docs/measurements.md"],
+      "combine": "merge",
+      "config": {
+        "MD043": {
+          "match_case": true,
+          "headings": [
+            "# Measurements",
+            "## Conditions",
+            "## Cases",
+            "## Results",
+            "## Reports", "*"
+          ]
+        }
+      }
+    },
+    {
+      // One section per symptom, so the file grows a heading whenever a new failure
+      // becomes worth naming. Only the title is pinned.
+      "filter": ["docs/troubleshooting.md"],
+      "combine": "merge",
+      "config": {
+        "MD043": { "match_case": true, "headings": ["# Troubleshooting", "*"] }
+      }
+    }
   ],
   "globs": ["**/*.md"],
+  // "gitignore": true is deliberately not set: it would cover only the tmp/ and
+  // vendor/ half of this list, leaving the two tracked symlinks linted twice, and
+  // would tie the lint surface to a file maintained for build artifacts.
+  "ignores": [
+    // BUILD_DIR, and the root of every worktree `git wt` creates
+    "tmp/**",
+    "vendor/**",
+    // Both are symlinks to AGENTS.md; linting the target once is enough.
+    ".github/copilot-instructions.md",
+    ".claude/CLAUDE.md"
+  ]
 }
