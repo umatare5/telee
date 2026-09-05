@@ -56,7 +56,8 @@ test-unit-coverage: test-unit
 # what the build produced rather than the directory itself.
 clean:
 	rm -f $(BINARY_PATH)
-	rm -rf $(BUILD_DIR)/dist $(COVERAGE_DIR)
+	rm -rf $(BUILD_DIR)/dist
+	rm -f $(COVERAGE_DIR)/report.html
 	find . -name "*.bak*" -type f -delete 2>/dev/null || true
 
 # --allow-missing-config is load-bearing: the hook path is the shared git common
