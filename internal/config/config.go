@@ -82,7 +82,8 @@ func checkArguments(cfg *Config) error {
 	if cfg.DefaultPrivMode && !isUsableDefaultPrivMode(cfg.ExecPlatform) {
 		return errors.ErrUnsupportedDefaultPrivMode
 	}
-	if !cfg.EnableMode && !isExpandableTermLength(cfg.ExecPlatform) {
+	// Paging cannot be disabled from an unprivileged ASA session; default-priv-mode already starts privileged.
+	if !cfg.EnableMode && !cfg.DefaultPrivMode && !isExpandableTermLength(cfg.ExecPlatform) {
 		return errors.ErrTermLengthIsEnforced
 	}
 	if cfg.Hostname == domain.EmptyString {
@@ -101,7 +102,7 @@ func checkArguments(cfg *Config) error {
 		return errors.ErrMissingPrivPassword
 	}
 	if cfg.EnableMode && !isUsableEnableMode(cfg.ExecPlatform) {
-		fmt.Println(infoEnableModeIgnored)
+		fmt.Fprintln(os.Stderr, infoEnableModeIgnored)
 	}
 
 	return nil
