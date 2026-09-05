@@ -177,21 +177,21 @@ func isStandardSSHPort(address string) bool {
 func (c *SSH) Fetch(batchers *[]x.Batcher, config *ssh.ClientConfig) (string, error) {
 	conn, err := c.dial(config)
 	if err != nil {
-		fmt.Print(errSSHSpawnFailed)
+		fmt.Fprint(os.Stderr, errSSHSpawnFailed)
 		return "", err
 	}
 	defer conn.Close() //nolint: errcheck
 
 	expecter, _, err := x.SpawnSSH(conn, c.timeout)
 	if err != nil {
-		fmt.Print(errSSHSpawnFailed)
+		fmt.Fprint(os.Stderr, errSSHSpawnFailed)
 		return "", err
 	}
 	defer expecter.Close() //nolint: errcheck
 
 	stdout, err := expecter.ExpectBatch(*batchers, c.timeout)
 	if err != nil {
-		fmt.Print(errSSHBatchFailed)
+		fmt.Fprint(os.Stderr, errSSHBatchFailed)
 		return "", err
 	}
 

@@ -3,6 +3,7 @@ package telnet
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 	"time"
 
@@ -37,14 +38,14 @@ func New(host string, port int, protocol string, timeout time.Duration) *Telnet 
 func (t *Telnet) Fetch(x *[]x.Batcher) (string, error) {
 	conn, _, err := t.spawn()
 	if err != nil {
-		fmt.Print(errTelnetSpawnFailed)
+		fmt.Fprint(os.Stderr, errTelnetSpawnFailed)
 		return "", err
 	}
 	defer conn.Close() // nolint: errcheck
 
 	stdout, err := conn.ExpectBatch(*x, t.timeout)
 	if err != nil {
-		fmt.Print(errTelnetBatchFailed)
+		fmt.Fprint(os.Stderr, errTelnetBatchFailed)
 		return "", err
 	}
 

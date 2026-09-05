@@ -33,8 +33,7 @@ func Start() {
 			r := infrastructure.New(&c)
 			u := application.New(&c, &r)
 			exec := framework.New(&c, &r, &u)
-			exec.Run()
-			return nil
+			return exec.Run()
 		},
 	}
 
