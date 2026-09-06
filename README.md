@@ -59,14 +59,14 @@ docker run --rm ghcr.io/umatare5/telee:latest --help
 A password passed as a flag lands in the process arguments and the shell history, so read it into the environment instead.
 
 ```bash
-export TELEE_USERNAME="telee"
+export TELEE_USERNAME="operator"
 read -rs TELEE_PASSWORD && export TELEE_PASSWORD
 ```
 
 ### 3. Run one command
 
 ```bash
-telee -H switch.example.internal -C "show interfaces description"
+telee -H sw01.example.internal -C "show interfaces description"
 ```
 
 > [!NOTE]
@@ -103,7 +103,7 @@ telee -H HOSTNAME -C COMMAND [options...]
 - **Default platform** — `ios` over telnet needs nothing but a hostname and a command.
 
 ```console
-$ telee --hostname lab-cat29l-02f99-01 --command "show int descr"
+$ telee --hostname sw01 --command "show int descr"
 show int descr
 Load for five secs: 2%/0%; one minute: 1%; five minutes: 1%
 Time source is NTP, 23:16:54.302 JST Sat May 8 2021
@@ -121,13 +121,13 @@ Gi0/7                          down           down     CLIENT_DEVICE
 Gi0/8                          up             up       GATEWAY_ROUTER
 Gi0/9                          admin down     down
 Gi0/10                         admin down     down
-lab-cat29l-02f99-01>
+sw01>
 ```
 
 - **Only device output on stdout** — a pipe sees exactly what the device printed.
 
 ```console
-$ telee --hostname lab-cat29l-02f99-01 --command "show int descr" | grep "Interface\|down"
+$ telee --hostname sw01 --command "show int descr" | grep "Interface\|down"
 Interface                      Status         Protocol Description
 Vl1                            admin down     down
 Gi0/1                          down           down     CLIENT_DEVICE_LONG_DESCR
@@ -140,7 +140,7 @@ Gi0/10                         admin down     down
 - **Redirect** — the same bytes land in a file, and `-e` raises the session first once `TELEE_PRIVPASSWORD` is exported.
 
 ```console
-$ telee --hostname lab-cat29l-02f99-01 --command "show run" --enable > telee.log
+$ telee --hostname sw01 --command "show run" --enable > telee.log
 $ head -n 10 telee.log
 show run
 Load for five secs: 1%/0%; one minute: 1%; five minutes: 1%
@@ -159,7 +159,7 @@ Current configuration : 18687 bytes
   <details><summary><u>Click to show example</u></summary><p>
 
   ```console
-  $ telee -H 192.168.0.250 -C "show sysinfo" -x aireos
+  $ telee -H 192.0.2.250 -C "show sysinfo" -x aireos
   show sysinfo
 
   Manufacturer's Name.............................. Cisco Systems Inc.
@@ -173,11 +173,11 @@ Current configuration : 18687 bytes
 
   Build Type....................................... DATA + WPS
 
-  System Name...................................... lab-wlc-01f01-01a
+  System Name...................................... wlc01
   System Location..................................
   System Contact...................................
   System ObjectID.................................. 1.3.6.1.4.1.9.1.1279
-  IP Address....................................... 192.168.0.250
+  IP Address....................................... 192.0.2.250
   <snip>
   ```
 
@@ -188,7 +188,8 @@ Current configuration : 18687 bytes
   <details><summary><u>Click to show example</u></summary><p>
 
   ```console
-  $ telee -H lab-asa5505-02f01-01 -C "show version" -x asa --enable-mode --pp Pswd1234#
+  $ export TELEE_PRIVPASSWORD='<enable password>'
+  $ telee -H fw01 -C "show version" -x asa --enable-mode
   show version
 
   Cisco Adaptive Security Appliance Software Version 9.0(4)
@@ -198,7 +199,7 @@ Current configuration : 18687 bytes
   System image file is "disk0:/asa904-k8.bin"
   Config file at boot was "startup-config"
 
-  lab-asa5505-02f01-01 up 70 days 2 hours
+  fw01 up 70 days 2 hours
 
   Hardware:   ASA5505, 512 MB RAM, CPU Geode 500 MHz,
   Internal ATA Compact Flash, 128MB
@@ -217,7 +218,7 @@ Current configuration : 18687 bytes
   <details><summary><u>Click to show example</u></summary><p>
 
   ```console
-  $ telee -H lab-cat29l-02f99-01 -C "show run" --enable --secure
+  $ telee -H sw01 -C "show run" --enable --secure
   show run
   Load for five secs: 8%/0%; one minute: 2%; five minutes: 1%
   Time source is NTP, 02:25:22.496 JST Fri May 14 2021
@@ -226,7 +227,7 @@ Current configuration : 18687 bytes
 
   Current configuration : 18716 bytes
   !
-  ! Last configuration change at 01:46:41 JST Fri May 14 2021 by raciadev
+  ! Last configuration change at 01:46:41 JST Fri May 14 2021 by operator
   !
   version 15.2
   no service pad
@@ -235,7 +236,7 @@ Current configuration : 18687 bytes
   service timestamps log datetime msec localtime show-timezone
   service password-encryption
   !
-  hostname lab-cat29l-02f99-01
+  hostname sw01
   <snip>
   ```
 
@@ -246,7 +247,7 @@ Current configuration : 18687 bytes
   <details><summary><u>Click to show example</u></summary><p>
 
   ```console
-  $ telee -H lab-nx70-02f01-01 -C "show version" -x nxos --default-privilege-mode
+  $ telee -H sw02 -C "show version" -x nxos --default-privilege-mode
   show version
   Cisco Nexus Operating System (NX-OS) Software
   TAC support: http://www.cisco.com/tac
@@ -277,19 +278,19 @@ Current configuration : 18687 bytes
   <details><summary><u>Click to show example</u></summary><p>
 
   ```console
-  $ telee -H lab-fs909-02f01-01 -C "show system" -x allied -u manager --timeout 10
+  $ telee -H sw03 -C "show system" -x allied -u manager --timeout 10
   show system
   Switch System Status                     Date 2021-05-09 Time 01:04:54
   Board     Bay      Board Name
   ----------------------------------------------------------------------
   Base      -        FS909M
   ----------------------------------------------------------------------
-  Memory -  DRAM : 32768 kB  FLASH : 8192 kB   MAC : 00-1A-EB-93-1C-95
+  Memory -  DRAM : 32768 kB  FLASH : 8192 kB   MAC : 00-00-5E-00-53-01
   ----------------------------------------------------------------------
   SysDescription  : CentreCOM FS909M Ver 1.6.14 B02
   SysContact      :
   SysLocation     : LAB
-  SysName         : lab-fs909-02f01-01
+  SysName         : sw03
   SysUpTime       : 1267989237(146days, 18:11:32)
   Release Version : 1.6.14
   Release built   : B02 (Nov 23 2010 at 14:29:56)
@@ -332,7 +333,7 @@ Each version below is the OS that path was exercised against. "⚠ Not Verified"
 ASA under `-d` is one of them. The mode guard rejected that combination until the guards were aligned with what the repositories implement, so it is reachable now and still unverified.
 
 | Name (`-x`)          | Telnet          | SSH (`-s`)       | Default PrivMode (`-d`) |
-| :------------------- | :-------------- | :--------------- | ----------------------- |
+| :------------------- | :-------------- | :--------------- | :---------------------- |
 | aireos               | ✅ 8.5.120.0    | ✅ 8.5.120.0     | Not Supported           |
 | allied               | ✅ 1.6.14B02    | Not Supported    | Not Supported           |
 | asa                  | ✅ 9.0(4)       | ⚠ Not Verified   | ⚠ Not Verified          |

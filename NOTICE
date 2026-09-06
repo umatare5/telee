@@ -4,7 +4,7 @@ Copyright (c) 2021 umatare5
 This product is distributed under the MIT License — see the LICENSE file for
 its terms. The binaries and container images published for this project
 statically link the third-party Go modules named below, and this file carries
-the notices their licences require on redistribution in binary form.
+the notices their licenses require on redistribution in binary form.
 
 The list is the set of modules "go list -deps ./cmd" reports, and it is the
 same on every published platform: linux/amd64, linux/arm64, darwin/amd64 and
@@ -15,9 +15,9 @@ darwin/arm64. The version of each is recorded in go.mod and go.sum.
 MIT License
 ===============================================================================
 
-The following module is licensed under the MIT License. Its licence text is
+The following module is licensed under the MIT License. Its license text is
 reproduced below, carrying the copyright notice and the permission notice that
-licence requires in all copies or substantial portions.
+license requires in all copies or substantial portions.
 
 -------------------------------------------------------------------------------
 github.com/urfave/cli/v3
@@ -50,8 +50,8 @@ SOFTWARE.
 BSD 3-Clause License
 ===============================================================================
 
-The following modules are licensed under the BSD 3-Clause License. The licence
-text of each is reproduced below, as that licence's second clause requires of a
+The following modules are licensed under the BSD 3-Clause License. The license
+text of each is reproduced below, as that license's second clause requires of a
 redistribution in binary form. The wording differs between modules, so each is
 carried in full rather than consolidated.
 
@@ -252,9 +252,9 @@ Apache License 2.0
 ===============================================================================
 
 The following modules are licensed under the Apache License, Version 2.0. Its
-clause 4(a) requires a copy of the licence to accompany the redistribution, and
+clause 4(a) requires a copy of the license to accompany the redistribution, and
 its clause 4(d) requires the NOTICE file of any module that ships one. Both
-modules carry the same licence text, so it is reproduced once at the end of
+modules carry the same license text, so it is reproduced once at the end of
 this section.
 
 -------------------------------------------------------------------------------

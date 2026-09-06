@@ -2,15 +2,15 @@
 
 Reference pages for `telee`, carrying the detail behind the [README](../README.md).
 
-| Page                                       | Focus                                                      |
-| :----------------------------------------- | :--------------------------------------------------------- |
-| [`configuration.md`](configuration.md)     | Every flag, its environment variable and which one wins    |
-| [`troubleshooting.md`](troubleshooting.md) | A symptom, then the condition that produced it             |
-| [`measurements.md`](measurements.md)       | Every timing taken against the lab switch, and its scripts |
-| [`../CONTRIBUTING.md`](../CONTRIBUTING.md) | The make targets, the build and what triggers a release    |
-| [`../CHANGELOG.md`](../CHANGELOG.md)       | What each release carries, newest first                    |
-| [`../SECURITY.md`](../SECURITY.md)         | Credential handling and where to report a vulnerability    |
-| [`../AGENTS.md`](../AGENTS.md)             | The repository instructions a coding agent reads           |
+| Page                                       | Focus                                                          |
+| :----------------------------------------- | :------------------------------------------------------------- |
+| [`configuration.md`](configuration.md)     | Every flag, its environment variable and which one wins        |
+| [`troubleshooting.md`](troubleshooting.md) | A symptom, then the condition that produced it                 |
+| [`measurements.md`](measurements.md)       | Every timing taken against the lab switch, and its scripts     |
+| [`../CONTRIBUTING.md`](../CONTRIBUTING.md) | The make targets, the build, the release and sample identities |
+| [`../CHANGELOG.md`](../CHANGELOG.md)       | What each release carries, newest first                        |
+| [`../SECURITY.md`](../SECURITY.md)         | Credential handling and where to report a vulnerability        |
+| [`../AGENTS.md`](../AGENTS.md)             | The repository instructions a coding agent reads               |
 
 ## Technical Information
 
