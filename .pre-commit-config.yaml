@@ -39,9 +39,6 @@ repos:
       # markdownlint-cli2 unions the filenames it is handed with the globs in
       # .markdownlint-cli2.jsonc rather than replacing them, so passing them
       # only makes pre-commit repeat the same whole-tree lint once per batch.
-      # --fix is withheld for the same reason: those globs still reach tmp/,
-      # where the sibling worktrees live, and rewriting their Markdown from a
-      # commit here is not this hook's business. Restore it once that config
-      # ignores tmp/**.
       - id: markdownlint-cli2
+        args: ["--fix"]
         pass_filenames: false

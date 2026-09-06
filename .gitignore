@@ -32,3 +32,9 @@ coverage/*
 # OS files
 .DS_Store
 Thumbs.db
+
+# Agent files
+# The trailing "*" is load-bearing: written as ".claude/" git never descends into the
+# directory, and the negation below cannot re-include the AGENTS.md symlink.
+.claude/*
+!.claude/CLAUDE.md

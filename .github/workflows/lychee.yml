@@ -2,21 +2,31 @@ name: Link Check
 
 on:
   push:
+    branches: ["main"]
     paths:
       - "**/*.md"
       - "lychee.toml"
       - ".github/workflows/lychee.yml"
   pull_request:
+    branches: ["main"]
     paths:
       - "**/*.md"
       - "lychee.toml"
       - ".github/workflows/lychee.yml"
+  # A link rots without anyone committing, so the paths filter above can never
+  # observe it and only a schedule reaches that failure
+  schedule:
+    - cron: "0 3 * * 1" # every Monday at 3:00, clear of the Go jobs at 2:00 and 2:30
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 permissions:
   contents: read
 
 jobs:
   lychee:
-    uses: umatare5/common/.github/workflows/lychee.yml@3df623d482350006c12656381399db14f8879fcc # v0.19.0
+    uses: umatare5/common/.github/workflows/lychee.yml@8044b3c0ce0dce6411ec179c3ec0e675219c117f # v0.21.0
     with:
       lychee_version: "v0.24.2"

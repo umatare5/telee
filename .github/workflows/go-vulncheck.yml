@@ -18,6 +18,10 @@ on:
   schedule:
     - cron: "30 2 * * 1" # every Monday at 2:30, clear of the three jobs already at 2:00
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 permissions:
   contents: read
 
@@ -26,4 +30,4 @@ jobs:
   # the other Go callers pin, and a standard-library finding is reported against
   # the toolchain this module declares
   go-vulncheck:
-    uses: umatare5/common/.github/workflows/go-vulncheck.yml@3df623d482350006c12656381399db14f8879fcc # v0.19.0
+    uses: umatare5/common/.github/workflows/go-vulncheck.yml@8044b3c0ce0dce6411ec179c3ec0e675219c117f # v0.21.0
