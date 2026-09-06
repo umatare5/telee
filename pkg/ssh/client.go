@@ -65,7 +65,9 @@ func createFixedHostKeyCallback(hostKeyPath string) (ssh.HostKeyCallback, error)
 		return nil, fmt.Errorf("failed to read host key file: %w", err)
 	}
 
-	publicKey, err := ssh.ParsePublicKey(publicKeyBytes)
+	// A known_hosts line parses here too: its leading host field is taken as the
+	// authorized_keys options field, so a .pub file and a scanned line both work.
+	publicKey, _, _, _, err := ssh.ParseAuthorizedKey(publicKeyBytes)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse host key: %w", err)
 	}
@@ -85,7 +87,7 @@ func createKnownHostsCallback(hostname string) (ssh.HostKeyCallback, error) {
 		if h, _, err := net.SplitHostPort(hostname); err == nil {
 			hostOnly = h
 		}
-		return nil, fmt.Errorf("~/.ssh/known_hosts not found. Please create it by running: ssh-keyscan %s >> ~/.ssh/known_hosts", hostOnly)
+		return nil, fmt.Errorf("~/.ssh/known_hosts not found. Please create it by running: ssh %s and accepting the key", hostOnly)
 	}
 
 	knownHostsCallback, err := knownhosts.New(knownHostsPath)
@@ -123,21 +125,17 @@ func handleHostKeyVerificationFailure(hostname string, originalErr error) error 
 
 	fmt.Fprintf(os.Stderr, "\n[ERROR] Host key verification failed for %s: %v\n", hostname, originalErr)
 	fmt.Fprintln(os.Stderr, "\nTo resolve this issue, you can add the host key to your known_hosts file using one of these methods:")
-	fmt.Fprintf(os.Stderr, "\n1. Run the following command to add the host key:\n")
+	fmt.Fprintf(os.Stderr, "\n1. Connect once with ssh and accept the key:\n")
 
 	// Check if it's a standard SSH port or custom port
 	if isStandardSSHPort(hostname) {
-		fmt.Fprintf(os.Stderr, "   ssh-keyscan %s >> ~/.ssh/known_hosts\n", host)
-		fmt.Fprintf(os.Stderr, "\n2. Or connect manually first with ssh to accept the host key:\n")
 		fmt.Fprintf(os.Stderr, "   ssh %s\n", host)
-		fmt.Fprintf(os.Stderr, "\n   For older Cisco IOS devices, you may need additional SSH options:\n")
+		fmt.Fprintf(os.Stderr, "\n2. Or, if that reports no matching host key type or key exchange method:\n")
 		fmt.Fprintf(os.Stderr, "   ssh -o HostKeyAlgorithms=+ssh-rsa -o KexAlgorithms=+diffie-hellman-group14-sha1 %s\n", host)
 	} else {
 		port := extractPortFromAddress(hostname)
-		fmt.Fprintf(os.Stderr, "   ssh-keyscan -p %s %s >> ~/.ssh/known_hosts\n", port, host)
-		fmt.Fprintf(os.Stderr, "\n2. Or connect manually first with ssh to accept the host key:\n")
 		fmt.Fprintf(os.Stderr, "   ssh -p %s %s\n", port, host)
-		fmt.Fprintf(os.Stderr, "\n   For older Cisco IOS devices, you may need additional SSH options:\n")
+		fmt.Fprintf(os.Stderr, "\n2. Or, if that reports no matching host key type or key exchange method:\n")
 		fmt.Fprintf(os.Stderr, "   ssh -p %s -o HostKeyAlgorithms=+ssh-rsa -o KexAlgorithms=+diffie-hellman-group14-sha1 %s\n", port, host)
 	}
 

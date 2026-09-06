@@ -5,7 +5,7 @@ A failure names its stage on the first line of stderr, and five stages can retur
 ```text
 Incorrect Usage: Required flag "hostname" not set
 2026/01/01 00:00:00 ERROR failed to validate arguments error="exec-platform is not supported"
-~/.ssh/known_hosts not found. Please create it by running: ssh-keyscan sw01 >> ~/.ssh/known_hosts
+~/.ssh/known_hosts not found. Please create it by running: ssh sw01 and accepting the key
 TelnetClient was failed at spawn(). You can troubleshoot using wireshark.
 TelnetClient was failed at ExpectBatch(). You can troubleshoot using wireshark.
 ```
@@ -73,7 +73,7 @@ The banner is the transport's, the line under it is the operating system's, and 
 
 The second line names the cause: `no such host` is resolution, `connection refused` is a closed port, and `operation timed out` is a filtered path. For the latter two, check that the completed port is the one the device listens on — `0` completes to 23 without `--secure-mode` and to 22 with it.
 
-Host key failure is a separate shape. Only a key that mismatches `known_hosts` reaches this banner, and its guidance block prints above it rather than below. A missing `known_hosts` and an unreadable `--host-key-path` are refused before any dial, so neither prints a banner at all.
+Host key failure is a separate shape. A `known_hosts` mismatch reaches this banner with its guidance block above rather than below, and a `--host-key-path` mismatch reaches it with none. A missing `known_hosts` and an unreadable `--host-key-path` are refused before any dial, so neither prints a banner at all.
 
 ## The session failed at ExpectBatch()
 
@@ -92,12 +92,13 @@ Two further causes produce the same failure. A wrong `--exec-platform` waits for
 
 ## Host key verification failed
 
-Four distinct messages come from the SSH host key check, and none of them sends anything:
+Five distinct messages come from the SSH host key check, and none of them sends anything:
 
-- **`~/.ssh/known_hosts not found`** — no `--host-key-path` was given and the file does not exist. The message carries the `ssh-keyscan` line that would create it.
+- **`~/.ssh/known_hosts not found`** — no `--host-key-path` was given and the file does not exist. The message carries the `ssh` line that creates it, which `ssh-keyscan` cannot on a device this old.
 - **`[ERROR] Host key verification failed for <host>`** — the file exists and the key does not match or is absent from it. Four remedies follow the message, including the legacy `HostKeyAlgorithms` and `KexAlgorithms` options older IOS devices need, and the `spawn()` banner prints after them.
 - **`failed to read host key file`** — `--host-key-path` named a path that does not exist or cannot be opened.
-- **`failed to parse host key: ssh: short read`** — `--host-key-path` pointed at a text key. The file must hold the RFC 4253 §6.6 wire encoding, not a `.pub` or `known_hosts` line.
+- **`failed to parse host key: ssh: no key found`** — `--host-key-path` named a file holding no key line. A `.pub` line and a `known_hosts` line both parse, and `#` comments are skipped, so the file is neither.
+- **`ssh: handshake failed: ssh: host key mismatch`** — `--host-key-path` parsed, and the key it pins is not the one the device presented. It follows the `spawn()` banner without a guidance block, which belongs to the `known_hosts` path alone.
 
 There is no flag that skips verification, by design. [`configuration.md`](configuration.md) covers `--host-key-path` in full.
 

@@ -22,7 +22,7 @@ One invocation runs one command on one device, so there are no subcommands, no c
 | `--username`, `-u`               | `admin`  | Login user                        |
 | `--password`, `-p`               | `cisco`  | Login password                    |
 | `--priv-password`, `--pp`        | `enable` | Password the `enable` step sends  |
-| `--host-key-path`, `--hkp`       | —        | SSH host key file, in wire format |
+| `--host-key-path`, `--hkp`       | —        | SSH host key file, in text form   |
 
 Three boolean flags carry long aliases as well: `--ena` and `--enable` for `--enable-mode`, `--redundant` for `--redundant-mode`, and `--sec` and `--secure` for `--secure-mode`.
 
@@ -33,7 +33,7 @@ What the flags that hold a mechanism actually do:
 - **Neither dial carries a deadline, so `--timeout` does not bound the connect.** A non-routable address with `--timeout 3` failed after 75 s on macOS 26, which is the operating system's connect timeout rather than the flag.
 - **`--hostname` is also the prompt pattern.** Eight of the nine scripts expect the value verbatim inside the device prompt, so anything but the device's own hostname matches nothing; `aireos` expects `(Cisco Controller) >` instead.
 - **`--priv-password` left at `enable` counts as unset.** The guard compares the value against that default literal, so `--enable-mode` without an explicit password is refused rather than sent.
-- **`--host-key-path` takes a wire-format key blob.** `ssh.ParsePublicKey` reads the RFC 4253 §6.6 encoding, so a `.pub` line or a `known_hosts` line is refused with `failed to parse host key: ssh: short read`.
+- **`--host-key-path` takes an OpenSSH text key and pins the first one in the file.** `ssh.ParseAuthorizedKey` accepts a `.pub` line and a `known_hosts` line alike — the leading host field of the latter is read as an options field — and skips the `#` comment `ssh-keygen -F` writes ahead of it. Later lines are never compared, so a multi-key capture pins whichever key it lists first.
 - **`--redundant-mode` only widens the expected prompt.** It appends `/pri/act` on `asa` and `(M)` on `ssg`, and every other platform refuses the flag outright.
 
 Which flags a platform takes is decided by the platform, not by the operator:
