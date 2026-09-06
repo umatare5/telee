@@ -1,7 +1,4 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "github>umatare5/common//renovate/go.json",
-    "security:gomodIndirectSecurityUpdates"
-  ]
+  "extends": ["github>umatare5/common//renovate/go.json"]
 }
