@@ -24,7 +24,7 @@ type Repository struct {
 	Config *config.Config
 }
 
-// Fetch returns stdout from telnet session.
+// Fetch runs one session and returns the output the last prompt match captured.
 func (r *Repository) Fetch() (string, error) {
 	var expects []x.Batcher
 	var data string
@@ -71,6 +71,7 @@ func (r *Repository) Fetch() (string, error) {
 }
 
 // [platform: nxos] buildUserModeRequest returns the expects.
+// NX-OS echoes one space after the prompt character, so every BExp here ends with it.
 func (r *Repository) buildUserModeRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: promptLogin},

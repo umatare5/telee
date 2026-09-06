@@ -16,7 +16,7 @@ type Repository struct {
 	Config *config.Config
 }
 
-// Fetch returns stdout from telnet session.
+// Fetch runs one telnet session and returns the output the last prompt match captured.
 func (r *Repository) Fetch() (string, error) {
 	var expects []x.Batcher
 	var data string
@@ -28,7 +28,7 @@ func (r *Repository) Fetch() (string, error) {
 		expects = r.buildUserModeRequest()
 	}
 
-	// IronWare is not supporting SSH
+	// Telnet only; checkArguments refuses --secure-mode for this platform.
 	data, err = telnet.New(
 		r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
 	).Fetch(&expects)
@@ -39,6 +39,7 @@ func (r *Repository) Fetch() (string, error) {
 }
 
 // [platform: foundry] buildUserModeRequest returns the expects.
+// IronWare is the only platform needing CRLF. A bare "\n" leaves the line unsent.
 func (r *Repository) buildUserModeRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "Please Enter Login Name:"},

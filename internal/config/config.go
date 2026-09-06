@@ -82,7 +82,7 @@ func checkArguments(cfg *Config) error {
 	if cfg.DefaultPrivMode && !isUsableDefaultPrivMode(cfg.ExecPlatform) {
 		return errors.ErrUnsupportedDefaultPrivMode
 	}
-	// Paging cannot be disabled from an unprivileged ASA session; default-priv-mode already starts privileged.
+	// Paging cannot be disabled from an unprivileged ASA session, and default-priv-mode already starts privileged.
 	if !cfg.EnableMode && !cfg.DefaultPrivMode && !isExpandableTermLength(cfg.ExecPlatform) {
 		return errors.ErrTermLengthIsEnforced
 	}
@@ -183,6 +183,7 @@ func isExpandableTermLength(platform string) bool {
 	return platform != domain.ASASoftwarePlatformName
 }
 
+// A priv password still equal to its default is treated as unset, so "enable" cannot be used as a real one.
 func hasPrivPassword(password string) bool {
 	return password != domain.PrivPasswordFlagDefaultValue
 }

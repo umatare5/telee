@@ -16,7 +16,7 @@ type Repository struct {
 	Config *config.Config
 }
 
-// Fetch returns stdout from telnet session.
+// Fetch runs one SSH session and returns the output the last prompt match captured.
 func (r *Repository) Fetch() (string, error) {
 	var expects []x.Batcher
 	var data string
@@ -24,7 +24,7 @@ func (r *Repository) Fetch() (string, error) {
 
 	expects = r.buildUserModeSecureRequest()
 
-	// JunOS is not supporting Telnet
+	// SSH only; checkArguments refuses a run without --secure-mode.
 	clientConfig, err := ssh.GenerateClientConfig(r.Config.Username, r.Config.Password, r.Config.HostKeyPath, r.Config.Hostname)
 	if err != nil {
 		return "", err

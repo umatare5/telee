@@ -107,7 +107,7 @@ func getKnownHostsPath() (string, error) {
 	return homeDir + "/.ssh/known_hosts", nil
 }
 
-// createFallbackCallback creates a callback that tries known_hosts first, then provides guidance.
+// Wraps the known_hosts callback so a mismatch prints the onboarding steps before it fails.
 func createFallbackCallback(knownHostsCallback ssh.HostKeyCallback) ssh.HostKeyCallback {
 	return func(hostname string, remote net.Addr, key ssh.PublicKey) error {
 		err := knownHostsCallback(hostname, remote, key)

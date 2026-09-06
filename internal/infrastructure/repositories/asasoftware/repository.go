@@ -26,7 +26,7 @@ type Repository struct {
 	Config *config.Config
 }
 
-// Fetch returns stdout from telnet session.
+// Fetch runs one session and returns the output the last prompt match captured.
 func (r *Repository) Fetch() (string, error) {
 	var expects []x.Batcher
 	var data string

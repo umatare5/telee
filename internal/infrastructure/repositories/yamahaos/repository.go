@@ -23,7 +23,7 @@ type Repository struct {
 	Config *config.Config
 }
 
-// Fetch returns stdout from telnet session.
+// Fetch runs one session and returns the output the last prompt match captured.
 func (r *Repository) Fetch() (string, error) {
 	var expects []x.Batcher
 	var data string
@@ -68,6 +68,7 @@ func (r *Repository) Fetch() (string, error) {
 }
 
 // [platform: yamaha] buildRequest returns the expects.
+// YAMAHA prompts for a password only, so --username reaches the device over SSH alone.
 func (r *Repository) buildUserModeRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: promptPassword},
