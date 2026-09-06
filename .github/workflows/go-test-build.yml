@@ -7,10 +7,6 @@ on:
   schedule:
     - cron: "0 2 * * 1" # every Monday at 2:00
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
-
 permissions:
   contents: read
 

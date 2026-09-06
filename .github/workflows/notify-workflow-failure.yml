@@ -9,7 +9,6 @@ on:
         "Test and Build",
         "govulncheck",
         "Release Snapshot",
-        "Link Check",
       ]
     types: ["completed"]
 
