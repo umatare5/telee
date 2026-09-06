@@ -1,4 +1,4 @@
-// Package repository implements Juniper ScreenOS-specific data access layer.
+// Package repository implements Juniper ScreenOS-specific data access layer, reached by -x ssg.
 package repository
 
 import (
@@ -19,7 +19,6 @@ const (
 	haSuffix string = "\\(M\\)"
 )
 
-// Repository struct.
 type Repository struct {
 	Config *config.Config
 }
@@ -64,7 +63,6 @@ func (r *Repository) Fetch() (string, error) {
 	return data, nil
 }
 
-// [platform: ssg] buildRequest returns the expects.
 func (r *Repository) buildRequest(suffix string) []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "login:"},
@@ -80,7 +78,6 @@ func (r *Repository) buildRequest(suffix string) []x.Batcher {
 	}
 }
 
-// [platform: ssg] buildSecureRequest returns the expects.
 func (r *Repository) buildSecureRequest(suffix string) []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + suffix + "->"},

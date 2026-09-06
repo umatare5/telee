@@ -18,7 +18,6 @@ const (
 	cmdDisablePaging string = "console lines infinity\n"
 )
 
-// Repository struct.
 type Repository struct {
 	Config *config.Config
 }
@@ -67,7 +66,6 @@ func (r *Repository) Fetch() (string, error) {
 	return data, nil
 }
 
-// [platform: yamaha] buildRequest returns the expects.
 // YAMAHA prompts for a password only, so --username reaches the device over SSH alone.
 func (r *Repository) buildUserModeRequest() []x.Batcher {
 	return []x.Batcher{
@@ -81,7 +79,6 @@ func (r *Repository) buildUserModeRequest() []x.Batcher {
 	}
 }
 
-// [platform: yamaha] buildPrivilegedRequest returns the expects.
 func (r *Repository) buildPrivilegedRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: promptPassword},
@@ -98,7 +95,6 @@ func (r *Repository) buildPrivilegedRequest() []x.Batcher {
 	}
 }
 
-// [platform: yamaha] buildUserModeSecureRequest returns the expects.
 func (r *Repository) buildUserModeSecureRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + ">"},
@@ -109,7 +105,6 @@ func (r *Repository) buildUserModeSecureRequest() []x.Batcher {
 	}
 }
 
-// [platform: yamaha] buildPrivilegedSecureRequest returns the expects.
 func (r *Repository) buildPrivilegedSecureRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + ">"},

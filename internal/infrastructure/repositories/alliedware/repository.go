@@ -1,4 +1,4 @@
-// Package repository implements AlliedTelesis AlliedWare-specific data access layer.
+// Package repository implements AlliedTelesis AlliedWare-specific data access layer, reached by -x allied.
 package repository
 
 import (
@@ -11,7 +11,6 @@ import (
 	"github.com/umatare5/telee/pkg/telnet"
 )
 
-// Repository struct.
 type Repository struct {
 	Config *config.Config
 }
@@ -34,7 +33,6 @@ func (r *Repository) Fetch() (string, error) {
 	return data, nil
 }
 
-// [platform: allied] buildRequest returns the expects.
 func (r *Repository) buildRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "login:"},

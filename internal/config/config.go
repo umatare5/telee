@@ -16,7 +16,6 @@ const (
 	infoEnableModeIgnored = "[INFO] enable-mode is ignored. It's not supported."
 )
 
-// Config struct.
 type Config struct {
 	Hostname        string
 	Port            int
@@ -33,7 +32,6 @@ type Config struct {
 	HostKeyPath     string
 }
 
-// New returns Config struct.
 func New(cli *cli.Command) Config {
 	cfg := Config{
 		Hostname:        cli.String(domain.HostnameFlagName),

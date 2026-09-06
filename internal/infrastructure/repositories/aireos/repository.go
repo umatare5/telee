@@ -17,7 +17,6 @@ const (
 	promptController string = "\\(Cisco Controller\\) >"
 )
 
-// Repository struct.
 type Repository struct {
 	Config *config.Config
 }
@@ -52,7 +51,6 @@ func (r *Repository) Fetch() (string, error) {
 	return data, nil
 }
 
-// [platform: aireos] buildRequest returns the expects.
 func (r *Repository) buildRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "User:"},

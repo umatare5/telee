@@ -19,7 +19,6 @@ const (
 	cmdDisablePaging string = "terminal length 0\n"
 )
 
-// Repository struct.
 type Repository struct {
 	Config *config.Config
 }
@@ -70,7 +69,6 @@ func (r *Repository) Fetch() (string, error) {
 	return data, nil
 }
 
-// [platform: ios] buildUserModeRequest returns the expects.
 func (r *Repository) buildUserModeRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: promptUsername},
@@ -85,7 +83,6 @@ func (r *Repository) buildUserModeRequest() []x.Batcher {
 	}
 }
 
-// [platform: ios] buildPrivilegedRequest returns the expects.
 func (r *Repository) buildPrivilegedRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: promptUsername},
@@ -104,7 +101,6 @@ func (r *Repository) buildPrivilegedRequest() []x.Batcher {
 	}
 }
 
-// [platform: ios] buildDefaultPrivilegedRequest returns the expects.
 func (r *Repository) buildDefaultPrivilegedRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: promptUsername},
@@ -119,7 +115,6 @@ func (r *Repository) buildDefaultPrivilegedRequest() []x.Batcher {
 	}
 }
 
-// [platform: ios] buildUserModeSecureRequest returns the expects.
 func (r *Repository) buildUserModeSecureRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + ">"},
@@ -130,7 +125,6 @@ func (r *Repository) buildUserModeSecureRequest() []x.Batcher {
 	}
 }
 
-// [platform: ios] buildPrivilegedSecureRequest returns the expects.
 func (r *Repository) buildPrivilegedSecureRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + ">"},
@@ -145,7 +139,6 @@ func (r *Repository) buildPrivilegedSecureRequest() []x.Batcher {
 	}
 }
 
-// [platform: ios] buildDefaultPrivilegedSecureRequest returns the expects.
 func (r *Repository) buildDefaultPrivilegedSecureRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + "#"},

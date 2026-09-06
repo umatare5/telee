@@ -11,14 +11,12 @@ import (
 	"github.com/umatare5/telee/internal/infrastructure"
 )
 
-// Exec struct.
 type Exec struct {
 	Config     *config.Config
 	Repository *infrastructure.Repository
 	Usecase    *application.Usecase
 }
 
-// New returns Exec struct.
 func New(c *config.Config, r *infrastructure.Repository, u *application.Usecase) Exec {
 	return Exec{
 		Config:     c,

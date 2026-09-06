@@ -1,4 +1,4 @@
-// Package repository implements Juniper JunOS-specific data access layer.
+// Package repository implements Juniper JunOS-specific data access layer, reached by -x srx.
 package repository
 
 import (
@@ -11,7 +11,6 @@ import (
 	"github.com/umatare5/telee/pkg/ssh"
 )
 
-// Repository struct.
 type Repository struct {
 	Config *config.Config
 }
@@ -38,7 +37,6 @@ func (r *Repository) Fetch() (string, error) {
 	return data, nil
 }
 
-// [platform: junos] buildUserModeSecureRequest returns the expects.
 func (r *Repository) buildUserModeSecureRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Username + "@" + r.Config.Hostname + ">"},
