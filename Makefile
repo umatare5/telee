@@ -42,7 +42,7 @@ lint:
 
 # The TELEE_* variables are cleared because they are read at flag-parse time, so a developer's own
 # shell must not decide what the CLI tests see. A new variable the CLI reads has to be added here
-# as well as to the neutralization inside whichever test parses flags.
+# as well.
 test-unit:
 	@command -v gotestsum >/dev/null 2>&1 || { echo "Error: gotestsum is not installed. Run: go install gotest.tools/gotestsum@latest"; exit 1; }
 	mkdir -p $(COVERAGE_DIR)
@@ -56,8 +56,7 @@ test-unit-coverage: test-unit
 snapshot:
 	goreleaser release --snapshot --clean
 
-# BUILD_DIR is ./tmp, which also holds the worktrees `git wt` creates, so this removes
-# what the build produced rather than the directory itself.
+# BUILD_DIR is ./tmp, which also holds the worktrees `git wt` creates.
 clean:
 	rm -f $(BINARY_PATH)
 	rm -rf $(BUILD_DIR)/dist

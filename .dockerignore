@@ -1,5 +1,4 @@
 # goreleaser assembles the build context in a temporary directory outside this repository,
 # so a release build never reads this file. It is kept for the other caller: a stray
-# `docker build .` at the root would otherwise send the whole tree — the worktrees under
-# tmp/ included — to the daemon before failing on the COPY.
+# `docker build .` at the root would otherwise send the worktrees under tmp/ to the daemon.
 *
