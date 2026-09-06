@@ -8,9 +8,13 @@ on:
   schedule:
     - cron: "0 12 * * 0"
 
+# The callee declares these three at job level from v0.21.0, and a reusable
+# workflow cannot be granted less than it declares: fewer scopes here fails
+# the run at startup, before any job appears.
 permissions:
   security-events: write
   packages: read
+  contents: read
 
 jobs:
   codeql:
