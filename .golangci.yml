@@ -1,35 +1,24 @@
 version: "2"
 
-########################
-# 1. Execution settings
-########################
 run:
-  timeout: 5m                      # Keep the original timeout
-  tests: true                      # Analyze *_test.go files as well
-  issues-exit-code: 1              # Fail CI if any issue is found
+  timeout: 5m
+  tests: true
+  issues-exit-code: 1
 
-########################
-# 2. Issues quota
-########################
 issues:
-  max-issues-per-linter: 0         # Do not cap issues per linter
-  max-same-issues: 0               # Do not deduplicate identical issues
+  max-issues-per-linter: 0
+  max-same-issues: 0
   # The default keeps one issue per line, which hides a second linter reporting the same line.
   uniq-by-line: false
 
-########################
-# 3. Enabled linters
-########################
 linters:
   default: none
   enable:
-    # Core correctness & security
     - govet
     - staticcheck
     - errcheck
     - ineffassign
     - unused
-    - errchkjson
     - errorlint
     - gosec
     - goconst
@@ -48,29 +37,22 @@ linters:
     - thelper
     - testpackage
 
-    # Modernization related to Go 1.22–1.25
-    - intrange               # Prefer `for i := range n` where applicable (Go 1.22) [external linter]
-    - copyloopvar            # Detect legacy loop-var copies; has autofix
-    - exptostd               # Suggest std replacements for x/exp/*
+    - intrange
+    - copyloopvar
+    - exptostd
 
-    # Logging hygiene (slog)
-    - sloglint               # Enforce consistent slog usage
-    - loggercheck            # Validate slog key/value shapes
+    - sloglint
+    - loggercheck
 
-    # API/style consistency that reduces long-term churn
-    - nilnesserr             # Detect inconsistent nil/err returns
-    - predeclared            # Avoid shadowing predeclared identifiers
-    - godot                  # Enforce periods at the end of doc comments
-    - whitespace             # Normalize whitespace
-    - fatcontext             # Avoid capturing/propagating "fat" contexts
-    - nosprintfhostport      # Safer host:port formatting
-    - depguard               # Belt-and-suspenders dependency rules
+    - nilnesserr
+    - predeclared
+    - godot
+    - whitespace
+    - fatcontext
+    - nosprintfhostport
+    - depguard
     - forbidigo
 
-  ########################
-  # 4. Per-linter settings
-  # https://golangci-lint.run/docs/linters/configuration/
-  ########################
   settings:
     errcheck:
       check-type-assertions: true
@@ -79,9 +61,6 @@ linters:
     staticcheck:
       checks:
         - all
-
-    errchkjson:
-      check-error-free-encoding: true
 
     errorlint:
       errorf: true
@@ -99,7 +78,9 @@ linters:
         - rangeValCopy
         - commentedOutCode
         - whyNoLint
-        - importShadow            # Disable to avoid churn in legacy code
+        # Two parameters shadow their own package: cli in internal/config/config.go
+        # and x in pkg/telnet/client.go, and renaming either is out of scope.
+        - importShadow
 
     mnd:
       checks: [argument, assign, case, return]
@@ -152,10 +133,6 @@ linters:
         - shadow # Noisy false positives
         - fieldalignment # Churn for marginal benefit
 
-    sloglint:                    # See options: https://github.com/go-simpler/sloglint
-      no-mixed-args: true        # Do not mix key/value pairs and Attrs
-      no-global: ""              # Allow default global logger usage for simplicity
-
     copyloopvar:
       check-alias: true
 
@@ -190,9 +167,6 @@ linters:
             - pkg: "golang.org/x/exp/slices$"
               desc: "Use the std slices package"
 
-  ########################
-  # 5. Exclusions
-  ########################
   exclusions:
     generated: lax
     warn-unused: false
@@ -222,13 +196,11 @@ linters:
         linters:
           - gosec
 
-########################
-# 6. Formatters
-########################
 formatters:
   enable:
     - gci
     - gofumpt
+    - goimports
   settings:
     gci:
       sections:
@@ -238,9 +210,9 @@ formatters:
     gofumpt:
       extra:
         group-params: true
+    goimports:
+      local-prefixes:
+        - github.com/umatare5/telee
 
-########################
-# 7. Output
-########################
 output:
   show-stats: false

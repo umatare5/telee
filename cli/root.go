@@ -20,7 +20,6 @@ const (
 	cmdUsageText string = "telee -H HOSTNAME -C COMMAND [options...]"
 )
 
-// Start executes this command.
 func Start() {
 	cmd := &cli.Command{
 		Name:      cmdName,

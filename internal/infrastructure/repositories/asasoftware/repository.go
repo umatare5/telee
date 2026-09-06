@@ -21,12 +21,11 @@ const (
 	haSuffix         string = "/pri/act"
 )
 
-// Repository struct.
 type Repository struct {
 	Config *config.Config
 }
 
-// Fetch returns stdout from telnet session.
+// Fetch runs one session and returns the output the last prompt match captured.
 func (r *Repository) Fetch() (string, error) {
 	var expects []x.Batcher
 	var data string
@@ -81,7 +80,6 @@ func (r *Repository) Fetch() (string, error) {
 	return data, nil
 }
 
-// [platform: asa] buildPrivilegedRequest returns the expects.
 func (r *Repository) buildPrivilegedRequest(suffix string) []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: promptUsername},
@@ -100,7 +98,6 @@ func (r *Repository) buildPrivilegedRequest(suffix string) []x.Batcher {
 	}
 }
 
-// [platform: asa] buildDefaultPrivilegedRequest returns the expects.
 func (r *Repository) buildDefaultPrivilegedRequest(suffix string) []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: promptUsername},
@@ -115,7 +112,6 @@ func (r *Repository) buildDefaultPrivilegedRequest(suffix string) []x.Batcher {
 	}
 }
 
-// [platform: asa] buildPrivilegedSecureRequest returns the expects.
 func (r *Repository) buildPrivilegedSecureRequest(suffix string) []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + suffix + ">"},
@@ -130,7 +126,6 @@ func (r *Repository) buildPrivilegedSecureRequest(suffix string) []x.Batcher {
 	}
 }
 
-// [platform: asa] buildDefaultPrivilegedSecureRequest returns the expects.
 func (r *Repository) buildDefaultPrivilegedSecureRequest(suffix string) []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + suffix + "#"},

@@ -1,4 +1,4 @@
-// Package repository implements AlliedTelesis AlliedWare-specific data access layer.
+// Package repository implements AlliedTelesis AlliedWare-specific data access layer, reached by -x allied.
 package repository
 
 import (
@@ -11,12 +11,11 @@ import (
 	"github.com/umatare5/telee/pkg/telnet"
 )
 
-// Repository struct.
 type Repository struct {
 	Config *config.Config
 }
 
-// Fetch returns stdout from telnet session.
+// Fetch runs one telnet session and returns the output the last prompt match captured.
 func (r *Repository) Fetch() (string, error) {
 	var expects []x.Batcher
 	var data string
@@ -24,7 +23,7 @@ func (r *Repository) Fetch() (string, error) {
 
 	expects = r.buildRequest()
 
-	// Alliedware is not supporting SSH
+	// Telnet only; checkArguments refuses --secure-mode for this platform.
 	data, err = telnet.New(
 		r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
 	).Fetch(&expects)
@@ -34,7 +33,6 @@ func (r *Repository) Fetch() (string, error) {
 	return data, nil
 }
 
-// [platform: allied] buildRequest returns the expects.
 func (r *Repository) buildRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "login:"},

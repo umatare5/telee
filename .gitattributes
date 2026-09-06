@@ -1,7 +1,7 @@
 # Treat everything under coverage/ as generated files (default collapsed in PR diffs)
 coverage/** linguist-generated=true
 
-# Disable diffs completely for certain file types (treat as binary)
+# The profile is a build artifact, so its diff is noise even when it is tracked.
 coverage/*.out  -diff
 
 # The badge is regenerated from that profile by octocov, so it is generated too.

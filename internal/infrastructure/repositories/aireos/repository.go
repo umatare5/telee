@@ -17,18 +17,17 @@ const (
 	promptController string = "\\(Cisco Controller\\) >"
 )
 
-// Repository struct.
 type Repository struct {
 	Config *config.Config
 }
 
-// Fetch returns stdout from telnet session.
+// Fetch runs one session and returns the output the last prompt match captured.
 func (r *Repository) Fetch() (string, error) {
 	var expects []x.Batcher
 	var data string
 	var err error
 
-	// AireOS needs the interactive authentication when also use SSH
+	// The controller prompts User:/Password: again after SSH authentication, so one batch serves both transports.
 	expects = r.buildRequest()
 
 	if r.Config.SecureMode {
@@ -52,7 +51,6 @@ func (r *Repository) Fetch() (string, error) {
 	return data, nil
 }
 
-// [platform: aireos] buildRequest returns the expects.
 func (r *Repository) buildRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "User:"},

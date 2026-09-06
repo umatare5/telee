@@ -19,12 +19,11 @@ const (
 	cmdDisablePaging string = "terminal length 0\n"
 )
 
-// Repository struct.
 type Repository struct {
 	Config *config.Config
 }
 
-// Fetch returns stdout from telnet session.
+// Fetch runs one session and returns the output the last prompt match captured.
 func (r *Repository) Fetch() (string, error) {
 	var expects []x.Batcher
 	var data string
@@ -70,7 +69,7 @@ func (r *Repository) Fetch() (string, error) {
 	return data, nil
 }
 
-// [platform: nxos] buildUserModeRequest returns the expects.
+// NX-OS echoes one space after the prompt character, so every BExp here ends with it.
 func (r *Repository) buildUserModeRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: promptLogin},
@@ -85,7 +84,6 @@ func (r *Repository) buildUserModeRequest() []x.Batcher {
 	}
 }
 
-// [platform: nxos] buildPrivilegedRequest returns the expects.
 func (r *Repository) buildPrivilegedRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: promptLogin},
@@ -104,7 +102,6 @@ func (r *Repository) buildPrivilegedRequest() []x.Batcher {
 	}
 }
 
-// [platform: nxos] buildDefaultPrivilegedRequest returns the expects.
 func (r *Repository) buildDefaultPrivilegedRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: promptLogin},
@@ -119,7 +116,6 @@ func (r *Repository) buildDefaultPrivilegedRequest() []x.Batcher {
 	}
 }
 
-// [platform: nxos] buildUserModeSecureRequest returns the expects.
 func (r *Repository) buildUserModeSecureRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + "> "},
@@ -130,7 +126,6 @@ func (r *Repository) buildUserModeSecureRequest() []x.Batcher {
 	}
 }
 
-// [platform: nxos] buildPrivilegedSecureRequest returns the expects.
 func (r *Repository) buildPrivilegedSecureRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + "> "},
@@ -145,7 +140,6 @@ func (r *Repository) buildPrivilegedSecureRequest() []x.Batcher {
 	}
 }
 
-// [platform: nxos] buildDefaultPrivilegedSecureRequest returns the expects.
 func (r *Repository) buildDefaultPrivilegedSecureRequest() []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + "# "},

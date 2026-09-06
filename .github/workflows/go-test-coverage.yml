@@ -1,18 +1,20 @@
 name: Coverage
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
   schedule:
-    - cron: "0 2 * * 1" # every Monday at 2:00
+    - cron: "0 2 * * 1"
 
 permissions:
   contents: read
 
 jobs:
   coverage:
-    uses: umatare5/common/.github/workflows/go-test-coverage.yml@3df623d482350006c12656381399db14f8879fcc # v0.19.0
+    uses: umatare5/common/.github/workflows/go-test-coverage.yml@8044b3c0ce0dce6411ec179c3ec0e675219c117f # v0.21.0
     with:
       go_version: "1.27.1"
+      # Named so that CI, `make test-unit` and .octocov.yml all read one profile
+      coverage_file: "./coverage/report.out"
       coverage_threshold: 0 # Minimal test coverage; increase as tests are added

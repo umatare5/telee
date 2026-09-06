@@ -1,34 +1,25 @@
-# Temporary files
+# tmp/ is both the build directory and the worktree root, so nothing under it is tracked.
 tmp/
 vendor/
+dist/
 
-# Build artifacts
 *.exe
-*.dll
-*.so
-*.dylib
-# The leading slash is load-bearing: unanchored, "bin" and "dist" also match internal/bin/
-# and internal/dist/ and leave them untracked and invisible to "git add .". A trailing
-# slash alone does not anchor — it only restricts the pattern to directories.
-/bin/
-/dist/
-
-# Test binaries
 *.test
 
-# Coverage files
 *.out
+# coverage/report.out is tracked on purpose; without the negation, coverage/* re-ignores it.
 coverage/*
 !coverage/report.out
 
-# IDE files
 .idea/
-.agent_reports/
 *.swp
 *.swo
+.DS_Store
 .env
 .envrc
 
-# OS files
-.DS_Store
-Thumbs.db
+# Agent files
+# The trailing "*" is load-bearing: written as ".claude/" git never descends into the
+# directory, and the negation below cannot re-include the AGENTS.md symlink.
+.claude/*
+!.claude/CLAUDE.md

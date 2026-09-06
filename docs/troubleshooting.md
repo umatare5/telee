@@ -5,7 +5,7 @@ A failure names its stage on the first line of stderr, and five stages can retur
 ```text
 Incorrect Usage: Required flag "hostname" not set
 2026/01/01 00:00:00 ERROR failed to validate arguments error="exec-platform is not supported"
-~/.ssh/known_hosts not found. Please create it by running: ssh-keyscan sw01 >> ~/.ssh/known_hosts
+~/.ssh/known_hosts not found. Please create it by running: ssh sw01 and accepting the key
 TelnetClient was failed at spawn(). You can troubleshoot using wireshark.
 TelnetClient was failed at ExpectBatch(). You can troubleshoot using wireshark.
 ```
@@ -45,7 +45,7 @@ The checks run in a fixed order and the first failure returns, so an invocation 
 - **`secure-mode is not supported in this platform`** — `-s` was set on `allied` or `foundry`, whose scripts exist only in a telnet form.
 - **`non secure-mode is not supported in this platform`** — `-s` was omitted on `srx`, whose script exists only in an SSH form.
 - **`default-privilege-mode is not supported in this platform`** — `-d` was set on anything but `asa`, `ios` or `nxos`.
-- **`EnableMode must be set. Terminal length expansion in user-level is not supporting.`** — an `asa` session was asked for with neither `-e` nor `-d`; `terminal pager 0` is refused at user level, so the session would stall on the device's first pager prompt.
+- **`EnableMode must be set. Terminal length expansion in user-level is not supporting.`** — an `asa` session was asked for with neither `-e` nor `-d`, and its paging command is refused at user level.
 - **`hostname must be set`** — `-H` or `TELEE_HOSTNAME` was set to an empty string, which clears the parser's required check and fails here.
 - **`command must be set`** — the same, for `-C` or `TELEE_COMMAND`.
 - **`TELEE_USERNAME must be set`** — `-u` or `TELEE_USERNAME` was set to an empty string; the flag's own default is `admin`, so this cannot fire unless something overwrote it.
@@ -73,7 +73,7 @@ The banner is the transport's, the line under it is the operating system's, and 
 
 The second line names the cause: `no such host` is resolution, `connection refused` is a closed port, and `operation timed out` is a filtered path. For the latter two, check that the completed port is the one the device listens on — `0` completes to 23 without `--secure-mode` and to 22 with it.
 
-Host key failure is a separate shape. Only a key that mismatches `known_hosts` reaches this banner, and its guidance block prints above it rather than below. A missing `known_hosts` and an unreadable `--host-key-path` are refused before any dial, so neither prints a banner at all.
+Host key failure is a separate shape. A `known_hosts` mismatch reaches this banner with its guidance block above rather than below, and a `--host-key-path` mismatch reaches it with none. A missing `known_hosts` and an unreadable `--host-key-path` are refused before any dial, so neither prints a banner at all.
 
 ## The session failed at ExpectBatch()
 
@@ -88,21 +88,22 @@ The session script builds the expected prompt out of the `--hostname` value. `io
 
 Dialling by IP address, or by a DNS name that differs from the device's configured hostname, therefore matches none of them. `aireos` is the only platform that does not build its prompt this way, expecting the fixed string `(Cisco Controller) >`.
 
-Two further causes produce the same failure. A wrong `--exec-platform` waits for another vendor's login prompt. An `asa` or `ssg` device in a failover pair prints a prompt suffix — `/pri/act` and `(M)` respectively — that only `--redundant-mode` accounts for.
+Two further causes produce the same failure. A wrong `--exec-platform` waits for another vendor's login prompt. An `asa` or `ssg` device in a failover pair prints the suffix only `--redundant-mode` accounts for.
 
 ## Host key verification failed
 
-Four distinct messages come from the SSH host key check, and none of them sends anything:
+Five distinct messages come from the SSH host key check, and none of them sends anything:
 
-- **`~/.ssh/known_hosts not found`** — no `--host-key-path` was given and the file does not exist. The message carries the `ssh-keyscan` line that would create it.
+- **`~/.ssh/known_hosts not found`** — no `--host-key-path` was given and the file does not exist. The message carries the `ssh` line that creates it, which `ssh-keyscan` cannot on a device this old.
 - **`[ERROR] Host key verification failed for <host>`** — the file exists and the key does not match or is absent from it. Four remedies follow the message, including the legacy `HostKeyAlgorithms` and `KexAlgorithms` options older IOS devices need, and the `spawn()` banner prints after them.
 - **`failed to read host key file`** — `--host-key-path` named a path that does not exist or cannot be opened.
-- **`failed to parse host key: ssh: short read`** — `--host-key-path` pointed at a text key. The file must hold the RFC 4253 §6.6 wire encoding, not a `.pub` or `known_hosts` line.
+- **`failed to parse host key: ssh: no key found`** — `--host-key-path` named a file holding no key line. A `.pub` line and a `known_hosts` line both parse, and `#` comments are skipped, so the file is neither.
+- **`ssh: handshake failed: ssh: host key mismatch`** — `--host-key-path` parsed, and the key it pins is not the one the device presented. It follows the `spawn()` banner without a guidance block, which belongs to the `known_hosts` path alone.
 
 There is no flag that skips verification, by design. [`configuration.md`](configuration.md) covers `--host-key-path` in full.
 
 ## The command took far longer than --timeout
 
-`--timeout` bounds one expect step rather than the session. The ceiling for the expect phase is the value times the script's step count, which is two on `srx` and up to seven on a telnet session using `-e`. A device that answers each prompt slowly therefore takes several multiples of the flag.
+`--timeout` bounds one expect step rather than the session, and neither dial passes a deadline, so the connect stage is not bounded by it at all. [`configuration.md`](configuration.md) carries both ceilings.
 
-The connect stage is not bounded by it at all. Neither dial passes a deadline, so the operating system's own connect timeout governs: a non-routable address with `--timeout 3` failed after 75 s on macOS 26. A run that hangs for over a minute and then reports `operation timed out` was never affected by the flag, and raising it changes nothing.
+A run that hangs for over a minute and then reports `operation timed out` was never affected by the flag, and raising it changes nothing.

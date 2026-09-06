@@ -1,4 +1,4 @@
-// Package repository implements Juniper ScreenOS-specific data access layer.
+// Package repository implements Juniper ScreenOS-specific data access layer, reached by -x ssg.
 package repository
 
 import (
@@ -15,15 +15,15 @@ import (
 
 const (
 	noSuffix string = ""
+	// BExp is a regular expression, so the master-unit suffix keeps its parentheses escaped.
 	haSuffix string = "\\(M\\)"
 )
 
-// Repository struct.
 type Repository struct {
 	Config *config.Config
 }
 
-// Fetch returns stdout from telnet session.
+// Fetch runs one session and returns the output the last prompt match captured.
 func (r *Repository) Fetch() (string, error) {
 	var expects []x.Batcher
 	var data string
@@ -63,11 +63,11 @@ func (r *Repository) Fetch() (string, error) {
 	return data, nil
 }
 
-// [platform: ssg] buildRequest returns the expects.
 func (r *Repository) buildRequest(suffix string) []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: "login:"},
 		&x.BSnd{S: r.Config.Username + "\n"},
+		// ScreenOS is the only platform prompting lower-case "password:".
 		&x.BExp{R: "password:"},
 		&x.BSnd{S: r.Config.Password + "\n"},
 		&x.BExp{R: r.Config.Hostname + suffix + "->"},
@@ -78,7 +78,6 @@ func (r *Repository) buildRequest(suffix string) []x.Batcher {
 	}
 }
 
-// [platform: ssg] buildSecureRequest returns the expects.
 func (r *Repository) buildSecureRequest(suffix string) []x.Batcher {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + suffix + "->"},

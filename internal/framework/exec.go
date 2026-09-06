@@ -11,14 +11,12 @@ import (
 	"github.com/umatare5/telee/internal/infrastructure"
 )
 
-// Exec struct.
 type Exec struct {
 	Config     *config.Config
 	Repository *infrastructure.Repository
 	Usecase    *application.Usecase
 }
 
-// New returns Exec struct.
 func New(c *config.Config, r *infrastructure.Repository, u *application.Usecase) Exec {
 	return Exec{
 		Config:     c,
@@ -27,7 +25,8 @@ func New(c *config.Config, r *infrastructure.Repository, u *application.Usecase)
 	}
 }
 
-// Run displays the command result.
+// Run routes --exec-platform to its usecase. A device error is written here and returned,
+// and cli.Start logs it again, so a failed run prints it twice.
 func (e *Exec) Run() error {
 	var err error
 	var data string

@@ -6,7 +6,6 @@ import (
 	"github.com/umatare5/telee/internal/domain"
 )
 
-// Register all flags.
 func registerFlags() []cli.Flag {
 	flags := []cli.Flag{}
 	flags = append(flags, registerHostNameFlag()...)
@@ -25,7 +24,6 @@ func registerFlags() []cli.Flag {
 	return flags
 }
 
-// Declare hostname flag.
 func registerHostNameFlag() []cli.Flag {
 	return []cli.Flag{
 		&cli.StringFlag{
@@ -38,7 +36,6 @@ func registerHostNameFlag() []cli.Flag {
 	}
 }
 
-// Declare port flag.
 func registerPortFlag() []cli.Flag {
 	return []cli.Flag{
 		&cli.IntFlag{
@@ -50,7 +47,6 @@ func registerPortFlag() []cli.Flag {
 	}
 }
 
-// Declare timeout flag.
 func registerTimeoutFlag() []cli.Flag {
 	return []cli.Flag{
 		&cli.IntFlag{
@@ -62,7 +58,6 @@ func registerTimeoutFlag() []cli.Flag {
 	}
 }
 
-// Declare command flag.
 func registerCommandFlag() []cli.Flag {
 	return []cli.Flag{
 		&cli.StringFlag{
@@ -75,7 +70,6 @@ func registerCommandFlag() []cli.Flag {
 	}
 }
 
-// Declare exec-platform flag.
 func registerExecPlatformFlag() []cli.Flag {
 	return []cli.Flag{
 		&cli.StringFlag{
@@ -87,7 +81,6 @@ func registerExecPlatformFlag() []cli.Flag {
 	}
 }
 
-// Declare enable-mode flag.
 func registerEnableModeFlag() []cli.Flag {
 	return []cli.Flag{
 		&cli.BoolFlag{
@@ -99,7 +92,6 @@ func registerEnableModeFlag() []cli.Flag {
 	}
 }
 
-// Declare redundant-mode flag.
 func registerRedundantModeFlag() []cli.Flag {
 	return []cli.Flag{
 		&cli.BoolFlag{
@@ -111,7 +103,6 @@ func registerRedundantModeFlag() []cli.Flag {
 	}
 }
 
-// Declare secure-mode flag.
 func registerSecureModeFlag() []cli.Flag {
 	return []cli.Flag{
 		&cli.BoolFlag{
@@ -123,7 +114,6 @@ func registerSecureModeFlag() []cli.Flag {
 	}
 }
 
-// Declare priv-mode flag.
 func registerDefaultPrivModeFlag() []cli.Flag {
 	return []cli.Flag{
 		&cli.BoolFlag{
@@ -135,7 +125,6 @@ func registerDefaultPrivModeFlag() []cli.Flag {
 	}
 }
 
-// Declare username flag.
 func registerUsernameFlag() []cli.Flag {
 	return []cli.Flag{
 		&cli.StringFlag{
@@ -148,7 +137,6 @@ func registerUsernameFlag() []cli.Flag {
 	}
 }
 
-// Declare password flag.
 func registerPasswordFlag() []cli.Flag {
 	return []cli.Flag{
 		&cli.StringFlag{
@@ -161,7 +149,6 @@ func registerPasswordFlag() []cli.Flag {
 	}
 }
 
-// Declare priv-password flag.
 func registerPrivPasswordFlag() []cli.Flag {
 	return []cli.Flag{
 		&cli.StringFlag{
@@ -174,7 +161,6 @@ func registerPrivPasswordFlag() []cli.Flag {
 	}
 }
 
-// Declare host-key-path flag.
 func registerHostKeyPathFlag() []cli.Flag {
 	return []cli.Flag{
 		&cli.StringFlag{

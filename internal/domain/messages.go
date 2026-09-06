@@ -1,6 +1,6 @@
 package domain
 
-// HintTelnetFailed invoked when expect was failed.
+// HintTelnetFailed is printed on any failed session despite the name, including the SSH-only srx.
 const HintTelnetFailed = `
 [Hint]
 - Are your username and password correct?
