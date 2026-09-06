@@ -10,7 +10,6 @@ Reference pages for `telee`, carrying the detail behind the [README](../README.m
 | [`../CONTRIBUTING.md`](../CONTRIBUTING.md) | The make targets, the build, the release and sample identities |
 | [`../CHANGELOG.md`](../CHANGELOG.md)       | What each release carries, newest first                        |
 | [`../SECURITY.md`](../SECURITY.md)         | Credential handling and where to report a vulnerability        |
-| [`../AGENTS.md`](../AGENTS.md)             | The repository instructions a coding agent reads               |
 
 ## Technical Information
 
@@ -18,8 +17,8 @@ Reference pages for `telee`, carrying the detail behind the [README](../README.m
 
 One invocation opens one session, runs one command and prints what the device answered.
 
-- **stdout is the device's** — the answer leaves `internal/framework/exec.go` as a single `fmt.Println`, so a pipe or a redirect carries device text and nothing else
-- **stderr is everything else** — a rejected argument set, `[INFO] enable-mode is ignored. It's not supported.`, the transport's failure line with its `[Hint]` block, and the closing `ERROR` log line
+- **stdout is the device's** — the answer leaves `internal/framework/exec.go` as a single `fmt.Fprintln(os.Stdout, …)`, so a pipe or a redirect carries device text and nothing else
+- **stderr is everything else** — a rejected argument set, the enable-mode notice, the transport's failure line with its `[Hint]` block, and the closing `ERROR` log line
 - **`--help` and `--version` go to stdout** — both exit 0, so neither reads as a failure to a caller testing the status
 
 > [!NOTE]

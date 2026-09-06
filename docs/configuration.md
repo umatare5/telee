@@ -29,11 +29,11 @@ Three boolean flags carry long aliases as well: `--ena` and `--enable` for `--en
 What the flags that hold a mechanism actually do:
 
 - **`--port` at `0` is completed, not defaulted.** Zero becomes 22 under `--secure-mode` and 23 without it, and any non-zero value is dialled as given with no validation.
-- **`--timeout` bounds one expect step, not the session.** `ExpectBatch` applies the value per step, so the expect phase's ceiling is the value times the script's step count — two on `srx`, up to seven on a telnet session using `--enable-mode`.
-- **Neither dial carries a deadline, so `--timeout` does not bound the connect.** A non-routable address with `--timeout 3` failed after 75 s on macOS 26, which is the operating system's connect timeout rather than the flag.
-- **`--hostname` is also the prompt pattern.** Eight of the nine scripts expect the value verbatim inside the device prompt, so anything but the device's own hostname matches nothing; `aireos` expects `(Cisco Controller) >` instead.
+- **`--timeout` bounds one expect step, not the session.** `ExpectBatch` applies it per step, so the ceiling is the value times the step count — two on `srx`, seven on a telnet `--enable-mode` session.
+- **Neither dial carries a deadline, so `--timeout` does not bound the connect.** A non-routable address with `--timeout 3` failed after 75 s on macOS 26, the operating system's own connect timeout.
+- **`--hostname` is also the prompt pattern.** Eight of the nine scripts expect the value verbatim inside the device prompt, so anything but the device's own hostname matches nothing.
 - **`--priv-password` left at `enable` counts as unset.** The guard compares the value against that default literal, so `--enable-mode` without an explicit password is refused rather than sent.
-- **`--host-key-path` takes an OpenSSH text key and pins the first one in the file.** `ssh.ParseAuthorizedKey` accepts a `.pub` line and a `known_hosts` line alike — the leading host field of the latter is read as an options field — and skips the `#` comment `ssh-keygen -F` writes ahead of it. Later lines are never compared, so a multi-key capture pins whichever key it lists first.
+- **`--host-key-path` takes an OpenSSH text key and pins the first one in the file.** `ssh.ParseAuthorizedKey` takes a `.pub` line and a `known_hosts` line alike, reading the latter's leading host field as an options field. It skips the `#` comment `ssh-keygen -F` writes, and never compares a later line, so a multi-key capture pins the first.
 - **`--redundant-mode` only widens the expected prompt.** It appends `/pri/act` on `asa` and `(M)` on `ssg`, and every other platform refuses the flag outright.
 
 Which flags a platform takes is decided by the platform, not by the operator:
@@ -68,9 +68,6 @@ Six variables reach the flags they name, and the CLI reads no others:
 | `TELEE_HOSTKEYPATH`  | `--host-key-path` | —        |
 
 The other seven flags have no environment source: `--port`, `--timeout`, `--exec-platform` and the four mode booleans are set on the command line or left at their defaults.
-
-> [!IMPORTANT]
-> `configor` was removed from this module, so a `CONFIGOR_`-prefixed variable no longer overrides an explicit flag — nor anything else. The six names above are read directly by the flag definitions and are the complete set.
 
 ## Precedence
 

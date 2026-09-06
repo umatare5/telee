@@ -41,7 +41,7 @@ telee ships as a static binary and as a `scratch`-based image:
 - **Binaries** — `linux_amd64`, `linux_arm64`, `darwin_amd64` and `darwin_arm64`
 - **Images** — `ghcr.io/umatare5/telee` for `linux/amd64` and `linux/arm64`, running as UID 65534
 
-Devices are reached over telnet or SSH, and nine exec-platforms cover the prompt and paging dialects between them. The [Exec Platform](#exec-platform) matrix names the OS version each path was verified on.
+The [Exec Platform](#exec-platform) matrix names the OS version each path was verified on.
 
 ## Quick Start
 
@@ -55,8 +55,6 @@ docker run --rm ghcr.io/umatare5/telee:latest --help
 > If you prefer using binaries, download them from the [Release](https://github.com/umatare5/telee/releases) page.
 
 ### 2. Export the credentials
-
-A password passed as a flag lands in the process arguments and the shell history, so read it into the environment instead.
 
 ```bash
 export TELEE_USERNAME="operator"
@@ -320,17 +318,15 @@ telee speaks nine platform dialects, and `-x` selects one. Each decides the prom
 | ssg         | Juniper ScreenOS         | Not Available       | Optional              |
 | yamaha      | YAMAHA RT                | Optional            | Not Available         |
 
-"Not Available" means the repository for that platform builds no privileged batch, so `-e` is taken and then ignored: a notice reaches stderr and the session stays where the login left it.
+Under Enable Mode, "Not Available" means the platform builds no privileged batch, so `-e` is taken, noticed on stderr and then ignored. Under Redundant Mode it means `-r` is refused before the session opens.
 
-`asa` is the one platform whose paging command needs a privileged session, so a run setting neither `-e` nor `-d` is refused with `EnableMode must be set. Terminal length expansion in user-level is not supporting.`
+`asa` is the one platform whose paging command needs a privileged session, so a run setting neither `-e` nor `-d` is refused before the dial
 
 `-r` appends the suffix a redundant pair prints — `/pri/act` on ASA, `(M)` on ScreenOS — to every prompt telee expects, which is why the two platforms that accept it are the two that print one.
 
 ### Verified On
 
 Each version below is the OS that path was exercised against. "⚠ Not Verified" marks a path that is implemented and reachable but never run on hardware.
-
-ASA under `-d` is one of them. The mode guard rejected that combination until the guards were aligned with what the repositories implement, so it is reachable now and still unverified.
 
 | Name (`-x`)          | Telnet          | SSH (`-s`)       | Default PrivMode (`-d`) |
 | :------------------- | :-------------- | :--------------- | :---------------------- |
@@ -362,7 +358,7 @@ Six environment variables reach the flags below, and nothing else in the environ
 Under `-s` the host key is checked against `~/.ssh/known_hosts`, and `--host-key-path` narrows that to one public key file. No flag disables the check. [`docs/configuration.md`](docs/configuration.md) carries the precedence between a flag and its variable, and which flags each platform accepts.
 
 > [!IMPORTANT]
-> `-e` is refused with `TELEE_PRIVPASSWORD must be set` while the privileged password still equals the default `enable`, because the guard compares it against that default rather than testing it for emptiness.
+> The guard behind `-e` compares `--priv-password` against its default literal rather than testing it for emptiness, so an unchanged privileged password reads as unset and the run stops.
 
 ## Troubleshooting
 
@@ -373,8 +369,6 @@ A rejected argument prints one `ERROR failed to validate arguments error="…"` 
 ## Contributing
 
 [`CONTRIBUTING.md`](CONTRIBUTING.md) carries the `make` targets, the container build and the release process.
-
-No manual release trigger exists. Pushing a change to [`VERSION`](VERSION) on `main` runs [`.github/workflows/go-release.yml`](.github/workflows/go-release.yml), which tags the commit from that file and then has goreleaser build the archives and push the images.
 
 ## License
 

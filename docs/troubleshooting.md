@@ -45,7 +45,7 @@ The checks run in a fixed order and the first failure returns, so an invocation 
 - **`secure-mode is not supported in this platform`** — `-s` was set on `allied` or `foundry`, whose scripts exist only in a telnet form.
 - **`non secure-mode is not supported in this platform`** — `-s` was omitted on `srx`, whose script exists only in an SSH form.
 - **`default-privilege-mode is not supported in this platform`** — `-d` was set on anything but `asa`, `ios` or `nxos`.
-- **`EnableMode must be set. Terminal length expansion in user-level is not supporting.`** — an `asa` session was asked for with neither `-e` nor `-d`; `terminal pager 0` is refused at user level, so the session would stall on the device's first pager prompt.
+- **`EnableMode must be set. Terminal length expansion in user-level is not supporting.`** — an `asa` session was asked for with neither `-e` nor `-d`, and its paging command is refused at user level.
 - **`hostname must be set`** — `-H` or `TELEE_HOSTNAME` was set to an empty string, which clears the parser's required check and fails here.
 - **`command must be set`** — the same, for `-C` or `TELEE_COMMAND`.
 - **`TELEE_USERNAME must be set`** — `-u` or `TELEE_USERNAME` was set to an empty string; the flag's own default is `admin`, so this cannot fire unless something overwrote it.
@@ -88,7 +88,7 @@ The session script builds the expected prompt out of the `--hostname` value. `io
 
 Dialling by IP address, or by a DNS name that differs from the device's configured hostname, therefore matches none of them. `aireos` is the only platform that does not build its prompt this way, expecting the fixed string `(Cisco Controller) >`.
 
-Two further causes produce the same failure. A wrong `--exec-platform` waits for another vendor's login prompt. An `asa` or `ssg` device in a failover pair prints a prompt suffix — `/pri/act` and `(M)` respectively — that only `--redundant-mode` accounts for.
+Two further causes produce the same failure. A wrong `--exec-platform` waits for another vendor's login prompt. An `asa` or `ssg` device in a failover pair prints the suffix only `--redundant-mode` accounts for.
 
 ## Host key verification failed
 
@@ -104,6 +104,6 @@ There is no flag that skips verification, by design. [`configuration.md`](config
 
 ## The command took far longer than --timeout
 
-`--timeout` bounds one expect step rather than the session. The ceiling for the expect phase is the value times the script's step count, which is two on `srx` and up to seven on a telnet session using `-e`. A device that answers each prompt slowly therefore takes several multiples of the flag.
+`--timeout` bounds one expect step rather than the session, and neither dial passes a deadline, so the connect stage is not bounded by it at all. [`configuration.md`](configuration.md) carries both ceilings.
 
-The connect stage is not bounded by it at all. Neither dial passes a deadline, so the operating system's own connect timeout governs: a non-routable address with `--timeout 3` failed after 75 s on macOS 26. A run that hangs for over a minute and then reports `operation timed out` was never affected by the flag, and raising it changes nothing.
+A run that hangs for over a minute and then reports `operation timed out` was never affected by the flag, and raising it changes nothing.

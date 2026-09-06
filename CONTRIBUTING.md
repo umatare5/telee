@@ -44,8 +44,6 @@ To release a new version, follow these steps:
 
 Merging that pull request is the whole release. A push to `main` touching `VERSION` runs the [release workflow](https://github.com/umatare5/telee/actions/workflows/go-release.yml), which tags the commit and publishes the release in the same run. The workflow has no manual trigger, so there is no step to perform by hand.
 
-GoReleaser writes the release notes from the commit subjects. [`CHANGELOG.md`](CHANGELOG.md) is the hand-written counterpart and is not generated from them.
-
 ## Sample identities
 
 Every transcript in this repository is device output with its identities replaced, and this section is the canon those replacements come from. It covers [`README.md`](README.md) and the reference pages under `docs/` equally.
