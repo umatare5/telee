@@ -1,8 +1,5 @@
-# goreleaser assembles the Docker build context itself, in a temporary directory holding
-# the binaries laid out as <os>/<arch>/telee plus the files named in
-# dockers_v2.extra_files, so nothing in this repository needs to be sent. The
-# re-includes name that layout rather than any path this repository holds.
+# goreleaser assembles the build context in a temporary directory outside this repository,
+# so a release build never reads this file. It is kept for the other caller: a stray
+# `docker build .` at the root would otherwise send the whole tree — the worktrees under
+# tmp/ included — to the daemon before failing on the COPY.
 *
-!*/*/telee
-!LICENSE
-!NOTICE

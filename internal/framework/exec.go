@@ -65,6 +65,9 @@ func (e *Exec) Run() error {
 		fmt.Fprint(os.Stderr, domain.HintTelnetFailed)
 		return err
 	}
-	fmt.Println(data)
+	if _, err := fmt.Fprintln(os.Stdout, data); err != nil {
+		return err
+	}
+
 	return nil
 }

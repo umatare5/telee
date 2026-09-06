@@ -1,16 +1,24 @@
 {
+  "$schema": "https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/main/schema/markdownlint-cli2-config-schema.json",
   "config": {
     "default": true,
+    "MD003": { "style": "atx" },
+    "MD004": { "style": "dash" },
     "MD013": false,
-    // `### Changed`, `### Added` and `### Fixed` recur under successive releases
-    "MD024": false,
-    "MD026": false,
+    "MD024": { "siblings_only": true },
+    // Two adjacent GitHub alerts cannot be written without a blank line between them
     "MD028": false,
-    "MD033": false,
-    "MD034": false,
-    "MD041": false,
-    "MD045": false
+    "MD029": { "style": "ordered" },
+    "MD046": { "style": "fenced" },
+    "MD048": { "style": "backtick" },
+    "MD050": { "style": "asterisk" },
+    "MD054": { "url_inline": false },
+    "MD055": { "style": "leading_and_trailing" },
+    "MD060": { "style": "aligned", "aligned_delimiter": true }
   },
+  // `overrides` is honoured from markdownlint-cli2 v0.23.0. v0.22.x ignores the key
+  // silently, so every heading contract below is inert there: check headings with the
+  // version .pre-commit-config.yaml pins, not with whatever is on PATH.
   "overrides": [
     {
       "filter": ["AGENTS.md"],
@@ -35,8 +43,9 @@
       "filter": ["CHANGELOG.md"],
       "combine": "merge",
       "config": {
-        // Release headings accrue and this repository opens each one directly as
-        // `## [vX.Y.Z]`, so only the title is pinned
+        // Release headings accrue, this file opens with `## [Unreleased]` and each
+        // release groups its entries under `### Added`, `### Changed` and the rest,
+        // so only the title is pinned
         "MD043": {
           "match_case": true,
           "headings": [
@@ -87,7 +96,7 @@
             "## Configuration", "*",
             "## Troubleshooting", "*",
             "## Contributing", "*",
-            "## Licence"
+            "## License"
           ]
         }
       }
@@ -145,6 +154,7 @@
       "filter": ["docs/measurements.md"],
       "combine": "merge",
       "config": {
+        "MD033": { "allowed_elements": ["details", "p", "summary", "u"] },
         "MD043": {
           "match_case": true,
           "headings": [

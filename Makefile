@@ -1,56 +1,60 @@
-.PHONY: help build lint test-unit test-unit-coverage clean pre-commit-install pre-commit-test pre-commit-uninstall
+.PHONY: help build lint test-unit test-unit-coverage snapshot clean pre-commit-install pre-commit-test pre-commit-uninstall
 
-# Binary name and paths
 BINARY_NAME := telee
 BUILD_DIR := ./tmp
 BINARY_PATH := $(BUILD_DIR)/$(BINARY_NAME)
 COVERAGE_DIR := ./coverage
 
-# Go build flags
 LDFLAGS := -X github.com/umatare5/telee/cli.version=$(shell cat VERSION)
-BUILD_FLAGS := -ldflags "$(LDFLAGS)"
+BUILD_FLAGS := -trimpath -ldflags "$(LDFLAGS)"
 
-# Default target
 .DEFAULT_GOAL := help
 
-# Show available targets
 help:
 	@echo "Available targets:"
-	@echo "  build                - Build the binary"
-	@echo "  lint                 - Run linters (golangci-lint)"
-	@echo "  test-unit            - Run unit tests with colored output"
-	@echo "  test-unit-coverage   - Generate HTML coverage report"
+	@echo "  build                - Build the binary into $(BINARY_PATH)"
+	@echo "  lint                 - Run golangci-lint and go mod tidy"
+	@echo "  test-unit            - Run unit tests with coverage"
+	@echo "  test-unit-coverage   - Generate the HTML coverage report"
+	@echo "  snapshot             - Build a goreleaser snapshot"
 	@echo "  clean                - Remove build artifacts and backup files"
 	@echo "  pre-commit-install   - Install the pre-commit hooks"
 	@echo "  pre-commit-test      - Run every hook across the whole tree"
 	@echo "  pre-commit-uninstall - Remove the pre-commit hooks"
 	@echo ""
 	@echo "Requirements:"
-	@echo "  - gotestsum: go install gotest.tools/gotestsum@latest"
+	@echo "  - gotestsum:     go install gotest.tools/gotestsum@latest"
 	@echo "  - golangci-lint: https://golangci-lint.run/docs/welcome/install/"
-	@echo "  - pre-commit: https://pre-commit.com/#install"
-	@echo "  - gitleaks: https://github.com/gitleaks/gitleaks#installing"
+	@echo "  - pre-commit:    https://pre-commit.com/#install"
+	@echo "  - gitleaks:      https://github.com/gitleaks/gitleaks#installing"
 
-# Build the binary
 build:
 	@mkdir -p $(BUILD_DIR)
 	go build $(BUILD_FLAGS) -o $(BINARY_PATH) ./cmd
 
-# Lint the code
+# config verify comes first because `run` accepts an unknown nested setting key
+# silently and reverts that setting to its default, so a typo leaves a rule the
+# author believes is on quietly off.
 lint:
+	golangci-lint config verify
 	golangci-lint run
 	go mod tidy
 
-# Run unit tests with gotestsum (shows individual test results with color)
+# The TELEE_* variables are cleared because they are read at flag-parse time, so a developer's own
+# shell must not decide what the CLI tests see. A new variable the CLI reads has to be added here
+# as well as to the neutralization inside whichever test parses flags.
 test-unit:
 	@command -v gotestsum >/dev/null 2>&1 || { echo "Error: gotestsum is not installed. Run: go install gotest.tools/gotestsum@latest"; exit 1; }
 	mkdir -p $(COVERAGE_DIR)
-	gotestsum --format testname -- -coverprofile=$(COVERAGE_DIR)/report.out ./...
+	env -u TELEE_HOSTNAME -u TELEE_COMMAND -u TELEE_USERNAME -u TELEE_PASSWORD -u TELEE_PRIVPASSWORD -u TELEE_HOSTKEYPATH \
+		gotestsum --format testname -- -race -coverprofile=$(COVERAGE_DIR)/report.out ./...
 
-# Generate coverage report (HTML)
 test-unit-coverage: test-unit
 	go tool cover -html=$(COVERAGE_DIR)/report.out -o $(COVERAGE_DIR)/report.html
 	@echo "Coverage report generated: $(COVERAGE_DIR)/report.html"
+
+snapshot:
+	goreleaser release --snapshot --clean
 
 # BUILD_DIR is ./tmp, which also holds the worktrees `git wt` creates, so this removes
 # what the build produced rather than the directory itself.

@@ -4,11 +4,11 @@ package repository
 import (
 	"time"
 
+	x "github.com/google/goexpect"
+
 	"github.com/umatare5/telee/internal/config"
 	"github.com/umatare5/telee/internal/domain"
 	"github.com/umatare5/telee/pkg/ssh"
-
-	x "github.com/google/goexpect"
 )
 
 // Repository struct.
@@ -32,7 +32,6 @@ func (r *Repository) Fetch() (string, error) {
 	data, err = ssh.New(
 		r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
 	).Fetch(&expects, clientConfig)
-
 	if err != nil {
 		return "", err
 	}

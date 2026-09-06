@@ -3,3 +3,6 @@ coverage/** linguist-generated=true
 
 # Disable diffs completely for certain file types (treat as binary)
 coverage/*.out  -diff
+
+# The badge is regenerated from that profile by octocov, so it is generated too.
+docs/assets/coverage.svg linguist-generated=true

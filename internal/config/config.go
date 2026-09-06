@@ -6,10 +6,10 @@ import (
 	"log/slog"
 	"os"
 
+	"github.com/urfave/cli/v3"
+
 	"github.com/umatare5/telee/internal/domain"
 	"github.com/umatare5/telee/pkg/errors"
-
-	"github.com/urfave/cli/v3"
 )
 
 const (

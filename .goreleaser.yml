@@ -1,14 +1,9 @@
-# .goreleaser.yml for telee
-
 project_name: telee
 version: 2
 
-# Distribution directory
 dist: tmp/dist
 
-# Build destination
 github_urls:
-  # set to true if you use a self-signed certificate
   skip_tls_verify: false
 
 before:
@@ -39,13 +34,15 @@ builds:
         - cmd: grep -q CGO_ENABLED=0 {{ .Path }}
 
 archives:
-  - name_template: "{{ .ProjectName }}-v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
-    # This list replaces goreleaser's own defaults, so every file has to be named here.
+  - name_template: "{{ .ProjectName }}-v{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    # SECURITY.md is named on its own because the list replaces goreleaser's own
+    # defaults, and no glob here reaches a root file.
     files:
       - "README.md"
       - "SECURITY.md"
       - "LICENSE"
       - "NOTICE"
+      - "docs/*.md"
 
 # A prerelease must not move latest, the major tag or the minor tag.
 dockers_v2:
@@ -93,31 +90,20 @@ dockers_v2:
 release:
   prerelease: auto
   draft: false
-  replace_existing_draft: true
   header: |
     ## {{ .ProjectName }} v{{ .Version }}
 
     This release contains the CLI for executing commands on network devices.
 
-    ### 🐳 Container Images
+    ### Container images
 
     ```bash
-    # Latest version
-    docker run --rm ghcr.io/umatare5/telee:latest --help
-
-    # Specific version
     docker run --rm ghcr.io/umatare5/telee:{{ .Tag }} --help
-
-    # With environment variables
-    docker run --rm -e TELEE_USERNAME -e TELEE_PASSWORD ghcr.io/umatare5/telee:{{ .Tag }} -H host.example.net -C "show version"
     ```
 
-    ### 📦 Binary Installation
+    ### Binaries
 
-    ```bash
-    go install github.com/umatare5/telee@v{{ .Version }}
-    ```
-
+    Download a prebuilt binary for your platform from the assets below.
   footer: |
     **Full Changelog**: https://github.com/umatare5/telee/compare/{{ .PreviousTag }}...{{ .Tag }}
 
@@ -126,11 +112,9 @@ release:
     - [README](https://github.com/umatare5/telee/blob/{{ .Tag }}/README.md)
     - [Container Registry](https://github.com/umatare5/telee/pkgs/container/telee)
 
-# Generate checksums for source archives
 checksum:
   name_template: "{{ .ProjectName }}-v{{ .Version }}_checksums.txt"
 
-# Changelog configuration
 changelog:
   use: github
   sort: asc
@@ -154,6 +138,5 @@ changelog:
       - "^ci:"
       - "^test:"
 
-# Metadata for Go proxy and pkg.go.dev
 metadata:
   mod_timestamp: "{{ .CommitTimestamp }}"
