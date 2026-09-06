@@ -5,12 +5,12 @@ import (
 	"log/slog"
 	"os"
 
+	"github.com/urfave/cli/v3"
+
 	"github.com/umatare5/telee/internal/application"
 	"github.com/umatare5/telee/internal/config"
 	"github.com/umatare5/telee/internal/framework"
 	"github.com/umatare5/telee/internal/infrastructure"
-
-	"github.com/urfave/cli/v3"
 )
 
 // Preset parameters for this command.

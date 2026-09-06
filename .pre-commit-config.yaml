@@ -20,18 +20,6 @@ repos:
       # see every file — unused above all — report what they actually would.
       - id: golangci-lint-full
 
-  - repo: local
-    hooks:
-      # .golangci.yml declares no formatters block, so `golangci-lint run --fix`
-      # above rewrites logic but never formatting. This hook is what keeps the
-      # tree gofmt-clean and retires the day that block lands.
-      - id: gofmt
-        name: gofmt
-        entry: gofmt -l -w
-        language: system
-        types: [go]
-        pass_filenames: true
-
   - repo: https://github.com/rhysd/actionlint
     rev: v1.7.12
     hooks:

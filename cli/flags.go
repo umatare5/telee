@@ -1,9 +1,9 @@
 package cli
 
 import (
-	"github.com/umatare5/telee/internal/domain"
-
 	"github.com/urfave/cli/v3"
+
+	"github.com/umatare5/telee/internal/domain"
 )
 
 // Register all flags.

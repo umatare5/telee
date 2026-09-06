@@ -14,6 +14,8 @@ run:
 issues:
   max-issues-per-linter: 0         # Do not cap issues per linter
   max-same-issues: 0               # Do not deduplicate identical issues
+  # The default keeps one issue per line, which hides a second linter reporting the same line.
+  uniq-by-line: false
 
 ########################
 # 3. Enabled linters
@@ -40,7 +42,6 @@ linters:
     - asasalint
     - misspell
     - usestdlibvars
-    - testifylint
     - perfsprint
     - paralleltest
     - tagliatelle
@@ -64,6 +65,7 @@ linters:
     - fatcontext             # Avoid capturing/propagating "fat" contexts
     - nosprintfhostport      # Safer host:port formatting
     - depguard               # Belt-and-suspenders dependency rules
+    - forbidigo
 
   ########################
   # 4. Per-linter settings
@@ -77,7 +79,6 @@ linters:
     staticcheck:
       checks:
         - all
-        - "-SA1012"
 
     errchkjson:
       check-error-free-encoding: true
@@ -89,6 +90,7 @@ linters:
     goconst:
       min-len: 2
       min-occurrences: 3
+      ignore-tests: true # Test tables enumerate the platform names; that is data, not duplication
 
     gocritic:
       enable-all: true
@@ -98,15 +100,9 @@ linters:
         - commentedOutCode
         - whyNoLint
         - importShadow            # Disable to avoid churn in legacy code
-        - paramTypeCombine        # Disable to avoid cosmetic changes
-
-    gosec:
-      excludes:
-        - G101                    # Exclude hardcoded credentials check (false positives in env var names)
-        - G304                    # Exclude file inclusion check (necessary for dynamic file operations)
 
     mnd:
-      checks: [argument,assign,case,return]
+      checks: [argument, assign, case, return]
       ignored-functions: ["time.Duration"]
 
     revive:
@@ -120,23 +116,18 @@ linters:
         - name: error-naming
         - name: var-naming
           arguments:
-          # White List to preserve readability. I maintain these words by hands.
-          - [
-              # Network Protocols & Technologies
-              "SSH", "Telnet", "TCP", "IP", "TLS", "DTLS", "CLI", "OS",
-              # Network Vendors & Platforms
-              "IOS", "NXOS", "ASA", "AireOS", "JunOS", "ScreenOS", "SRX", "SSG", "Yamaha",
-              # Network Devices & Components
-              "AP", "VLAN", "MAC", "SSID"
-            ]
-          # Black List to avoid confusion with common initialisms.
-          - [
-              # General
-              "API", "ID", "URL", "URI", "UUID", "HTTP", "HTTPS",
-              # Network Protocols
-              "DHCP", "DNS", "SNMP", "NTP", "RADIUS", "TACACS"
-            ]
-          - - skip-initialism-name-checks: false
+            # Argument one is revive's allowlist — these spellings are left as written;
+            # argument two is its blocklist, which adds initialisms revive then requires in
+            # upper case.
+            - [
+                "Telnet",
+                "AireOS", "JunOS", "ScreenOS", "YamahaOS", "AlliedWare", "IronWare",
+              ]
+            - [
+                "AP", "ASA", "CLI", "DHCP", "DTLS", "IOS", "IP", "MAC", "NTP", "NXOS",
+                "RADIUS", "SNMP", "SRX", "SSG", "SSH", "SSID", "TACACS", "TCP", "TLS", "VLAN",
+              ]
+            - - skip-initialism-name-checks: false
 
     misspell:
       locale: US
@@ -155,42 +146,49 @@ linters:
         rules:
           json: snake
 
-    testifylint:
-      enable-all: true
-      disable:
-        - float-compare
-
     govet:
       enable-all: true
       disable:
-        - shadow                 # Prevent noisy false positives
-        - fieldalignment         # Avoid churn with marginal benefits
+        - shadow # Noisy false positives
+        - fieldalignment # Churn for marginal benefit
 
     sloglint:                    # See options: https://github.com/go-simpler/sloglint
       no-mixed-args: true        # Do not mix key/value pairs and Attrs
       no-global: ""              # Allow default global logger usage for simplicity
 
     copyloopvar:
-      check-alias: true          # Also flag aliasing the loop variable
+      check-alias: true
+
+    forbidigo:
+      # analyze-types is on because the two package-qualified patterns below match source
+      # text by default, so an aliased fmt or sort import would evade them.
+      analyze-types: true
+      forbid:
+        - pattern: '^fmt\.Print.*$'
+          msg: "write to an explicit io.Writer with fmt.Fprint*"
+        - pattern: '^sort\.(Slice|SliceStable|Sort)$'
+          msg: "use slices.SortStableFunc"
 
     depguard:
       rules:
         main:
           list-mode: lax
-          files: [ $all ]
-          allow:
-            - $gostd
+          files: [$all]
           deny:
             - pkg: "log$"
-              desc: "Use slog (and sloglint) instead of log package"
-            - pkg: "golang.org/x/exp/maps$"
-              desc: "Use std `maps` and built-ins (e.g., clear) instead of x/exp/maps"
-            - pkg: "golang.org/x/exp/slices$"
-              desc: "Use std `slices` instead of x/exp/slices"
+              desc: "This CLI logs through log/slog; the std log package writes to its own sink"
+            # The anchor is load-bearing: depguard matches by prefix, so an unanchored
+            # "encoding/json" would also ban encoding/json/v2 and encoding/json/jsontext.
+            - pkg: "encoding/json$"
+              desc: "Use encoding/json/v2; mixing v1 and v2 mixes their omitempty and nil-slice rules"
             - pkg: "github.com/pkg/errors$"
-              desc: "Use std `errors`"
+              desc: "Use the std errors package"
             - pkg: "math/rand$"
-              desc: "Use `math/rand/v2` on Go 1.22+"
+              desc: "Use math/rand/v2"
+            - pkg: "golang.org/x/exp/maps$"
+              desc: "Use the std maps package"
+            - pkg: "golang.org/x/exp/slices$"
+              desc: "Use the std slices package"
 
   ########################
   # 5. Exclusions
@@ -198,3 +196,51 @@ linters:
   exclusions:
     generated: lax
     warn-unused: false
+    paths:
+      - tmp/
+    rules:
+      - path: _test\.go
+        linters:
+          - errcheck
+          - goconst
+          - gosec
+          - ineffassign
+          - mnd
+          - perfsprint
+          - staticcheck
+          - unused
+          - tagliatelle
+      # The flag env-var names are the CLI's public contract, so gosec's G101 word list
+      # matches the constant that carries TELEE_PRIVPASSWORD rather than a secret.
+      - path: ^internal/domain/flags\.go$
+        text: "G101"
+        linters:
+          - gosec
+      # --host-key-path names the file the operator chose; the variable is the point.
+      - path: ^pkg/ssh/client\.go$
+        text: "G304"
+        linters:
+          - gosec
+
+########################
+# 6. Formatters
+########################
+formatters:
+  enable:
+    - gci
+    - gofumpt
+  settings:
+    gci:
+      sections:
+        - standard
+        - default
+        - prefix(github.com/umatare5/telee)
+    gofumpt:
+      extra:
+        group-params: true
+
+########################
+# 7. Output
+########################
+output:
+  show-stats: false

@@ -3,7 +3,6 @@ package infrastructure
 
 import (
 	"github.com/umatare5/telee/internal/config"
-
 	aireosRepository "github.com/umatare5/telee/internal/infrastructure/repositories/aireos"
 	alliedwareRepository "github.com/umatare5/telee/internal/infrastructure/repositories/alliedware"
 	asasoftwareRepository "github.com/umatare5/telee/internal/infrastructure/repositories/asasoftware"
