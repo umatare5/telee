@@ -375,6 +375,6 @@ A rejected argument prints one `ERROR failed to validate arguments error="…"` 
 
 No manual release trigger exists. Pushing a change to [`VERSION`](VERSION) on `main` runs [`.github/workflows/go-release.yml`](.github/workflows/go-release.yml), which tags the commit from that file and then has goreleaser build the archives and push the images.
 
-## Licence
+## License
 
 MIT. The binary statically links MIT, BSD 3-Clause and Apache 2.0 dependencies, whose notices are reproduced in [`NOTICE`](NOTICE) and shipped alongside [`LICENSE`](LICENSE) in every release archive and container image.
