@@ -52,8 +52,7 @@ BSD 3-Clause License
 
 The following modules are licensed under the BSD 3-Clause License. The license
 text of each is reproduced below, as that license's second clause requires of a
-redistribution in binary form. The wording differs between modules, so each is
-carried in full rather than consolidated.
+redistribution in binary form.
 
 -------------------------------------------------------------------------------
 github.com/google/goexpect

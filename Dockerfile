@@ -2,7 +2,7 @@
 # dockers_v2.extra_files, so this copies rather than builds.
 FROM scratch
 
-# dockers_v2 lays the build context out as <os>/<arch>/<binary>, so the binary is not at
+# dockers_v2 lays the build context out as linux/<arch>/<binary>, so the binary is not at
 # the context root.
 ARG TARGETPLATFORM
 
