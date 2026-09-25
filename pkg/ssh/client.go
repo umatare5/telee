@@ -2,11 +2,14 @@
 package ssh
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"net"
 	"os"
+	"slices"
 	"strconv"
+	"strings"
 	"time"
 
 	"golang.org/x/crypto/ssh"
@@ -120,40 +123,73 @@ func getKnownHostsPath() (string, error) {
 	return homeDir + "/.ssh/known_hosts", nil
 }
 
-// Wraps the known_hosts callback so a mismatch prints the onboarding steps before it fails.
+// Wraps the known_hosts callback so a failure prints what to do before it is returned.
 func createFallbackCallback(knownHostsCallback ssh.HostKeyCallback) ssh.HostKeyCallback {
 	return func(hostname string, remote net.Addr, key ssh.PublicKey) error {
 		err := knownHostsCallback(hostname, remote, key)
 		if err != nil {
-			return handleHostKeyVerificationFailure(hostname, err)
+			return handleHostKeyVerificationFailure(hostname, key, err)
 		}
 		return nil
 	}
 }
 
-func handleHostKeyVerificationFailure(hostname string, originalErr error) error {
-	host := extractHostFromAddress(hostname)
+func handleHostKeyVerificationFailure(hostname string, key ssh.PublicKey, originalErr error) error {
+	fmt.Fprint(os.Stderr, hostKeyFailureMessage(hostname, key, originalErr))
+	return fmt.Errorf("host key verification failed for %s", hostname)
+}
 
-	fmt.Fprintf(os.Stderr, "\n[ERROR] Host key verification failed for %s: %v\n", hostname, originalErr)
-	fmt.Fprintln(os.Stderr, "\nTo resolve this issue, you can add the host key to your known_hosts file using one of these methods:")
-	fmt.Fprintf(os.Stderr, "\n1. Connect once with ssh and accept the key:\n")
-
-	if isStandardSSHPort(hostname) {
-		fmt.Fprintf(os.Stderr, "   ssh %s\n", host)
-		fmt.Fprintf(os.Stderr, "\n2. Or, if that reports no matching host key type or key exchange method:\n")
-		fmt.Fprintf(os.Stderr, "   ssh -o HostKeyAlgorithms=+ssh-rsa -o KexAlgorithms=+diffie-hellman-group14-sha1 %s\n", host)
-	} else {
-		port := extractPortFromAddress(hostname)
-		fmt.Fprintf(os.Stderr, "   ssh -p %s %s\n", port, host)
-		fmt.Fprintf(os.Stderr, "\n2. Or, if that reports no matching host key type or key exchange method:\n")
-		fmt.Fprintf(os.Stderr, "   ssh -p %s -o HostKeyAlgorithms=+ssh-rsa -o KexAlgorithms=+diffie-hellman-group14-sha1 %s\n", port, host)
+// hostKeyFailureMessage tells a key that fails its known_hosts record from a host the file does not
+// know. The former is what the file exists to catch, so it gets the fingerprint and the recorded line
+// and no instruction to accept it, whatever its type; the latter keeps the onboarding steps.
+func hostKeyFailureMessage(hostname string, key ssh.PublicKey, originalErr error) string {
+	var revoked *knownhosts.RevokedError
+	if errors.As(originalErr, &revoked) {
+		return fmt.Sprintf("\n[ERROR] Host key for %s is revoked at %s:%d\n\nConnection canceled for security reasons.\n",
+			hostname, revoked.Revoked.Filename, revoked.Revoked.Line)
 	}
 
-	fmt.Fprintf(os.Stderr, "\n3. Or use the --host-key-path flag to specify a specific host key file\n")
-	fmt.Fprintf(os.Stderr, "\n4. Or set TELEE_HOSTKEYPATH environment variable to specify the host key file path\n")
-	fmt.Fprintln(os.Stderr, "\nConnection canceled for security reasons.")
+	var keyErr *knownhosts.KeyError
+	if errors.As(originalErr, &keyErr) && len(keyErr.Want) > 0 {
+		if i := slices.IndexFunc(keyErr.Want, func(k knownhosts.KnownKey) bool { return k.Key.Type() == key.Type() }); i >= 0 {
+			return fmt.Sprintf("\n[ERROR] Host key for %s has changed: %s\nThe recorded key is at %s:%d.\n\nConnection canceled for security reasons.\n",
+				hostname, ssh.FingerprintSHA256(key), keyErr.Want[i].Filename, keyErr.Want[i].Line)
+		}
+		// Another type on record cannot be told from another device, so it is refused the same way.
+		var recorded []string
+		for _, k := range keyErr.Want {
+			if !slices.Contains(recorded, k.Key.Type()) {
+				recorded = append(recorded, k.Key.Type())
+			}
+		}
+		return fmt.Sprintf("\n[ERROR] Host key for %s does not match known_hosts: it holds %s at %s:%d and the device presented %s %s\n\nConnection canceled for security reasons.\n",
+			hostname, strings.Join(recorded, ", "), keyErr.Want[0].Filename, keyErr.Want[0].Line, key.Type(), ssh.FingerprintSHA256(key))
+	}
 
-	return fmt.Errorf("host key verification failed for %s", hostname)
+	var b strings.Builder
+	fmt.Fprintf(&b, "\n[ERROR] Host key verification failed for %s: %v\n", hostname, originalErr)
+	fmt.Fprintln(&b, "\nTo resolve this issue, you can add the host key to your known_hosts file using one of these methods:")
+	fmt.Fprintf(&b, "\n1. Connect once with ssh and accept the key:\n")
+	fmt.Fprintf(&b, "   %s\n", sshCommand(hostname, ""))
+	fmt.Fprintf(&b, "\n2. Or, if that reports no matching host key type or key exchange method:\n")
+	fmt.Fprintf(&b, "   %s\n", sshCommand(hostname, "-o HostKeyAlgorithms=+ssh-rsa -o KexAlgorithms=+diffie-hellman-group14-sha1"))
+	fmt.Fprintf(&b, "\n3. Or use the --host-key-path flag to specify a specific host key file\n")
+	fmt.Fprintf(&b, "\n4. Or set TELEE_HOSTKEYPATH environment variable to specify the host key file path\n")
+	fmt.Fprintln(&b, "\nConnection canceled for security reasons.")
+
+	return b.String()
+}
+
+// sshCommand is the ssh line that reaches the address, carrying -p for a non-default port.
+func sshCommand(address, options string) string {
+	parts := []string{"ssh"}
+	if !isStandardSSHPort(address) {
+		parts = append(parts, "-p", extractPortFromAddress(address))
+	}
+	if options != "" {
+		parts = append(parts, options)
+	}
+	return strings.Join(append(parts, extractHostFromAddress(address)), " ")
 }
 
 func extractHostFromAddress(address string) string {
