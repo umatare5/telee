@@ -12,9 +12,17 @@ permissions:
 
 jobs:
   coverage:
-    uses: umatare5/common/.github/workflows/go-test-coverage.yml@8044b3c0ce0dce6411ec179c3ec0e675219c117f # v0.21.0
+    uses: umatare5/common/.github/workflows/go-test-coverage.yml@2dc181f4ceb6cd36a063f968d42c22953b554efd # v0.22.0
     with:
       go_version: "1.27.1"
-      # Named so that CI, `make test-unit` and .octocov.yml all read one profile
-      coverage_file: "./coverage/report.out"
       coverage_threshold: 0 # Minimal test coverage; increase as tests are added
+      enable_badge: true
+
+  badge:
+    needs: coverage
+    if: ${{ !cancelled() && needs.coverage.outputs.badge != '' }}
+    permissions:
+      contents: write
+    uses: umatare5/common/.github/workflows/coverage-badge.yml@2dc181f4ceb6cd36a063f968d42c22953b554efd # v0.22.0
+    with:
+      badge: ${{ needs.coverage.outputs.badge }}

@@ -7,9 +7,7 @@ dist/
 *.test
 
 *.out
-# coverage/report.out is tracked on purpose; without the negation, coverage/* re-ignores it.
 coverage/*
-!coverage/report.out
 
 .idea/
 *.swp
