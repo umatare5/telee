@@ -173,7 +173,7 @@ sw01>
 
   ```console
   $ telee -H 192.0.2.250 -C "show sysinfo" -x aireos
-  (Cisco Controller) >show sysinfo
+  <snip>
 
   Manufacturer's Name.............................. Cisco Systems Inc.
   Product Name..................................... Cisco Controller
@@ -203,7 +203,7 @@ sw01>
   ```console
   $ export TELEE_PRIVPASSWORD='<enable password>'
   $ telee -H fw01 -C "show version" -x asa --enable-mode
-  fw01# show version
+  <snip>
 
   Cisco Adaptive Security Appliance Software Version 9.0(4)
   Device Manager Version 7.1(5)100
@@ -292,7 +292,7 @@ sw01>
 
   ```console
   $ telee -H sw03 -C "show system" -x allied -u manager --timeout 10
-  Manager sw03> show system
+  <snip>
   Switch System Status                     Date 2021-05-09 Time 01:04:54
   Board     Bay      Board Name
   ----------------------------------------------------------------------
