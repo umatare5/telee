@@ -90,8 +90,8 @@ telee -H HOSTNAME -C COMMAND [options...]
 | `--default-privilege-mode`, `-d` | Expect a privileged prompt at login and escalate nothing  |
 | `--redundant-mode`, `-r`         | Append the failover suffix to every expected prompt       |
 | `--username`, `-u`               | Account name, `admin` unless set                          |
-| `--password`, `-p`               | Account password, `cisco` unless set                      |
-| `--priv-password`, `--pp`        | Privileged password, `enable` unless set                  |
+| `--password`, `-p`               | Account password, which has no default                    |
+| `--priv-password`, `--pp`        | Privileged password, which has no default                 |
 | `--host-key-path`, `--hkp`       | Public key file replacing `~/.ssh/known_hosts` under `-s` |
 
 `telee --help` prints the same flags with their aliases, [`docs/configuration.md`](docs/configuration.md) carries every default and environment variable, and [`docs/README.md`](docs/README.md) indexes the reference pages.
@@ -351,14 +351,11 @@ Six environment variables reach the flags below, and nothing else in the environ
 | `TELEE_HOSTNAME`     | `--hostname`, `-H`         | —        |
 | `TELEE_COMMAND`      | `--command`, `-C`          | —        |
 | `TELEE_USERNAME`     | `--username`, `-u`         | `admin`  |
-| `TELEE_PASSWORD`     | `--password`, `-p`         | `cisco`  |
-| `TELEE_PRIVPASSWORD` | `--priv-password`, `--pp`  | `enable` |
+| `TELEE_PASSWORD`     | `--password`, `-p`         | —        |
+| `TELEE_PRIVPASSWORD` | `--priv-password`, `--pp`  | —        |
 | `TELEE_HOSTKEYPATH`  | `--host-key-path`, `--hkp` | —        |
 
 Under `-s` the host key is checked against `~/.ssh/known_hosts`, and `--host-key-path` narrows that to one public key file. No flag disables the check. [`docs/configuration.md`](docs/configuration.md) carries the precedence between a flag and its variable, and which flags each platform accepts.
-
-> [!IMPORTANT]
-> The guard behind `-e` compares `--priv-password` against its default literal rather than testing it for emptiness, so an unchanged privileged password reads as unset and the run stops.
 
 ## Troubleshooting
 

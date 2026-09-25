@@ -44,8 +44,8 @@ const (
 	SecureModeFlagDefaultValue      bool   = false
 	DefaultPrivModeFlagDefaultValue bool   = false
 	UsernameFlagDefaultValue        string = "admin"
-	PasswordFlagDefaultValue        string = "cisco"
-	PrivPasswordFlagDefaultValue    string = "enable"
+	PasswordFlagDefaultValue        string = ""
+	PrivPasswordFlagDefaultValue    string = ""
 	HostKeyPathFlagDefaultValue     string = ""
 )
 
