@@ -66,12 +66,12 @@ Four platforms have no privileged mode to escalate into, so `-e` still clears th
 
 ```text
 TelnetClient was failed at spawn(). You can troubleshoot using wireshark.
-dial tcp 192.0.2.1:23: connect: operation timed out
+dial tcp 192.0.2.1:23: i/o timeout
 ```
 
-The banner is the transport's, the line under it is the operating system's, and `SSH was failed at spawn()` is the `--secure-mode` wording of the same stage. Nothing was authenticated and no command was sent.
+The banner is the transport's, the line under it is the operating system's, and `SSH was failed at spawn()` is the `--secure-mode` wording of the same stage. That wording also covers a handshake or an authentication that outlived `--timeout`, as a slow AAA server can cause, and both end in `i/o timeout` too. A channel open that did ends in `unexpected packet in response to channel open: <nil>` instead, and a pty or shell request in `EOF`.
 
-The second line names the cause: `no such host` is resolution, `connection refused` is a closed port, and `operation timed out` is a filtered path. For the latter two, check that the completed port is the one the device listens on — `0` completes to 23 without `--secure-mode` and to 22 with it.
+The second line names the cause: `no such host` is resolution, `connection refused` is a closed port, and `i/o timeout` is a filtered path, reported once `--timeout` has elapsed. For the latter two, check that the completed port is the one the device listens on — `0` completes to 23 without `--secure-mode` and to 22 with it.
 
 Host key failure is a separate shape. A `known_hosts` mismatch reaches this banner with its guidance block above rather than below, and a `--host-key-path` mismatch reaches it with none. A missing `known_hosts` and an unreadable `--host-key-path` are refused before any dial, so neither prints a banner at all.
 
@@ -82,7 +82,7 @@ TelnetClient was failed at ExpectBatch(). You can troubleshoot using wireshark.
 expect: timer expired after 2 seconds
 ```
 
-The transport connected and one of the expected patterns never arrived within `--timeout`, whose value the second line repeats. The hint block printed underneath names the three causes, and the second of them is the common one.
+The transport connected and one of the expected patterns never arrived within `--timeout` seconds of the last byte, whose value the second line repeats. A device that closes the connection first ends the step at once instead, with `expect: connection closed before a match: EOF` on the second line. The hint block printed underneath names the three causes, and the second of them is the common one.
 
 The session script builds the expected prompt out of the `--hostname` value. `ios` waits for `<hostname>>`, `foundry` for `telnet@<hostname>>`, `allied` for `Manager <hostname>>`, `srx` for `<username>@<hostname>>`, and `ssg` for `<hostname>->`.
 
@@ -101,9 +101,3 @@ Five distinct messages come from the SSH host key check, and none of them sends 
 - **`ssh: handshake failed: ssh: host key mismatch`** — `--host-key-path` parsed, and the key it pins is not the one the device presented. It follows the `spawn()` banner without a guidance block, which belongs to the `known_hosts` path alone.
 
 There is no flag that skips verification, by design. [`configuration.md`](configuration.md) covers `--host-key-path` in full.
-
-## The command took far longer than --timeout
-
-`--timeout` bounds one expect step rather than the session, and neither dial passes a deadline, so the connect stage is not bounded by it at all. [`configuration.md`](configuration.md) carries both ceilings.
-
-A run that hangs for over a minute and then reports `operation timed out` was never affected by the flag, and raising it changes nothing.

@@ -14,7 +14,7 @@ One invocation runs one command on one device, so there are no subcommands, no c
 | `--command`, `-C`                | —        | The command the session runs      |
 | `--exec-platform`, `-x`          | `ios`    | The session script to drive       |
 | `--port`, `-P`                   | `0`      | TCP port, `0` meaning complete it |
-| `--timeout`, `-t`                | `5`      | Seconds allowed per expect step   |
+| `--timeout`, `-t`                | `5`      | Seconds per dial and per step     |
 | `--secure-mode`, `-s`            | `false`  | SSH in place of telnet            |
 | `--enable-mode`, `-e`            | `false`  | Escalation to privileged EXEC     |
 | `--default-privilege-mode`, `-d` | `false`  | Login is already privileged       |
@@ -29,8 +29,7 @@ Three boolean flags carry long aliases as well: `--ena` and `--enable` for `--en
 What the flags that hold a mechanism actually do:
 
 - **`--port` at `0` is completed, not defaulted.** Zero becomes 22 under `--secure-mode` and 23 without it, and any non-zero value is dialed as given with no validation.
-- **`--timeout` bounds one expect step, not the session.** `ExpectBatch` applies it per step, so the ceiling is the value times the step count — two on `srx`, seven on a telnet `--enable-mode` session.
-- **Neither dial carries a deadline, so `--timeout` does not bound the connect.** A non-routable address with `--timeout 3` failed after 75 s on macOS 26, the operating system's own connect timeout.
+- **`--timeout` bounds each stage of a session, not the whole of it.** The dial gets the value, the SSH handshake with its authentication and shell request gets it once more, and every expect step gets it again. An expect step's timer restarts on every byte received, so a device that keeps sending is never cut off and one that goes silent is dropped after that many seconds. `0` or less is not refused: a dial at `0` has no limit on either transport, and every stage after it ends at once.
 - **`--hostname` is also the prompt pattern.** Eight of the nine scripts expect the value verbatim inside the device prompt, so anything but the device's own hostname matches nothing.
 - **`--priv-password` left at `enable` counts as unset.** The guard compares the value against that default literal, so `--enable-mode` without an explicit password is refused rather than sent.
 - **`--host-key-path` takes an OpenSSH text key and pins the first one in the file.** `ssh.ParseAuthorizedKey` takes a `.pub` line and a `known_hosts` line alike, reading the latter's leading host field as an options field. It skips the `#` comment `ssh-keygen -F` writes, and never compares a later line, so a multi-key capture pins the first.

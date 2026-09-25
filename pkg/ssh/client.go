@@ -1,22 +1,42 @@
-// Package ssh provides SSH client functionality for network device connections.
+// Package ssh dials a device over SSH and runs one batch on an interactive shell.
 package ssh
 
 import (
 	"fmt"
+	"io"
 	"net"
 	"os"
 	"strconv"
 	"time"
 
-	x "github.com/google/goexpect"
 	"golang.org/x/crypto/ssh"
 	"golang.org/x/crypto/ssh/knownhosts"
+
+	x "github.com/umatare5/telee/pkg/expect"
 )
 
 const (
 	errSSHSpawnFailed = "SSH was failed at spawn(). You can troubleshoot using wireshark.\n"
 	errSSHBatchFailed = "SSH was failed at ExpectBatch(). You can troubleshoot using wireshark.\n"
 )
+
+// The terminal goexpect requested: its 34 flags minus CS7, which CS8 carries. Every line-discipline
+// flag is off, so a server that applies pty modes neither echoes nor rewrites line endings, and the
+// 16 control characters and two speeds it also sent mean nothing with ICANON, ISIG and IXON off.
+const (
+	ptyTerm   = "xterm"
+	ptyWidth  = 132
+	ptyHeight = 43
+)
+
+var ptyModes = ssh.TerminalModes{
+	ssh.IGNPAR: 0, ssh.PARMRK: 0, ssh.INPCK: 0, ssh.ISTRIP: 0, ssh.INLCR: 0, ssh.IGNCR: 0, ssh.ICRNL: 0,
+	ssh.IUCLC: 0, ssh.IXON: 0, ssh.IXANY: 0, ssh.IXOFF: 0, ssh.IMAXBEL: 0,
+	ssh.ISIG: 0, ssh.ICANON: 0, ssh.XCASE: 0, ssh.ECHO: 0, ssh.ECHOE: 0, ssh.ECHOK: 0, ssh.ECHONL: 0,
+	ssh.NOFLSH: 0, ssh.TOSTOP: 0, ssh.IEXTEN: 0, ssh.ECHOCTL: 0, ssh.ECHOKE: 0,
+	ssh.OPOST: 0, ssh.OLCUC: 0, ssh.ONLCR: 0, ssh.OCRNL: 0, ssh.ONOCR: 0, ssh.ONLRET: 0,
+	ssh.CS8: 1, ssh.PARENB: 0, ssh.PARODD: 0,
+}
 
 type SSH struct {
 	host     string
@@ -157,34 +177,90 @@ func isStandardSSHPort(address string) bool {
 	return port == "22"
 }
 
+// Fetch dials, opens a shell on a pseudo-terminal, runs the batch and returns the output the
+// last prompt match captured.
 func (c *SSH) Fetch(batchers *[]x.Batcher, config *ssh.ClientConfig) (string, error) {
-	conn, err := c.dial(config)
+	client, conn, err := c.dial(config)
 	if err != nil {
 		fmt.Fprint(os.Stderr, errSSHSpawnFailed)
 		return "", err
 	}
-	defer conn.Close() //nolint: errcheck
+	defer client.Close() //nolint:errcheck
 
-	expecter, _, err := x.SpawnSSH(conn, c.timeout)
+	session, err := client.NewSession()
 	if err != nil {
 		fmt.Fprint(os.Stderr, errSSHSpawnFailed)
 		return "", err
 	}
-	defer expecter.Close() //nolint: errcheck
+	defer session.Close() //nolint:errcheck
 
-	stdout, err := expecter.ExpectBatch(*batchers, c.timeout)
+	pr, pw := io.Pipe()
+	defer pw.Close() //nolint:errcheck
+	stdin, err := openShell(session, pw)
+	if err != nil {
+		fmt.Fprint(os.Stderr, errSSHSpawnFailed)
+		return "", err
+	}
+	// The deadline dial set is lifted once the shell is up, because the multiplexer reads
+	// this socket for the rest of the session.
+	if err := conn.SetDeadline(time.Time{}); err != nil {
+		fmt.Fprint(os.Stderr, errSSHSpawnFailed)
+		return "", err
+	}
+	// Ends the batch's input when the shell ends, so a device closing the session fails the
+	// step at once instead of running out the timeout.
+	go func() {
+		session.Wait() //nolint:errcheck,gosec
+		pw.Close()     //nolint:errcheck,gosec
+	}()
+
+	out, err := x.Run(shell{pr, stdin}, *batchers, c.timeout)
 	if err != nil {
 		fmt.Fprint(os.Stderr, errSSHBatchFailed)
 		return "", err
 	}
-
-	return stdout[len(stdout)-1].Output, nil
+	return out, nil
 }
 
-func (c *SSH) dial(config *ssh.ClientConfig) (*ssh.Client, error) {
-	conn, err := ssh.Dial(c.protocol, c.host+":"+strconv.Itoa(c.port), config)
+// shell is the batch's view of a session: its joined output and its input.
+type shell struct {
+	io.Reader
+	io.Writer
+}
+
+// openShell starts an interactive shell whose output streams both feed out, as goexpect read
+// both, and returns its input.
+func openShell(session *ssh.Session, out io.Writer) (io.Writer, error) {
+	session.Stdout, session.Stderr = out, out
+	stdin, err := session.StdinPipe()
 	if err != nil {
 		return nil, err
 	}
-	return conn, nil
+	if err := session.RequestPty(ptyTerm, ptyHeight, ptyWidth, ptyModes); err != nil {
+		return nil, err
+	}
+	if err := session.Shell(); err != nil {
+		return nil, err
+	}
+	return stdin, nil
+}
+
+// dial connects under the timeout and leaves one more timeout as the socket deadline, which the
+// handshake, the authentication and the shell request share and Fetch lifts afterwards.
+func (c *SSH) dial(config *ssh.ClientConfig) (*ssh.Client, net.Conn, error) {
+	addr := net.JoinHostPort(c.host, strconv.Itoa(c.port))
+	conn, err := net.DialTimeout(c.protocol, addr, c.timeout)
+	if err != nil {
+		return nil, nil, err
+	}
+	if err := conn.SetDeadline(time.Now().Add(c.timeout)); err != nil {
+		conn.Close() //nolint:errcheck,gosec
+		return nil, nil, err
+	}
+	// NewClientConn closes the socket itself when the handshake or the authentication fails.
+	sshConn, chans, reqs, err := ssh.NewClientConn(conn, addr, config)
+	if err != nil {
+		return nil, nil, err
+	}
+	return ssh.NewClient(sshConn, chans, reqs), conn, nil
 }

@@ -6,9 +6,7 @@
 ## Tech Stack
 
 - Go 1.27+ (see [`go.mod`](go.mod))
-- [`google/goexpect`](https://github.com/google/goexpect) v0.0.0-20210430 — the expect engine; a session is one `[]x.Batcher` of `BExp` and `BSnd` steps
 - [`urfave/cli/v3`](https://github.com/urfave/cli) v3.11+ — the single command, its thirteen flags, their aliases and their `TELEE_*` sources
-- [`ziutek/telnet`](https://github.com/ziutek/telnet) v0.1 — the Telnet dialer `pkg/telnet` hands to goexpect's generic spawner
 - [`golang.org/x/crypto`](https://pkg.go.dev/golang.org/x/crypto) v0.56+ — `ssh` and `ssh/knownhosts`, the host-key path behind `pkg/ssh`
 - [`goreleaser`](https://goreleaser.com/) v2.18.0 — cross-platform release builds (see [`.goreleaser.yml`](.goreleaser.yml))
 
@@ -21,7 +19,8 @@
 - `internal/application/` — One `Usecase` per platform, each forwarding to its repository so the router stays free of transport code
 - `internal/infrastructure/` — One repository per platform, owning the whole wire dialogue and the Telnet-or-SSH choice
 - `internal/framework/` — Routes `--exec-platform` to a usecase, writes device output to stdout and the error plus hint to stderr
-- `pkg/telnet/`, `pkg/ssh/` — Dial, run one `ExpectBatch`, return the last match's output
+- `pkg/expect/` — The `BExp` and `BSnd` step types and `Run`, which drives a batch over any transport with a per-step silence timeout
+- `pkg/telnet/`, `pkg/ssh/` — Dial under `--timeout`, hand the connection to `expect.Run` and return the last match's output; the Telnet side also answers the option negotiation
 - `pkg/errors/` — The sentinel validation errors `checkArguments` returns, quoted verbatim below
 
 ## Setup and Commands
@@ -56,8 +55,8 @@ The install passes `--allow-missing-config` because the hook path is the shared 
 
 - Run `make test-unit` before committing.
 - Place tests next to code under test (`*_test.go`), in the `_test` package `testpackage` enforces.
-- Coverage is effectively zero: `cmd/main_test.go` asserts nothing, and both gates accept `0%`.
-- The line above is temporary. Raise both gates as tests land, then delete it.
+- Tests cover `pkg/expect`, `pkg/telnet` and the pure functions of `pkg/ssh`; the platform batches and the CLI have none, and both gates still accept `0%`.
+- Raise both gates as tests land.
 
 ## Commits and PRs
 
