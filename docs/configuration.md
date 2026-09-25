@@ -28,7 +28,7 @@ Three boolean flags carry long aliases as well: `--ena` and `--enable` for `--en
 
 What the flags that hold a mechanism actually do:
 
-- **`--port` at `0` is completed, not defaulted.** Zero becomes 22 under `--secure-mode` and 23 without it, and any non-zero value is dialled as given with no validation.
+- **`--port` at `0` is completed, not defaulted.** Zero becomes 22 under `--secure-mode` and 23 without it, and any non-zero value is dialed as given with no validation.
 - **`--timeout` bounds one expect step, not the session.** `ExpectBatch` applies it per step, so the ceiling is the value times the step count — two on `srx`, seven on a telnet `--enable-mode` session.
 - **Neither dial carries a deadline, so `--timeout` does not bound the connect.** A non-routable address with `--timeout 3` failed after 75 s on macOS 26, the operating system's own connect timeout.
 - **`--hostname` is also the prompt pattern.** Eight of the nine scripts expect the value verbatim inside the device prompt, so anything but the device's own hostname matches nothing.

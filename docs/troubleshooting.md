@@ -10,7 +10,7 @@ TelnetClient was failed at spawn(). You can troubleshoot using wireshark.
 TelnetClient was failed at ExpectBatch(). You can troubleshoot using wireshark.
 ```
 
-The first three never reach the device: the parser and the argument check run before any socket opens, and the host key file is read before the dial. The fourth dialled and failed. The fifth connected and then failed to recognise the device's prompt, which is the failure most invocations actually hit.
+The first three never reach the device: the parser and the argument check run before any socket opens, and the host key file is read before the dial. The fourth dialed and failed. The fifth connected and then failed to recognize the device's prompt, which is the failure most invocations actually hit.
 
 ## The exit contract
 
@@ -86,7 +86,7 @@ The transport connected and one of the expected patterns never arrived within `-
 
 The session script builds the expected prompt out of the `--hostname` value. `ios` waits for `<hostname>>`, `foundry` for `telnet@<hostname>>`, `allied` for `Manager <hostname>>`, `srx` for `<username>@<hostname>>`, and `ssg` for `<hostname>->`.
 
-Dialling by IP address, or by a DNS name that differs from the device's configured hostname, therefore matches none of them. `aireos` is the only platform that does not build its prompt this way, expecting the fixed string `(Cisco Controller) >`.
+Dialing by IP address, or by a DNS name that differs from the device's configured hostname, therefore matches none of them. `aireos` is the only platform that does not build its prompt this way, expecting the fixed string `(Cisco Controller) >`.
 
 Two further causes produce the same failure. A wrong `--exec-platform` waits for another vendor's login prompt. An `asa` or `ssg` device in a failover pair prints the suffix only `--redundant-mode` accounts for.
 

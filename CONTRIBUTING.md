@@ -29,7 +29,7 @@ The hook path is the shared git common directory, so `make pre-commit-install` a
 
 ## Build
 
-`make build` stamps `cli.version` from [`VERSION`](VERSION). That variable is initialised to `dev`, so a plain `go build ./cmd` still produces a working binary.
+`make build` stamps `cli.version` from [`VERSION`](VERSION). That variable is initialized to `dev`, so a plain `go build ./cmd` still produces a working binary.
 
 There is no target for the container image. GoReleaser builds it during a release and pushes it to `ghcr.io/umatare5/telee`, where a prerelease is excluded from the `latest`, `vX` and `vX.Y` tags.
 
