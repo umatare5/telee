@@ -33,5 +33,5 @@ One invocation reaches one device and either gets an answer or does not, so ther
 | 0    | The device answered, or `--help` / `--version` was asked    |
 | 1    | A usage fault, a rejected argument set, or a failed session |
 
-- **Nothing partial reaches stdout** – the transcript is printed only once the session returns, so `telee -H 192.0.2.1 -C "show version" --timeout 3` exits 1 having written zero bytes there. A failure on the last of several commands discards the answers before it as well.
+- **Nothing partial reaches stdout** – the transcript is printed only once the session returns, so `telee -H 192.0.2.1 -C "show version" --timeout 3` exits 1 having written zero bytes there.
 - **A rejected argument set never dials** – `checkArguments` runs inside `config.New` before a socket opens, so the device saw nothing and the wording alone identifies the fault

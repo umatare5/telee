@@ -85,7 +85,7 @@ expect: timer expired after 2 seconds
 
 The transport connected and one of the expected patterns never arrived within `--timeout` seconds of the last byte, whose value the second line repeats. A write the device does not take within `--timeout` seconds fails with the same line. A device that closes the connection first ends the step at once instead, with `expect: connection closed before a match: EOF` on the second line.
 
-Several `-C` values share the session, so a failure on any of them ends the run with nothing on stdout, whichever answered before it.
+Several `-C` values share the session, so a failure on any of them ends the run with nothing on stdout, whichever answered before it. A copy of the prompt inside an answer, as IOS reprints it after `?`, can end the step early, and the run then exits 0 with a transcript that ends before the last answer does.
 
 The hint block printed underneath names the three causes, and the second of them is the common one. The session script builds the expected prompt out of the `--hostname` value. `ios` waits for `<hostname>>`, `foundry` for `telnet@<hostname>>`, `allied` for `Manager <hostname>>`, `srx` for `<username>@<hostname>>`, and `ssg` for `<hostname>->`.
 
