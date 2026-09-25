@@ -25,37 +25,37 @@ type Repository struct {
 	Config *config.Config
 }
 
-// Fetch runs one session and returns the output the last prompt match captured.
+// Fetch runs one session and returns the transcript of the commands.
 func (r *Repository) Fetch() (string, error) {
-	var expects []x.Batcher
+	var login, commands []x.Batcher
 	var data string
 	var err error
 
 	if r.Config.SecureMode {
 		if r.Config.DefaultPrivMode && r.Config.RedundantMode {
-			expects = r.buildDefaultPrivilegedSecureRequest(haSuffix)
+			login, commands = r.buildDefaultPrivilegedSecureRequest(haSuffix)
 		}
 		if !r.Config.DefaultPrivMode && r.Config.RedundantMode {
-			expects = r.buildPrivilegedSecureRequest(haSuffix)
+			login, commands = r.buildPrivilegedSecureRequest(haSuffix)
 		}
 		if r.Config.DefaultPrivMode && !r.Config.RedundantMode {
-			expects = r.buildDefaultPrivilegedSecureRequest(noSuffix)
+			login, commands = r.buildDefaultPrivilegedSecureRequest(noSuffix)
 		}
 		if !r.Config.DefaultPrivMode && !r.Config.RedundantMode {
-			expects = r.buildPrivilegedSecureRequest(noSuffix)
+			login, commands = r.buildPrivilegedSecureRequest(noSuffix)
 		}
 	} else {
 		if r.Config.DefaultPrivMode && r.Config.RedundantMode {
-			expects = r.buildDefaultPrivilegedRequest(haSuffix)
+			login, commands = r.buildDefaultPrivilegedRequest(haSuffix)
 		}
 		if !r.Config.DefaultPrivMode && r.Config.RedundantMode {
-			expects = r.buildPrivilegedRequest(haSuffix)
+			login, commands = r.buildPrivilegedRequest(haSuffix)
 		}
 		if r.Config.DefaultPrivMode && !r.Config.RedundantMode {
-			expects = r.buildDefaultPrivilegedRequest(noSuffix)
+			login, commands = r.buildDefaultPrivilegedRequest(noSuffix)
 		}
 		if !r.Config.DefaultPrivMode && !r.Config.RedundantMode {
-			expects = r.buildPrivilegedRequest(noSuffix)
+			login, commands = r.buildPrivilegedRequest(noSuffix)
 		}
 	}
 
@@ -67,11 +67,11 @@ func (r *Repository) Fetch() (string, error) {
 		}
 		data, err = ssh.New(
 			r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
-		).Fetch(&expects, clientConfig)
+		).Fetch(login, commands, clientConfig)
 	} else {
 		data, err = telnet.New(
 			r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
-		).Fetch(&expects)
+		).Fetch(login, commands)
 	}
 
 	if err != nil {
@@ -80,7 +80,7 @@ func (r *Repository) Fetch() (string, error) {
 	return data, nil
 }
 
-func (r *Repository) buildPrivilegedRequest(suffix string) []x.Batcher {
+func (r *Repository) buildPrivilegedRequest(suffix string) (login, commands []x.Batcher) {
 	return []x.Batcher{
 		&x.BExp{R: promptUsername},
 		&x.BSnd{S: r.Config.Username + "\n"},
@@ -93,12 +93,10 @@ func (r *Repository) buildPrivilegedRequest(suffix string) []x.Batcher {
 		&x.BExp{R: r.Config.Hostname + suffix + "#"},
 		&x.BSnd{S: cmdDisablePaging},
 		&x.BExp{R: r.Config.Hostname + suffix + "#"},
-		&x.BSnd{S: r.Config.Command + "\n"},
-		&x.BExp{R: r.Config.Hostname + suffix + "#"},
-	}
+	}, x.Commands(r.Config.Hostname+suffix+"#", "\n", r.Config.Commands)
 }
 
-func (r *Repository) buildDefaultPrivilegedRequest(suffix string) []x.Batcher {
+func (r *Repository) buildDefaultPrivilegedRequest(suffix string) (login, commands []x.Batcher) {
 	return []x.Batcher{
 		&x.BExp{R: promptUsername},
 		&x.BSnd{S: r.Config.Username + "\n"},
@@ -107,12 +105,10 @@ func (r *Repository) buildDefaultPrivilegedRequest(suffix string) []x.Batcher {
 		&x.BExp{R: r.Config.Hostname + suffix + "#"},
 		&x.BSnd{S: cmdDisablePaging},
 		&x.BExp{R: r.Config.Hostname + suffix + "#"},
-		&x.BSnd{S: r.Config.Command + "\n"},
-		&x.BExp{R: r.Config.Hostname + suffix + "#"},
-	}
+	}, x.Commands(r.Config.Hostname+suffix+"#", "\n", r.Config.Commands)
 }
 
-func (r *Repository) buildPrivilegedSecureRequest(suffix string) []x.Batcher {
+func (r *Repository) buildPrivilegedSecureRequest(suffix string) (login, commands []x.Batcher) {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + suffix + ">"},
 		&x.BSnd{S: "enable\n"},
@@ -121,17 +117,13 @@ func (r *Repository) buildPrivilegedSecureRequest(suffix string) []x.Batcher {
 		&x.BExp{R: r.Config.Hostname + suffix + "#"},
 		&x.BSnd{S: cmdDisablePaging},
 		&x.BExp{R: r.Config.Hostname + suffix + "#"},
-		&x.BSnd{S: r.Config.Command + "\n"},
-		&x.BExp{R: r.Config.Hostname + suffix + "#"},
-	}
+	}, x.Commands(r.Config.Hostname+suffix+"#", "\n", r.Config.Commands)
 }
 
-func (r *Repository) buildDefaultPrivilegedSecureRequest(suffix string) []x.Batcher {
+func (r *Repository) buildDefaultPrivilegedSecureRequest(suffix string) (login, commands []x.Batcher) {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + suffix + "#"},
 		&x.BSnd{S: cmdDisablePaging},
 		&x.BExp{R: r.Config.Hostname + suffix + "#"},
-		&x.BSnd{S: r.Config.Command + "\n"},
-		&x.BExp{R: r.Config.Hostname + suffix + "#"},
-	}
+	}, x.Commands(r.Config.Hostname+suffix+"#", "\n", r.Config.Commands)
 }

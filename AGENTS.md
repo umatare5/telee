@@ -19,8 +19,8 @@
 - `internal/application/` – One `Usecase` per platform, each forwarding to its repository so the router stays free of transport code
 - `internal/infrastructure/` – One repository per platform, owning the whole wire dialogue and the Telnet-or-SSH choice
 - `internal/framework/` – Routes `--exec-platform` to a usecase, writes device output to stdout and the error plus hint to stderr
-- `pkg/expect/` – The `BExp` and `BSnd` step types and `Run`, which drives a batch over any transport with a per-step silence timeout
-- `pkg/telnet/`, `pkg/ssh/` – Dial under `--timeout`, hand the connection to `expect.Run` and return the last match's output; the Telnet side also answers the option negotiation
+- `pkg/expect/` – The `BExp` and `BSnd` step types, `Commands`, and `Run`, which drives a login batch then a command batch over any transport with a per-step silence timeout and returns the commands' transcript
+- `pkg/telnet/`, `pkg/ssh/` – Dial under `--timeout`, hand the connection to `expect.Run` and return the transcript of the commands; the Telnet side also answers the option negotiation
 - `pkg/errors/` – The sentinel validation errors `checkArguments` returns, quoted verbatim below
 
 ## Setup and Commands

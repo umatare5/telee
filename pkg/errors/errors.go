@@ -10,6 +10,7 @@ var (
 	ErrMissingPrivPassword        = errors.New("TELEE_PRIVPASSWORD must be set")
 	ErrMissingHostname            = errors.New("hostname must be set")
 	ErrMissingCommand             = errors.New("command must be set")
+	ErrMultilineCommand           = errors.New("command must be one line")
 	ErrInvalidPlatform            = errors.New("exec-platform is not supported")
 	ErrUnsupportedRedundantMode   = errors.New("redundant-mode is not supported in this platform")
 	ErrUnsupportedModeSet         = errors.New("enable-mode and default-priv-mode cannot use at once")

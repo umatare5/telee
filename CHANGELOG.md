@@ -10,6 +10,7 @@ Each release from [v1.8.0] on also carries notes GoReleaser generates from the c
 
 ### Added
 
+- `--command` repeats, and every value runs in the one session in the order given, so a loop over devices logs in once per device, and a value holding a line break is refused
 - A `known_hosts` key of the same type that differs from the one presented is refused with the fingerprint and the recorded line, a revoked key likewise, and neither gets the onboarding steps
 - A `known_hosts` record of another key type is refused the same way, naming both types, the recorded line and the presented fingerprint
 - Unit tests for `pkg/expect`, `pkg/telnet` and `pkg/ssh`
@@ -26,6 +27,7 @@ Each release from [v1.8.0] on also carries notes GoReleaser generates from the c
 
 ### Changed
 
+- stdout carries the transcript: the prompt precedes each echoed command, where the output previously began at the echo
 - The expect loop and the Telnet client are in-house on the standard library, in `pkg/expect` and `pkg/telnet`, and the SSH shell is opened directly on `x/crypto/ssh`
 - `--timeout` also bounds the dial and, under `--secure-mode`, the handshake, the authentication and the shell request, where a non-routable address previously hung for the operating system's 75 s
 - `--password` and `--priv-password` have no default, so a run without `TELEE_PASSWORD` stops before dialing instead of sending `cisco`, and an enable password of `enable` is accepted

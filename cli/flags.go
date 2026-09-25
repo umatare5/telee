@@ -60,7 +60,7 @@ func registerTimeoutFlag() []cli.Flag {
 
 func registerCommandFlag() []cli.Flag {
 	return []cli.Flag{
-		&cli.StringFlag{
+		&cli.StringSliceFlag{
 			Name:     domain.CommandFlagName,
 			Usage:    domain.CommandFlagUsage,
 			Aliases:  domain.CommandFlagAliases,

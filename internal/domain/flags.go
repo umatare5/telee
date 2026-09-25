@@ -22,7 +22,7 @@ const (
 	HostnameFlagUsage        string = "Set hostname or IP address."
 	PortFlagUsage            string = "Set port number."
 	TimeoutFlagUsage         string = "Set timeout seconds."
-	CommandFlagUsage         string = "Set a command."
+	CommandFlagUsage         string = "Set a command. Repeat it to run more in the same session."
 	ExecPlatformFlagUsage    string = "Set exec-platform. Refer to README.md what to be set."
 	EnableModeFlagUsage      string = "Raise to privileged EXEC mode."
 	RedundantModeFlagUsage   string = "Use redundant prompt mode."

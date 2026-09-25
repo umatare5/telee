@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"io"
 	"regexp"
+	"slices"
+	"strings"
 	"time"
 )
 
@@ -43,31 +45,47 @@ func (t TimeoutError) Error() string {
 	return fmt.Sprintf("expect: timer expired after %d seconds", time.Duration(t)/time.Second)
 }
 
-// Run executes the batch in order and returns the output the last BExp captured. A BExp
-// returns everything received since the previous match, and discards it for the next step.
-func Run(rw io.ReadWriter, batch []Batcher, timeout time.Duration) (string, error) {
+// Run executes login, then commands, and returns the transcript of commands: the prompt the
+// last BExp of login matched, then everything each BExp of commands captured. A BExp captures
+// everything received since the previous match, and discards it for the next step.
+func Run(rw io.ReadWriter, login, commands []Batcher, timeout time.Duration) (string, error) {
 	s := &session{chunks: make(chan []byte), errc: make(chan error, 1), done: make(chan struct{}), timeout: timeout}
 	defer close(s.done)
 	go s.read(rw)
 
-	var out string
-	for _, b := range batch {
+	var out strings.Builder
+	for i, b := range slices.Concat(login, commands) {
 		switch b := b.(type) {
 		case *BExp:
 			re, err := regexp.Compile(b.R)
 			if err != nil {
 				return "", err
 			}
-			if out, err = s.expect(re); err != nil {
+			buf, at, err := s.expect(re)
+			if err != nil {
 				return "", err
 			}
+			if i < len(login) {
+				out.Reset()
+				buf = buf[at:]
+			}
+			out.Write(buf)
 		case *BSnd:
 			if err := s.send(rw, b.S); err != nil {
 				return "", err
 			}
 		}
 	}
-	return out, nil
+	return out.String(), nil
+}
+
+// Commands sends each command with suffix and waits for prompt after it.
+func Commands(prompt, suffix string, cmds []string) []Batcher {
+	var batch []Batcher
+	for _, c := range cmds {
+		batch = append(batch, &BSnd{S: c + suffix}, &BExp{R: prompt})
+	}
+	return batch
 }
 
 type session struct {
@@ -118,29 +136,30 @@ func (s *session) send(w io.Writer, str string) error {
 	}
 }
 
-// expect appends chunks until re matches, giving up after timeout of silence.
-func (s *session) expect(re *regexp.Regexp) (string, error) {
+// expect appends chunks until re matches, giving up after timeout of silence. It returns the
+// buffer and the offset the match starts at.
+func (s *session) expect(re *regexp.Regexp) (buf []byte, at int, err error) {
 	timer := time.NewTimer(s.timeout)
 	defer timer.Stop()
 
-	var buf []byte
 	for {
 		var chunk []byte
 		select {
 		case chunk = <-s.chunks:
-		case err := <-s.errc:
-			return "", fmt.Errorf("expect: connection closed before a match: %w", err)
+		case err = <-s.errc:
+			return nil, 0, fmt.Errorf("expect: connection closed before a match: %w", err)
 		case <-timer.C:
 			// A chunk that arrived with the expiry still counts, as it did under goexpect.
 			select {
 			case chunk = <-s.chunks:
 			default:
-				return "", TimeoutError(s.timeout)
+				return nil, 0, TimeoutError(s.timeout)
 			}
 		}
 		buf = append(buf, chunk...)
-		if re.Match(buf[max(0, len(buf)-len(chunk)-window):]) {
-			return string(buf), nil
+		off := max(0, len(buf)-len(chunk)-window)
+		if loc := re.FindIndex(buf[off:]); loc != nil {
+			return buf, off + loc[0], nil
 		}
 		timer.Reset(s.timeout)
 	}

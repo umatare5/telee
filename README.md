@@ -8,7 +8,7 @@
 
   <h1>telee</h1>
 
-  <p>A command-line interface that logs in to one network device and runs one command on it.</p>
+  <p>A command-line interface that logs in to one network device and runs commands on it.</p>
 
   <p>
     <img alt="GitHub Tag" src="https://img.shields.io/github/v/tag/umatare5/telee?label=Latest%20version" />
@@ -23,9 +23,9 @@
 
 ## Overview
 
-This CLI opens one telnet or SSH session, logs in, disables paging, runs one command and prints what came back.
+This CLI opens one telnet or SSH session, logs in, disables paging, runs each command in turn and prints the transcript.
 
-- 🔑 **One login**: Credentials arrive from `TELEE_*` variables, so no prompt interrupts a loop over many devices
+- 🔑 **One login**: Credentials arrive from `TELEE_*` variables and every `-C` runs in the same session, so a loop over many devices logs in once per device
 - 🧭 **Nine platforms**: `-x` picks the prompt, paging and escalation dialect, from Cisco IOS to YAMAHA RT
 - 🚿 **Shell-friendly**: Device output is the only thing on stdout, so a pipe or a redirect needs no filtering
 - ⚡ **Fast**: 6 to 72 times faster than napalm on one Catalyst 2960L, measured on telee 1.6.5
@@ -61,7 +61,7 @@ export TELEE_USERNAME="operator"
 read -rs TELEE_PASSWORD && export TELEE_PASSWORD
 ```
 
-### 3. Run one command
+### 3. Run a command
 
 ```bash
 telee -H sw01.example.internal -C "show interfaces description"
@@ -72,16 +72,16 @@ telee -H sw01.example.internal -C "show interfaces description"
 
 ## Syntax
 
-One invocation runs one command on one device, and there are no subcommands.
+One invocation runs one or more commands on one device, and there are no subcommands.
 
 ```bash
-telee -H HOSTNAME -C COMMAND [options...]
+telee -H HOSTNAME -C COMMAND [-C COMMAND...] [options...]
 ```
 
 | Flag                             | What it sets                                              |
 | :------------------------------- | :-------------------------------------------------------- |
 | `--hostname`, `-H`               | Target host, which also builds the prompt telee expects   |
-| `--command`, `-C`                | The single command line sent to the device                |
+| `--command`, `-C`                | A command line to send, repeatable and run in order       |
 | `--exec-platform`, `-x`          | Platform dialect, `ios` unless set                        |
 | `--port`, `-P`                   | TCP port, completed to 22 under `-s` and to 23 otherwise  |
 | `--timeout`, `-t`                | Seconds per dial and per expect step, 5 unless set        |
@@ -102,7 +102,7 @@ telee -H HOSTNAME -C COMMAND [options...]
 
 ```console
 $ telee --hostname sw01 --command "show int descr"
-show int descr
+sw01>show int descr
 Load for five secs: 2%/0%; one minute: 1%; five minutes: 1%
 Time source is NTP, 23:16:54.302 JST Sat May 8 2021
 
@@ -140,7 +140,7 @@ Gi0/10                         admin down     down
 ```console
 $ telee --hostname sw01 --command "show run" --enable > telee.log
 $ head -n 10 telee.log
-show run
+sw01#show run
 Load for five secs: 1%/0%; one minute: 1%; five minutes: 1%
 Time source is NTP, 23:21:34.501 JST Sat May 8 2021
 
@@ -152,13 +152,28 @@ Current configuration : 18687 bytes
 !
 ```
 
+- **Several commands** – each `-C` runs in the same session, in order, and the prompt separates the answers.
+
+```console
+$ telee --hostname sw01 --command "show version" --command "show inventory"
+sw01>show version
+Cisco IOS Software, C2960CX Software (C2960CX-UNIVERSALK9-M), Version 15.2(7)E3, RELEASE SOFTWARE (fc3)
+<snip>
+sw01>show inventory
+NAME: "1", DESCR: "WS-C2960CX-8PC-L"
+PID: WS-C2960CX-8PC-L  , VID: V03  , SN: FOC0000X0XX
+
+
+sw01>
+```
+
 - **Other platforms** – `-x` selects the dialect for anything that is not IOS.
 
   <details><summary><u>Click to show example</u></summary><p>
 
   ```console
   $ telee -H 192.0.2.250 -C "show sysinfo" -x aireos
-  show sysinfo
+  (Cisco Controller) >show sysinfo
 
   Manufacturer's Name.............................. Cisco Systems Inc.
   Product Name..................................... Cisco Controller
@@ -188,7 +203,7 @@ Current configuration : 18687 bytes
   ```console
   $ export TELEE_PRIVPASSWORD='<enable password>'
   $ telee -H fw01 -C "show version" -x asa --enable-mode
-  show version
+  fw01# show version
 
   Cisco Adaptive Security Appliance Software Version 9.0(4)
   Device Manager Version 7.1(5)100
@@ -217,7 +232,7 @@ Current configuration : 18687 bytes
 
   ```console
   $ telee -H sw01 -C "show run" --enable --secure
-  show run
+  sw01#show run
   Load for five secs: 8%/0%; one minute: 2%; five minutes: 1%
   Time source is NTP, 02:25:22.496 JST Fri May 14 2021
 
@@ -246,7 +261,7 @@ Current configuration : 18687 bytes
 
   ```console
   $ telee -H sw02 -C "show version" -x nxos --default-privilege-mode
-  show version
+  sw02# show version
   Cisco Nexus Operating System (NX-OS) Software
   TAC support: http://www.cisco.com/tac
   Documents: http://www.cisco.com/en/US/products/ps9372/tsd_products_support_series_home.html
@@ -277,7 +292,7 @@ Current configuration : 18687 bytes
 
   ```console
   $ telee -H sw03 -C "show system" -x allied -u manager --timeout 10
-  show system
+  Manager sw03> show system
   Switch System Status                     Date 2021-05-09 Time 01:04:54
   Board     Bay      Board Name
   ----------------------------------------------------------------------

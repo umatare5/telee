@@ -47,7 +47,8 @@ The checks run in a fixed order and the first failure returns, so an invocation 
 - **`default-privilege-mode is not supported in this platform`** – `-d` was set on anything but `asa`, `ios` or `nxos`.
 - **`EnableMode must be set. Terminal length expansion in user-level is not supporting.`** – an `asa` session was asked for with neither `-e` nor `-d`, and its paging command is refused at user level.
 - **`hostname must be set`** – `-H` or `TELEE_HOSTNAME` was set to an empty string, which clears the parser's required check and fails here.
-- **`command must be set`** – the same, for `-C` or `TELEE_COMMAND`.
+- **`command must be set`** – the same, for `-C` or `TELEE_COMMAND`, and for any one `-C` given empty.
+- **`command must be one line`** – a `-C` value holds a line break, which the device would run as a second command that the transcript then misattributes.
 - **`TELEE_USERNAME must be set`** – `-u` or `TELEE_USERNAME` was set to an empty string; the flag's own default is `admin`, so this cannot fire unless something overwrote it.
 - **`TELEE_PASSWORD must be set`** – neither `-p` nor `TELEE_PASSWORD` was set, or one of them was set to an empty string. The password has no default, so this is the refusal a run with no credentials meets before it dials.
 - **`TELEE_PRIVPASSWORD must be set`** – `-e` was set while neither `--pp` nor `TELEE_PRIVPASSWORD` was, or the value was empty. The privileged password has no default either, so `enable` itself is sent as given.
@@ -83,6 +84,8 @@ expect: timer expired after 2 seconds
 ```
 
 The transport connected and one of the expected patterns never arrived within `--timeout` seconds of the last byte, whose value the second line repeats. A write the device does not take within `--timeout` seconds fails with the same line. A device that closes the connection first ends the step at once instead, with `expect: connection closed before a match: EOF` on the second line.
+
+Several `-C` values share the session, so a failure on any of them ends the run with nothing on stdout, whichever answered before it.
 
 The hint block printed underneath names the three causes, and the second of them is the common one. The session script builds the expected prompt out of the `--hostname` value. `ios` waits for `<hostname>>`, `foundry` for `telnet@<hostname>>`, `allied` for `Manager <hostname>>`, `srx` for `<username>@<hostname>>`, and `ssg` for `<hostname>->`.
 

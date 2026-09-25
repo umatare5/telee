@@ -101,12 +101,12 @@ func TestFetchDialogue(t *testing.T) {
 		ch.Write([]byte("\r\nsw01>"))
 	})
 	batch := []x.Batcher{&x.BExp{R: "Username:"}, &x.BSnd{S: "operator\n"}, &x.BExp{R: "sw01>"}}
-	out, err := ssh.New("127.0.0.1", port, "tcp", timeout).Fetch(&batch, config)
+	out, err := ssh.New("127.0.0.1", port, "tcp", timeout).Fetch(batch, nil, config)
 	if err != nil {
 		t.Fatalf("Fetch() error = %v", err)
 	}
-	if out != "\r\nsw01>" {
-		t.Fatalf("Fetch() = %q; want %q", out, "\r\nsw01>")
+	if out != "sw01>" {
+		t.Fatalf("Fetch() = %q; want %q", out, "sw01>")
 	}
 }
 
@@ -117,7 +117,7 @@ func TestFetchRemoteClose(t *testing.T) {
 	})
 	batch := []x.Batcher{&x.BExp{R: "never"}}
 	start := time.Now()
-	_, err := ssh.New("127.0.0.1", port, "tcp", timeout).Fetch(&batch, config)
+	_, err := ssh.New("127.0.0.1", port, "tcp", timeout).Fetch(batch, nil, config)
 	if !errors.Is(err, io.EOF) {
 		t.Fatalf("Fetch() error = %v; want io.EOF", err)
 	}
