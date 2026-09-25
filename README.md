@@ -38,8 +38,8 @@ Where a fleet is driven by `expect` scripts or TeraTerm macros, telee replaces t
 
 telee ships as a static binary and as a `scratch`-based image:
 
-- **Binaries** — `linux_amd64`, `linux_arm64`, `darwin_amd64` and `darwin_arm64`
-- **Images** — `ghcr.io/umatare5/telee` for `linux/amd64` and `linux/arm64`, running as UID 65534
+- **Binaries** – `linux_amd64`, `linux_arm64`, `darwin_amd64` and `darwin_arm64`
+- **Images** – `ghcr.io/umatare5/telee` for `linux/amd64` and `linux/arm64`, running as UID 65534
 
 The [Exec Platform](#exec-platform) matrix names the OS version each path was verified on.
 
@@ -98,7 +98,7 @@ telee -H HOSTNAME -C COMMAND [options...]
 
 ## Usage
 
-- **Default platform** — `ios` over telnet needs nothing but a hostname and a command.
+- **Default platform** – `ios` over telnet needs nothing but a hostname and a command.
 
 ```console
 $ telee --hostname sw01 --command "show int descr"
@@ -122,7 +122,7 @@ Gi0/10                         admin down     down
 sw01>
 ```
 
-- **Only device output on stdout** — a pipe sees exactly what the device printed.
+- **Only device output on stdout** – a pipe sees exactly what the device printed.
 
 ```console
 $ telee --hostname sw01 --command "show int descr" | grep "Interface\|down"
@@ -135,7 +135,7 @@ Gi0/9                          admin down     down
 Gi0/10                         admin down     down
 ```
 
-- **Redirect** — the same bytes land in a file, and `-e` raises the session first once `TELEE_PRIVPASSWORD` is exported.
+- **Redirect** – the same bytes land in a file, and `-e` raises the session first once `TELEE_PRIVPASSWORD` is exported.
 
 ```console
 $ telee --hostname sw01 --command "show run" --enable > telee.log
@@ -152,7 +152,7 @@ Current configuration : 18687 bytes
 !
 ```
 
-- **Other platforms** — `-x` selects the dialect for anything that is not IOS.
+- **Other platforms** – `-x` selects the dialect for anything that is not IOS.
 
   <details><summary><u>Click to show example</u></summary><p>
 
@@ -181,7 +181,7 @@ Current configuration : 18687 bytes
 
   </p></details>
 
-- **ASA** — `terminal pager 0` is refused from a user-level session, so an `asa` run has to start privileged through either `-e` or `-d`.
+- **ASA** – `terminal pager 0` is refused from a user-level session, so an `asa` run has to start privileged through either `-e` or `-d`.
 
   <details><summary><u>Click to show example</u></summary><p>
 
@@ -211,7 +211,7 @@ Current configuration : 18687 bytes
 
   </p></details>
 
-- **SSH** — `-s` replaces telnet, and its aliases `--sec` and `--secure` name the same flag.
+- **SSH** – `-s` replaces telnet, and its aliases `--sec` and `--secure` name the same flag.
 
   <details><summary><u>Click to show example</u></summary><p>
 
@@ -240,7 +240,7 @@ Current configuration : 18687 bytes
 
   </p></details>
 
-- **RADIUS privilege** — `-d` expects the privileged prompt straight after login, so nothing is escalated and no privileged password is read.
+- **RADIUS privilege** – `-d` expects the privileged prompt straight after login, so nothing is escalated and no privileged password is read.
 
   <details><summary><u>Click to show example</u></summary><p>
 
@@ -271,7 +271,7 @@ Current configuration : 18687 bytes
 
   </p></details>
 
-- **Slow devices** — `-t` widens the window each expect step waits in.
+- **Slow devices** – `-t` widens the window each expect step waits in.
 
   <details><summary><u>Click to show example</u></summary><p>
 
@@ -322,7 +322,7 @@ Under Enable Mode, "Not Available" means the platform builds no privileged batch
 
 `asa` is the one platform whose paging command needs a privileged session, so a run setting neither `-e` nor `-d` is refused before the dial
 
-`-r` appends the suffix a redundant pair prints — `/pri/act` on ASA, `(M)` on ScreenOS — to every prompt telee expects, which is why the two platforms that accept it are the two that print one.
+`-r` appends the suffix a redundant pair prints – `/pri/act` on ASA, `(M)` on ScreenOS – to every prompt telee expects, which is why the two platforms that accept it are the two that print one.
 
 ### Verified On
 
@@ -346,14 +346,14 @@ Each version below is the OS that path was exercised against. "⚠ Not Verified"
 
 Six environment variables reach the flags below, and nothing else in the environment is read.
 
-| Variable             | Flag                       | Default  |
-| :------------------- | :------------------------- | :------- |
-| `TELEE_HOSTNAME`     | `--hostname`, `-H`         | —        |
-| `TELEE_COMMAND`      | `--command`, `-C`          | —        |
-| `TELEE_USERNAME`     | `--username`, `-u`         | `admin`  |
-| `TELEE_PASSWORD`     | `--password`, `-p`         | —        |
-| `TELEE_PRIVPASSWORD` | `--priv-password`, `--pp`  | —        |
-| `TELEE_HOSTKEYPATH`  | `--host-key-path`, `--hkp` | —        |
+| Variable             | Flag                       | Default |
+| :------------------- | :------------------------- | :------ |
+| `TELEE_HOSTNAME`     | `--hostname`, `-H`         | –       |
+| `TELEE_COMMAND`      | `--command`, `-C`          | –       |
+| `TELEE_USERNAME`     | `--username`, `-u`         | `admin` |
+| `TELEE_PASSWORD`     | `--password`, `-p`         | –       |
+| `TELEE_PRIVPASSWORD` | `--priv-password`, `--pp`  | –       |
+| `TELEE_HOSTKEYPATH`  | `--host-key-path`, `--hkp` | –       |
 
 Under `-s` the host key is checked against `~/.ssh/known_hosts`, and `--host-key-path` narrows that to one public key file. No flag disables the check. [`docs/configuration.md`](docs/configuration.md) carries the precedence between a flag and its variable, and which flags each platform accepts.
 

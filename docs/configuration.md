@@ -10,8 +10,8 @@ One invocation runs one command on one device, so there are no subcommands, no c
 
 | Flag                             | Default | Sets                              |
 | :------------------------------- | :------ | :-------------------------------- |
-| `--hostname`, `-H`               | —       | Target address and prompt literal |
-| `--command`, `-C`                | —       | The command the session runs      |
+| `--hostname`, `-H`               | –       | Target address and prompt literal |
+| `--command`, `-C`                | –       | The command the session runs      |
 | `--exec-platform`, `-x`          | `ios`   | The session script to drive       |
 | `--port`, `-P`                   | `0`     | TCP port, `0` meaning complete it |
 | `--timeout`, `-t`                | `5`     | Seconds per dial and per step     |
@@ -20,9 +20,9 @@ One invocation runs one command on one device, so there are no subcommands, no c
 | `--default-privilege-mode`, `-d` | `false` | Login is already privileged       |
 | `--redundant-mode`, `-r`         | `false` | Failover suffix on the prompt     |
 | `--username`, `-u`               | `admin` | Login user                        |
-| `--password`, `-p`               | —       | Login password                    |
-| `--priv-password`, `--pp`        | —       | Password the `enable` step sends  |
-| `--host-key-path`, `--hkp`       | —       | SSH host key file, in text form   |
+| `--password`, `-p`               | –       | Login password                    |
+| `--priv-password`, `--pp`        | –       | Password the `enable` step sends  |
+| `--host-key-path`, `--hkp`       | –       | SSH host key file, in text form   |
 
 Three boolean flags carry long aliases as well: `--ena` and `--enable` for `--enable-mode`, `--redundant` for `--redundant-mode`, and `--sec` and `--secure` for `--secure-mode`.
 
@@ -58,12 +58,12 @@ Six variables reach the flags they name, and the CLI reads no others:
 
 | Variable             | Flag              | Default |
 | :------------------- | :---------------- | :------ |
-| `TELEE_HOSTNAME`     | `--hostname`      | —       |
-| `TELEE_COMMAND`      | `--command`       | —       |
+| `TELEE_HOSTNAME`     | `--hostname`      | –       |
+| `TELEE_COMMAND`      | `--command`       | –       |
 | `TELEE_USERNAME`     | `--username`      | `admin` |
-| `TELEE_PASSWORD`     | `--password`      | —       |
-| `TELEE_PRIVPASSWORD` | `--priv-password` | —       |
-| `TELEE_HOSTKEYPATH`  | `--host-key-path` | —       |
+| `TELEE_PASSWORD`     | `--password`      | –       |
+| `TELEE_PRIVPASSWORD` | `--priv-password` | –       |
+| `TELEE_HOSTKEYPATH`  | `--host-key-path` | –       |
 
 The other seven flags have no environment source: `--port`, `--timeout`, `--exec-platform` and the four mode booleans are set on the command line or left at their defaults.
 
@@ -77,7 +77,7 @@ telee -H sw01 -C "show run" -e            # uses the variable
 telee -H sw01 -C "show run" -e --pp other # uses "other"
 ```
 
-The default is applied first and each later source overwrites it. An exported empty string therefore differs from an unset variable — `TELEE_USERNAME=''` replaces the `admin` default and the run stops at `TELEE_USERNAME must be set`.
+The default is applied first and each later source overwrites it. An exported empty string therefore differs from an unset variable – `TELEE_USERNAME=''` replaces the `admin` default and the run stops at `TELEE_USERNAME must be set`.
 
 `--hostname` and `--command` are the exception to that pattern, because both are marked required. Leaving the flag and the variable both unset ends at the argument parser with a usage message, before any of the validation in this page runs.
 
@@ -96,9 +96,9 @@ telee -H sw01 -C "show version" --secure --enable
 
 Host key verification fails closed and has no bypass. With `--host-key-path` unset the session verifies against `~/.ssh/known_hosts`; a missing file and a key that does not match are both errors that send nothing. No flag and no environment variable disables the check.
 
-Device output goes to stdout, joined there only by the usage block a missing required flag prints, so a redirect captures what the device printed. For `show run` that is a running configuration carrying interface descriptions, SNMP communities and encrypted secrets — treat the target file as the configuration backup it is.
+Device output goes to stdout, joined there only by the usage block a missing required flag prints, so a redirect captures what the device printed. For `show run` that is a running configuration carrying interface descriptions, SNMP communities and encrypted secrets – treat the target file as the configuration backup it is.
 
-Nothing else is written anywhere. The session is never logged to a file, and the only other stream is stderr, which carries diagnostics that [`troubleshooting.md`](troubleshooting.md) indexes. Reporting policy — what is in scope and how to send it — lives in [`SECURITY.md`](../SECURITY.md).
+Nothing else is written anywhere. The session is never logged to a file, and the only other stream is stderr, which carries diagnostics that [`troubleshooting.md`](troubleshooting.md) indexes. Reporting policy – what is in scope and how to send it – lives in [`SECURITY.md`](../SECURITY.md).
 
 > [!CAUTION]
 > Telnet is the default transport. Without `--secure-mode` the login password, the enable password and the whole session cross the network in clear text, and port `0` completes to 23 rather than 22.

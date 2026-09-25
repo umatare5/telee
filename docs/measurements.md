@@ -33,9 +33,9 @@ Seven cases over three scripts, and the letter each report below carries.
 
 The three scripts stayed at [`performance_comparison/`](performance_comparison/), and each was run from that directory.
 
-- [`telee_command.sh`](performance_comparison/telee_command.sh) — passes `--enable`, which adds the `enable` command and the privileged password to the batch
-- [`telee_command_without_enable.sh`](performance_comparison/telee_command_without_enable.sh) — drops it, because `show version` needs no privileged EXEC mode
-- [`napalm_command.sh`](performance_comparison/napalm_command.sh) — passes `secret=` and has no arm that skips the escalation, so (G) is the counterpart of both (C) and (D)
+- [`telee_command.sh`](performance_comparison/telee_command.sh) – passes `--enable`, which adds the `enable` command and the privileged password to the batch
+- [`telee_command_without_enable.sh`](performance_comparison/telee_command_without_enable.sh) – drops it, because `show version` needs no privileged EXEC mode
+- [`napalm_command.sh`](performance_comparison/napalm_command.sh) – passes `secret=` and has no arm that skips the escalation, so (G) is the counterpart of both (C) and (D)
 
 ## Results
 

@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-Only the most recent tagged release carries fixes — reproduce a finding against it before reporting.
+Only the most recent tagged release carries fixes – reproduce a finding against it before reporting.
 
 Releases are tags cut from `main` with no maintenance branch behind them, so a fix reaches an operator only in the next tag. The [releases page](https://github.com/umatare5/telee/releases) names the current one.
 
@@ -50,5 +50,5 @@ Out of scope:
 - Telnet carrying the credential in clear text, which is the protocol and which `--secure-mode` answers
 - A credential visible in the process list after `--password` or `--priv-password`, whose cost [`docs/configuration.md`](docs/configuration.md) sets out
 - A device-side or vendor-OS defect, which belongs to that vendor's PSIRT
-- A dependency advisory with no path reachable from `./cmd` — show the path, or a `govulncheck` finding
+- A dependency advisory with no path reachable from `./cmd` – show the path, or a `govulncheck` finding
 - An operator's own configuration, which [`docs/configuration.md`](docs/configuration.md) covers
