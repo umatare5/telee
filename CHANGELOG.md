@@ -8,8 +8,16 @@ Each release from [v1.8.0] on also carries notes GoReleaser generates from the c
 
 ## [Unreleased]
 
+### Added
+
+- A `known_hosts` key of the same type that differs from the one presented is refused with the fingerprint and the recorded line, a revoked key likewise, and neither gets the onboarding steps
+- A `known_hosts` record of another key type is refused the same way, naming both types, the recorded line and the presented fingerprint
+- Unit tests for `pkg/expect`, `pkg/telnet` and `pkg/ssh`
+
 ### Fixed
 
+- An IPv6 literal in `--hostname` is dialed, the address now being composed with `net.JoinHostPort`
+- A device that closes the connection ends the session at once, where it previously ran out `--timeout`
 - A failed session writes to stderr and exits non-zero, where it previously printed the error and the hint to stdout and returned 0
 - `configor` no longer runs after the flags are assembled, so an exported `CONFIGOR_PASSWORD` can no longer replace a password given on the command line
 - `--default-privilege-mode` is accepted on `asa`, whose term-length guard had rejected every session without `--enable-mode`
@@ -17,12 +25,16 @@ Each release from [v1.8.0] on also carries notes GoReleaser generates from the c
 
 ### Changed
 
+- The expect loop and the Telnet client are in-house on the standard library, in `pkg/expect` and `pkg/telnet`, and the SSH shell is opened directly on `x/crypto/ssh`
+- `--timeout` also bounds the dial and, under `--secure-mode`, the handshake, the authentication and the shell request, where a non-routable address previously hung for the operating system's 75 s
+- `--password` and `--priv-password` have no default, so a run without `TELEE_PASSWORD` stops before dialing instead of sending `cisco`, and an enable password of `enable` is accepted
 - The container build moved to GoReleaser's `dockers_v2`
 - The pre-commit hooks are wired through the Makefile, and `make clean` no longer reaches the worktrees under `./tmp`
 - The build and the tests also run weekly ([#107])
 
 ### Removed
 
+- `google/goexpect`, archived upstream, and `ziutek/telnet`, together with the gRPC, protobuf, genproto and goterm modules the former linked into the binary
 - The vendored instruction corpus and the inert `.gemini` symlink
 - The tracked coverage output
 

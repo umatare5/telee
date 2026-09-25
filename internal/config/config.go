@@ -96,7 +96,7 @@ func checkArguments(cfg *Config) error {
 	if cfg.Password == domain.EmptyString {
 		return errors.ErrMissingPassword
 	}
-	if cfg.EnableMode && !hasPrivPassword(cfg.PrivPassword) {
+	if cfg.EnableMode && cfg.PrivPassword == domain.EmptyString {
 		return errors.ErrMissingPrivPassword
 	}
 	if cfg.EnableMode && !isUsableEnableMode(cfg.ExecPlatform) {
@@ -179,11 +179,6 @@ func isUsableRedundantMode(platform string) bool {
 
 func isExpandableTermLength(platform string) bool {
 	return platform != domain.ASASoftwarePlatformName
-}
-
-// A priv password still equal to its default is treated as unset, so "enable" cannot be used as a real one.
-func hasPrivPassword(password string) bool {
-	return password != domain.PrivPasswordFlagDefaultValue
 }
 
 func isUsableEnableMode(platform string) bool {
