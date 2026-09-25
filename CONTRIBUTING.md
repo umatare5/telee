@@ -39,8 +39,7 @@ To release a new version, follow these steps:
 
 1. Rename `## [Unreleased]` in [`CHANGELOG.md`](CHANGELOG.md) to `## [vX.Y.Z]`, add that version's release link at the foot, and repoint the `[Unreleased]` compare link at the new tag.
 2. Update the version in the [`VERSION`](VERSION) file.
-3. Refresh the coverage badge — `make test-unit`, then `mkdir -p tmp && octocov badge coverage --config .octocov.yml > tmp/coverage.svg && mv tmp/coverage.svg docs/assets/coverage.svg`. The redirect goes through `tmp/` because the shell truncates its target before octocov runs. Nothing automates it — the reusable coverage workflow checks the threshold and writes no badge.
-4. Submit a pull request with all three files.
+3. Submit a pull request with both files.
 
 Merging that pull request is the whole release. A push to `main` touching `VERSION` runs the [release workflow](https://github.com/umatare5/telee/actions/workflows/go-release.yml), which tags the commit and publishes the release in the same run. The workflow has no manual trigger, so there is no step to perform by hand.
 
