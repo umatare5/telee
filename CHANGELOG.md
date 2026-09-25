@@ -46,7 +46,7 @@ Each release from [v1.8.0] on also carries notes GoReleaser generates from the c
 
 - `--host-key-path` / `--hkp`, sourced from `TELEE_HOSTKEYPATH`, naming a public key file for SSH host key verification
 - SSH host key verification through `golang.org/x/crypto/ssh/knownhosts`, replacing the callback a code-scanning alert had flagged ([#40])
-- The project logo and the centred README layout
+- The project logo and the centered README layout
 
 ### Changed
 
