@@ -16,6 +16,7 @@ Each release from [v1.8.0] on also carries notes GoReleaser generates from the c
 
 ### Fixed
 
+- `foundry` with `--enable-mode` waits for the privileged prompt before it disables paging, where it previously sent that command on the heels of the enable password and matched the wrong prompt
 - An IPv6 literal in `--hostname` is dialed, the address now being composed with `net.JoinHostPort`
 - A device that closes the connection ends the session at once, where it previously ran out `--timeout`
 - A failed session writes to stderr and exits non-zero, where it previously printed the error and the hint to stdout and returned 0
