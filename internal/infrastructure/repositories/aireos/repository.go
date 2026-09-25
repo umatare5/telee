@@ -21,14 +21,14 @@ type Repository struct {
 	Config *config.Config
 }
 
-// Fetch runs one session and returns the output the last prompt match captured.
+// Fetch runs one session and returns the transcript of the commands.
 func (r *Repository) Fetch() (string, error) {
-	var expects []x.Batcher
+	var login, commands []x.Batcher
 	var data string
 	var err error
 
 	// The controller prompts User:/Password: again after SSH authentication, so one batch serves both transports.
-	expects = r.buildRequest()
+	login, commands = r.buildRequest()
 
 	if r.Config.SecureMode {
 		var clientConfig *cryptossh.ClientConfig
@@ -38,11 +38,11 @@ func (r *Repository) Fetch() (string, error) {
 		}
 		data, err = ssh.New(
 			r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
-		).Fetch(&expects, clientConfig)
+		).Fetch(login, commands, clientConfig)
 	} else {
 		data, err = telnet.New(
 			r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
-		).Fetch(&expects)
+		).Fetch(login, commands)
 	}
 
 	if err != nil {
@@ -51,7 +51,7 @@ func (r *Repository) Fetch() (string, error) {
 	return data, nil
 }
 
-func (r *Repository) buildRequest() []x.Batcher {
+func (r *Repository) buildRequest() (login, commands []x.Batcher) {
 	return []x.Batcher{
 		&x.BExp{R: "User:"},
 		&x.BSnd{S: r.Config.Username + "\n"},
@@ -60,7 +60,5 @@ func (r *Repository) buildRequest() []x.Batcher {
 		&x.BExp{R: promptController},
 		&x.BSnd{S: "config paging disable\n"},
 		&x.BExp{R: promptController},
-		&x.BSnd{S: r.Config.Command + "\n"},
-		&x.BExp{R: promptController},
-	}
+	}, x.Commands(promptController, "\n", r.Config.Commands)
 }

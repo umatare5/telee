@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log/slog"
 	"os"
+	"slices"
+	"strings"
 
 	"github.com/urfave/cli/v3"
 
@@ -25,7 +27,7 @@ type Config struct {
 	RedundantMode   bool
 	SecureMode      bool
 	DefaultPrivMode bool
-	Command         string
+	Commands        []string
 	Username        string
 	Password        string
 	PrivPassword    string
@@ -37,7 +39,7 @@ func New(cli *cli.Command) Config {
 		Hostname:        cli.String(domain.HostnameFlagName),
 		Port:            cli.Int(domain.PortFlagName),
 		Timeout:         cli.Int(domain.TimeoutFlagName),
-		Command:         cli.String(domain.CommandFlagName),
+		Commands:        cli.StringSlice(domain.CommandFlagName),
 		ExecPlatform:    cli.String(domain.ExecPlatformFlagName),
 		EnableMode:      cli.Bool(domain.EnableModeFlagName),
 		RedundantMode:   cli.Bool(domain.RedundantModeFlagName),
@@ -87,8 +89,11 @@ func checkArguments(cfg *Config) error {
 	if cfg.Hostname == domain.EmptyString {
 		return errors.ErrMissingHostname
 	}
-	if cfg.Command == domain.EmptyString {
+	if len(cfg.Commands) == domain.EmptyArray || slices.Contains(cfg.Commands, domain.EmptyString) {
 		return errors.ErrMissingCommand
+	}
+	if slices.ContainsFunc(cfg.Commands, isMultiline) {
+		return errors.ErrMultilineCommand
 	}
 	if cfg.Username == domain.EmptyString {
 		return errors.ErrMissingUsername
@@ -113,6 +118,10 @@ func completePortNumber(cfg *Config) bool {
 		cfg.Port = domain.TelnetPort
 	}
 	return true
+}
+
+func isMultiline(command string) bool {
+	return strings.ContainsAny(command, "\r\n")
 }
 
 func isValidExecPlatform(platform string) bool {

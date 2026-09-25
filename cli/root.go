@@ -17,7 +17,7 @@ import (
 const (
 	cmdName      string = "telee"
 	cmdUsage     string = "One-line command executor"
-	cmdUsageText string = "telee -H HOSTNAME -C COMMAND [options...]"
+	cmdUsageText string = "telee -H HOSTNAME -C COMMAND [-C COMMAND...] [options...]"
 )
 
 func Start() {
@@ -27,6 +27,8 @@ func Start() {
 		UsageText: cmdUsageText,
 		Version:   getVersion(),
 		Flags:     registerFlags(),
+		// A command may hold a comma, as an NX-OS interface list does, so a value is never split.
+		DisableSliceFlagSeparator: true,
 		Action: func(ctx context.Context, cli *cli.Command) error {
 			c := config.New(cli)
 			r := infrastructure.New(&c)

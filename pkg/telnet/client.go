@@ -1,4 +1,4 @@
-// Package telnet dials a device over Telnet and runs one batch on the connection.
+// Package telnet dials a device over Telnet and runs one session on the connection.
 package telnet
 
 import (
@@ -51,8 +51,8 @@ func New(host string, port int, protocol string, timeout time.Duration) *Telnet 
 	}
 }
 
-// Fetch dials, runs the batch and returns the output the last prompt match captured.
-func (t *Telnet) Fetch(batch *[]x.Batcher) (string, error) {
+// Fetch dials, runs login then commands and returns the transcript of commands.
+func (t *Telnet) Fetch(login, commands []x.Batcher) (string, error) {
 	conn, err := net.DialTimeout(t.protocol, net.JoinHostPort(t.host, strconv.Itoa(t.port)), t.timeout)
 	if err != nil {
 		fmt.Fprint(os.Stderr, errTelnetSpawnFailed)
@@ -60,7 +60,7 @@ func (t *Telnet) Fetch(batch *[]x.Batcher) (string, error) {
 	}
 	defer conn.Close() //nolint:errcheck
 
-	out, err := x.Run(newConn(conn), *batch, t.timeout)
+	out, err := x.Run(newConn(conn), login, commands, t.timeout)
 	if err != nil {
 		fmt.Fprint(os.Stderr, errTelnetBatchFailed)
 		return "", err

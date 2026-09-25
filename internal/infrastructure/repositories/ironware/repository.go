@@ -14,22 +14,22 @@ type Repository struct {
 	Config *config.Config
 }
 
-// Fetch runs one telnet session and returns the output the last prompt match captured.
+// Fetch runs one telnet session and returns the transcript of the commands.
 func (r *Repository) Fetch() (string, error) {
-	var expects []x.Batcher
+	var login, commands []x.Batcher
 	var data string
 	var err error
 
 	if r.Config.EnableMode {
-		expects = r.buildPrivilegedRequest()
+		login, commands = r.buildPrivilegedRequest()
 	} else {
-		expects = r.buildUserModeRequest()
+		login, commands = r.buildUserModeRequest()
 	}
 
 	// Telnet only; checkArguments refuses --secure-mode for this platform.
 	data, err = telnet.New(
 		r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
-	).Fetch(&expects)
+	).Fetch(login, commands)
 	if err != nil {
 		return "", err
 	}
@@ -37,7 +37,7 @@ func (r *Repository) Fetch() (string, error) {
 }
 
 // IronWare is the only platform needing CRLF. A bare "\n" leaves the line unsent.
-func (r *Repository) buildUserModeRequest() []x.Batcher {
+func (r *Repository) buildUserModeRequest() (login, commands []x.Batcher) {
 	return []x.Batcher{
 		&x.BExp{R: "Please Enter Login Name:"},
 		&x.BSnd{S: r.Config.Username + "\r\n"},
@@ -46,12 +46,10 @@ func (r *Repository) buildUserModeRequest() []x.Batcher {
 		&x.BExp{R: "telnet@" + r.Config.Hostname + ">"},
 		&x.BSnd{S: "skip-page-display\r\n"},
 		&x.BExp{R: "telnet@" + r.Config.Hostname + ">"},
-		&x.BSnd{S: r.Config.Command + "\r\n"},
-		&x.BExp{R: "telnet@" + r.Config.Hostname + ">"},
-	}
+	}, x.Commands("telnet@"+r.Config.Hostname+">", "\r\n", r.Config.Commands)
 }
 
-func (r *Repository) buildPrivilegedRequest() []x.Batcher {
+func (r *Repository) buildPrivilegedRequest() (login, commands []x.Batcher) {
 	return []x.Batcher{
 		&x.BExp{R: "Please Enter Login Name:"},
 		&x.BSnd{S: r.Config.Username + "\r\n"},
@@ -63,7 +61,5 @@ func (r *Repository) buildPrivilegedRequest() []x.Batcher {
 		&x.BSnd{S: r.Config.PrivPassword + "\r\n"},
 		&x.BSnd{S: "skip-page-display\r\n"},
 		&x.BExp{R: "telnet@" + r.Config.Hostname + "#"},
-		&x.BSnd{S: r.Config.Command + "\r\n"},
-		&x.BExp{R: "telnet@" + r.Config.Hostname + "#"},
-	}
+	}, x.Commands("telnet@"+r.Config.Hostname+"#", "\r\n", r.Config.Commands)
 }

@@ -2,7 +2,7 @@
 
 Every setting this CLI reads, in precedence order: a flag, then the environment, then the built-in default.
 
-One invocation runs one command on one device, so there are no subcommands, no configuration file and no per-command flag set. The thirteen flags below are the whole surface.
+One invocation runs one or more commands on one device, so there are no subcommands, no configuration file and no per-command flag set. The thirteen flags below are the whole surface.
 
 ## Flags
 
@@ -11,7 +11,7 @@ One invocation runs one command on one device, so there are no subcommands, no c
 | Flag                             | Default | Sets                              |
 | :------------------------------- | :------ | :-------------------------------- |
 | `--hostname`, `-H`               | –       | Target address and prompt literal |
-| `--command`, `-C`                | –       | The command the session runs      |
+| `--command`, `-C`                | –       | The commands the session runs     |
 | `--exec-platform`, `-x`          | `ios`   | The session script to drive       |
 | `--port`, `-P`                   | `0`     | TCP port, `0` meaning complete it |
 | `--timeout`, `-t`                | `5`     | Seconds per dial and per step     |
@@ -30,6 +30,7 @@ What the flags that hold a mechanism actually do:
 
 - **`--port` at `0` is completed, not defaulted.** Zero becomes 22 under `--secure-mode` and 23 without it, and any non-zero value is dialed as given with no validation.
 - **`--timeout` bounds each stage of a session, not the whole of it.** The dial gets the value, the SSH handshake with its authentication and shell request gets it once more, and every expect step gets it again. An expect step's timer restarts on every byte received, so a device that keeps sending is never cut off and one that goes silent is dropped after that many seconds. `0` or less is not refused: a dial at `0` has no limit on either transport, and every stage after it ends at once.
+- **`--command` repeats, and every value runs in the one session.** The commands run in the order given, each waiting for the prompt the previous one returned to, and a value is never split on a comma, so `TELEE_COMMAND` carries exactly one command.
 - **`--hostname` is also the prompt pattern.** Eight of the nine scripts expect the value verbatim inside the device prompt, so anything but the device's own hostname matches nothing.
 - **`--host-key-path` takes an OpenSSH text key and pins the first one in the file.** `ssh.ParseAuthorizedKey` takes a `.pub` line and a `known_hosts` line alike, reading the latter's leading host field as an options field. It skips the `#` comment `ssh-keygen -F` writes, and never compares a later line, so a multi-key capture pins the first.
 - **`--redundant-mode` only widens the expected prompt.** It appends `/pri/act` on `asa` and `(M)` on `ssg`, and every other platform refuses the flag outright.

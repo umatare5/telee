@@ -23,23 +23,23 @@ type Repository struct {
 	Config *config.Config
 }
 
-// Fetch runs one session and returns the output the last prompt match captured.
+// Fetch runs one session and returns the transcript of the commands.
 func (r *Repository) Fetch() (string, error) {
-	var expects []x.Batcher
+	var login, commands []x.Batcher
 	var data string
 	var err error
 
 	if r.Config.SecureMode && r.Config.RedundantMode {
-		expects = r.buildSecureRequest(haSuffix)
+		login, commands = r.buildSecureRequest(haSuffix)
 	}
 	if r.Config.SecureMode && !r.Config.RedundantMode {
-		expects = r.buildSecureRequest(noSuffix)
+		login, commands = r.buildSecureRequest(noSuffix)
 	}
 	if !r.Config.SecureMode && r.Config.RedundantMode {
-		expects = r.buildRequest(haSuffix)
+		login, commands = r.buildRequest(haSuffix)
 	}
 	if !r.Config.SecureMode && !r.Config.RedundantMode {
-		expects = r.buildRequest(noSuffix)
+		login, commands = r.buildRequest(noSuffix)
 	}
 
 	if r.Config.SecureMode {
@@ -50,11 +50,11 @@ func (r *Repository) Fetch() (string, error) {
 		}
 		data, err = ssh.New(
 			r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
-		).Fetch(&expects, clientConfig)
+		).Fetch(login, commands, clientConfig)
 	} else {
 		data, err = telnet.New(
 			r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
-		).Fetch(&expects)
+		).Fetch(login, commands)
 	}
 
 	if err != nil {
@@ -63,7 +63,7 @@ func (r *Repository) Fetch() (string, error) {
 	return data, nil
 }
 
-func (r *Repository) buildRequest(suffix string) []x.Batcher {
+func (r *Repository) buildRequest(suffix string) (login, commands []x.Batcher) {
 	return []x.Batcher{
 		&x.BExp{R: "login:"},
 		&x.BSnd{S: r.Config.Username + "\n"},
@@ -73,17 +73,13 @@ func (r *Repository) buildRequest(suffix string) []x.Batcher {
 		&x.BExp{R: r.Config.Hostname + suffix + "->"},
 		&x.BSnd{S: "set console page 0\n"},
 		&x.BExp{R: r.Config.Hostname + suffix + "->"},
-		&x.BSnd{S: r.Config.Command + "\n"},
-		&x.BExp{R: r.Config.Hostname + suffix + "->"},
-	}
+	}, x.Commands(r.Config.Hostname+suffix+"->", "\n", r.Config.Commands)
 }
 
-func (r *Repository) buildSecureRequest(suffix string) []x.Batcher {
+func (r *Repository) buildSecureRequest(suffix string) (login, commands []x.Batcher) {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + suffix + "->"},
 		&x.BSnd{S: "set console page 0\n"},
 		&x.BExp{R: r.Config.Hostname + suffix + "->"},
-		&x.BSnd{S: r.Config.Command + "\n"},
-		&x.BExp{R: r.Config.Hostname + suffix + "->"},
-	}
+	}, x.Commands(r.Config.Hostname+suffix+"->", "\n", r.Config.Commands)
 }

@@ -14,25 +14,25 @@ type Repository struct {
 	Config *config.Config
 }
 
-// Fetch runs one telnet session and returns the output the last prompt match captured.
+// Fetch runs one telnet session and returns the transcript of the commands.
 func (r *Repository) Fetch() (string, error) {
-	var expects []x.Batcher
+	var login, commands []x.Batcher
 	var data string
 	var err error
 
-	expects = r.buildRequest()
+	login, commands = r.buildRequest()
 
 	// Telnet only; checkArguments refuses --secure-mode for this platform.
 	data, err = telnet.New(
 		r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
-	).Fetch(&expects)
+	).Fetch(login, commands)
 	if err != nil {
 		return "", err
 	}
 	return data, nil
 }
 
-func (r *Repository) buildRequest() []x.Batcher {
+func (r *Repository) buildRequest() (login, commands []x.Batcher) {
 	return []x.Batcher{
 		&x.BExp{R: "login:"},
 		&x.BSnd{S: r.Config.Username + "\n"},
@@ -41,7 +41,5 @@ func (r *Repository) buildRequest() []x.Batcher {
 		&x.BExp{R: "Manager " + r.Config.Hostname + ">"},
 		&x.BSnd{S: "terminal length 0\n"},
 		&x.BExp{R: "Manager " + r.Config.Hostname + ">"},
-		&x.BSnd{S: r.Config.Command + "\n"},
-		&x.BExp{R: "Manager " + r.Config.Hostname + ">"},
-	}
+	}, x.Commands("Manager "+r.Config.Hostname+">", "\n", r.Config.Commands)
 }

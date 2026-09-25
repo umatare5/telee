@@ -1,4 +1,4 @@
-// Package ssh dials a device over SSH and runs one batch on an interactive shell.
+// Package ssh dials a device over SSH and runs one session on an interactive shell.
 package ssh
 
 import (
@@ -213,9 +213,9 @@ func isStandardSSHPort(address string) bool {
 	return port == "22"
 }
 
-// Fetch dials, opens a shell on a pseudo-terminal, runs the batch and returns the output the
-// last prompt match captured.
-func (c *SSH) Fetch(batchers *[]x.Batcher, config *ssh.ClientConfig) (string, error) {
+// Fetch dials, opens a shell on a pseudo-terminal, runs login then commands and returns the
+// transcript of commands.
+func (c *SSH) Fetch(login, commands []x.Batcher, config *ssh.ClientConfig) (string, error) {
 	client, conn, err := c.dial(config)
 	if err != nil {
 		fmt.Fprint(os.Stderr, errSSHSpawnFailed)
@@ -250,7 +250,7 @@ func (c *SSH) Fetch(batchers *[]x.Batcher, config *ssh.ClientConfig) (string, er
 		pw.Close()     //nolint:errcheck,gosec
 	}()
 
-	out, err := x.Run(shell{pr, stdin}, *batchers, c.timeout)
+	out, err := x.Run(shell{pr, stdin}, login, commands, c.timeout)
 	if err != nil {
 		fmt.Fprint(os.Stderr, errSSHBatchFailed)
 		return "", err

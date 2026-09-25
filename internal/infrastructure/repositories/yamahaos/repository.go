@@ -22,26 +22,26 @@ type Repository struct {
 	Config *config.Config
 }
 
-// Fetch runs one session and returns the output the last prompt match captured.
+// Fetch runs one session and returns the transcript of the commands.
 func (r *Repository) Fetch() (string, error) {
-	var expects []x.Batcher
+	var login, commands []x.Batcher
 	var data string
 	var err error
 
 	if r.Config.SecureMode {
 		if r.Config.EnableMode {
-			expects = r.buildPrivilegedSecureRequest()
+			login, commands = r.buildPrivilegedSecureRequest()
 		}
 		if !r.Config.EnableMode {
-			expects = r.buildUserModeSecureRequest()
+			login, commands = r.buildUserModeSecureRequest()
 		}
 	}
 	if !r.Config.SecureMode {
 		if r.Config.EnableMode {
-			expects = r.buildPrivilegedRequest()
+			login, commands = r.buildPrivilegedRequest()
 		}
 		if !r.Config.EnableMode {
-			expects = r.buildUserModeRequest()
+			login, commands = r.buildUserModeRequest()
 		}
 	}
 
@@ -53,11 +53,11 @@ func (r *Repository) Fetch() (string, error) {
 		}
 		data, err = ssh.New(
 			r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
-		).Fetch(&expects, clientConfig)
+		).Fetch(login, commands, clientConfig)
 	} else {
 		data, err = telnet.New(
 			r.Config.Hostname, r.Config.Port, domain.ProtocolTCP, time.Duration(r.Config.Timeout)*time.Second,
-		).Fetch(&expects)
+		).Fetch(login, commands)
 	}
 
 	if err != nil {
@@ -67,19 +67,17 @@ func (r *Repository) Fetch() (string, error) {
 }
 
 // YAMAHA prompts for a password only, so --username reaches the device over SSH alone.
-func (r *Repository) buildUserModeRequest() []x.Batcher {
+func (r *Repository) buildUserModeRequest() (login, commands []x.Batcher) {
 	return []x.Batcher{
 		&x.BExp{R: promptPassword},
 		&x.BSnd{S: r.Config.Password + "\n"},
 		&x.BExp{R: r.Config.Hostname + ">"},
 		&x.BSnd{S: cmdDisablePaging},
 		&x.BExp{R: r.Config.Hostname + ">"},
-		&x.BSnd{S: r.Config.Command + "\n"},
-		&x.BExp{R: r.Config.Hostname + ">"},
-	}
+	}, x.Commands(r.Config.Hostname+">", "\n", r.Config.Commands)
 }
 
-func (r *Repository) buildPrivilegedRequest() []x.Batcher {
+func (r *Repository) buildPrivilegedRequest() (login, commands []x.Batcher) {
 	return []x.Batcher{
 		&x.BExp{R: promptPassword},
 		&x.BSnd{S: r.Config.Password + "\n"},
@@ -90,22 +88,18 @@ func (r *Repository) buildPrivilegedRequest() []x.Batcher {
 		&x.BExp{R: r.Config.Hostname + "#"},
 		&x.BSnd{S: cmdDisablePaging},
 		&x.BExp{R: r.Config.Hostname + "#"},
-		&x.BSnd{S: r.Config.Command + "\n"},
-		&x.BExp{R: r.Config.Hostname + "#"},
-	}
+	}, x.Commands(r.Config.Hostname+"#", "\n", r.Config.Commands)
 }
 
-func (r *Repository) buildUserModeSecureRequest() []x.Batcher {
+func (r *Repository) buildUserModeSecureRequest() (login, commands []x.Batcher) {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + ">"},
 		&x.BSnd{S: cmdDisablePaging},
 		&x.BExp{R: r.Config.Hostname + ">"},
-		&x.BSnd{S: r.Config.Command + "\n"},
-		&x.BExp{R: r.Config.Hostname + ">"},
-	}
+	}, x.Commands(r.Config.Hostname+">", "\n", r.Config.Commands)
 }
 
-func (r *Repository) buildPrivilegedSecureRequest() []x.Batcher {
+func (r *Repository) buildPrivilegedSecureRequest() (login, commands []x.Batcher) {
 	return []x.Batcher{
 		&x.BExp{R: r.Config.Hostname + ">"},
 		&x.BSnd{S: "administrator\n"},
@@ -114,7 +108,5 @@ func (r *Repository) buildPrivilegedSecureRequest() []x.Batcher {
 		&x.BExp{R: r.Config.Hostname + "#"},
 		&x.BSnd{S: cmdDisablePaging},
 		&x.BExp{R: r.Config.Hostname + "#"},
-		&x.BSnd{S: r.Config.Command + "\n"},
-		&x.BExp{R: r.Config.Hostname + "#"},
-	}
+	}, x.Commands(r.Config.Hostname+"#", "\n", r.Config.Commands)
 }
