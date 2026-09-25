@@ -35,7 +35,8 @@ type BSnd struct {
 func (*BExp) step() {}
 func (*BSnd) step() {}
 
-// TimeoutError is returned when a step makes no progress for its whole window.
+// TimeoutError is returned when a BExp receives nothing for its whole window, or a BSnd is
+// not written within it.
 type TimeoutError time.Duration
 
 func (t TimeoutError) Error() string {

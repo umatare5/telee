@@ -82,9 +82,9 @@ TelnetClient was failed at ExpectBatch(). You can troubleshoot using wireshark.
 expect: timer expired after 2 seconds
 ```
 
-The transport connected and one of the expected patterns never arrived within `--timeout` seconds of the last byte, whose value the second line repeats. A device that closes the connection first ends the step at once instead, with `expect: connection closed before a match: EOF` on the second line. The hint block printed underneath names the three causes, and the second of them is the common one.
+The transport connected and one of the expected patterns never arrived within `--timeout` seconds of the last byte, whose value the second line repeats. A write the device does not take within `--timeout` seconds fails with the same line. A device that closes the connection first ends the step at once instead, with `expect: connection closed before a match: EOF` on the second line.
 
-The session script builds the expected prompt out of the `--hostname` value. `ios` waits for `<hostname>>`, `foundry` for `telnet@<hostname>>`, `allied` for `Manager <hostname>>`, `srx` for `<username>@<hostname>>`, and `ssg` for `<hostname>->`.
+The hint block printed underneath names the three causes, and the second of them is the common one. The session script builds the expected prompt out of the `--hostname` value. `ios` waits for `<hostname>>`, `foundry` for `telnet@<hostname>>`, `allied` for `Manager <hostname>>`, `srx` for `<username>@<hostname>>`, and `ssg` for `<hostname>->`.
 
 Dialing by IP address, or by a DNS name that differs from the device's configured hostname, therefore matches none of them. `aireos` is the only platform that does not build its prompt this way, expecting the fixed string `(Cisco Controller) >`.
 
