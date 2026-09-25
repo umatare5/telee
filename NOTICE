@@ -1,7 +1,7 @@
 telee
 Copyright (c) 2021 umatare5
 
-This product is distributed under the MIT License — see the LICENSE file for
+This product is distributed under the MIT License – see the LICENSE file for
 its terms. The binaries and container images published for this project
 statically link the third-party Go modules named below, and this file carries
 the notices their licenses require on redistribution in binary form.

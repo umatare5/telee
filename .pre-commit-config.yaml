@@ -17,7 +17,7 @@ repos:
     rev: v2.13.2
     hooks:
       # The full variant runs on the whole module, so the linters that need to
-      # see every file — unused above all — report what they actually would.
+      # see every file – unused above all – report what they actually would.
       - id: golangci-lint-full
 
   - repo: https://github.com/rhysd/actionlint

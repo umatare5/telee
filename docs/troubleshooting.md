@@ -14,14 +14,14 @@ The first three never reach the device: the parser and the argument check run be
 
 ## The exit contract
 
-Device output goes to stdout and nothing else does — a redirect captures the session and leaves every diagnostic on the terminal:
+Device output goes to stdout and nothing else does – a redirect captures the session and leaves every diagnostic on the terminal:
 
 ```bash
 export TELEE_PRIVPASSWORD='<enable password>'
 telee -H sw01 -C "show run" -e > sw01.cfg
 ```
 
-The one exception is the argument parser, which prints the full usage block on stdout when a required flag is missing. Everything else — the validation line, the enable-mode notice, the transport banner, the underlying error, the hint block and the closing log line — is written to stderr.
+The one exception is the argument parser, which prints the full usage block on stdout when a required flag is missing. Everything else – the validation line, the enable-mode notice, the transport banner, the underlying error, the hint block and the closing log line – is written to stderr.
 
 Exit status is `0` on success and `1` on every failure, with no third code. The closing log line names which stage returned. `failed to validate arguments` is the argument check alone, while `command execution failed` covers the parser refusal, the host key check and the session itself.
 
@@ -39,18 +39,18 @@ The environment satisfies the requirement as well as the flag does, so this appe
 
 The checks run in a fixed order and the first failure returns, so an invocation with two faults reports only the earlier one. The list is in that order.
 
-- **`exec-platform is not supported`** — `-x` took a value outside the nine platform names, matched exactly and case sensitively.
-- **`enable-mode and default-priv-mode cannot use at once`** — `-e` and `-d` were both set; they describe two different sessions, one that escalates and one that starts privileged.
-- **`redundant-mode is not supported in this platform`** — `-r` was set on anything but `asa` or `ssg`, the two platforms whose scripts carry a failover prompt suffix.
-- **`secure-mode is not supported in this platform`** — `-s` was set on `allied` or `foundry`, whose scripts exist only in a telnet form.
-- **`non secure-mode is not supported in this platform`** — `-s` was omitted on `srx`, whose script exists only in an SSH form.
-- **`default-privilege-mode is not supported in this platform`** — `-d` was set on anything but `asa`, `ios` or `nxos`.
-- **`EnableMode must be set. Terminal length expansion in user-level is not supporting.`** — an `asa` session was asked for with neither `-e` nor `-d`, and its paging command is refused at user level.
-- **`hostname must be set`** — `-H` or `TELEE_HOSTNAME` was set to an empty string, which clears the parser's required check and fails here.
-- **`command must be set`** — the same, for `-C` or `TELEE_COMMAND`.
-- **`TELEE_USERNAME must be set`** — `-u` or `TELEE_USERNAME` was set to an empty string; the flag's own default is `admin`, so this cannot fire unless something overwrote it.
-- **`TELEE_PASSWORD must be set`** — neither `-p` nor `TELEE_PASSWORD` was set, or one of them was set to an empty string. The password has no default, so this is the refusal a run with no credentials meets before it dials.
-- **`TELEE_PRIVPASSWORD must be set`** — `-e` was set while neither `--pp` nor `TELEE_PRIVPASSWORD` was, or the value was empty. The privileged password has no default either, so `enable` itself is sent as given.
+- **`exec-platform is not supported`** – `-x` took a value outside the nine platform names, matched exactly and case sensitively.
+- **`enable-mode and default-priv-mode cannot use at once`** – `-e` and `-d` were both set; they describe two different sessions, one that escalates and one that starts privileged.
+- **`redundant-mode is not supported in this platform`** – `-r` was set on anything but `asa` or `ssg`, the two platforms whose scripts carry a failover prompt suffix.
+- **`secure-mode is not supported in this platform`** – `-s` was set on `allied` or `foundry`, whose scripts exist only in a telnet form.
+- **`non secure-mode is not supported in this platform`** – `-s` was omitted on `srx`, whose script exists only in an SSH form.
+- **`default-privilege-mode is not supported in this platform`** – `-d` was set on anything but `asa`, `ios` or `nxos`.
+- **`EnableMode must be set. Terminal length expansion in user-level is not supporting.`** – an `asa` session was asked for with neither `-e` nor `-d`, and its paging command is refused at user level.
+- **`hostname must be set`** – `-H` or `TELEE_HOSTNAME` was set to an empty string, which clears the parser's required check and fails here.
+- **`command must be set`** – the same, for `-C` or `TELEE_COMMAND`.
+- **`TELEE_USERNAME must be set`** – `-u` or `TELEE_USERNAME` was set to an empty string; the flag's own default is `admin`, so this cannot fire unless something overwrote it.
+- **`TELEE_PASSWORD must be set`** – neither `-p` nor `TELEE_PASSWORD` was set, or one of them was set to an empty string. The password has no default, so this is the refusal a run with no credentials meets before it dials.
+- **`TELEE_PRIVPASSWORD must be set`** – `-e` was set while neither `--pp` nor `TELEE_PRIVPASSWORD` was, or the value was empty. The privileged password has no default either, so `enable` itself is sent as given.
 
 ## The enable-mode notice
 
@@ -71,7 +71,7 @@ dial tcp 192.0.2.1:23: i/o timeout
 
 The banner is the transport's, the line under it is the operating system's, and `SSH was failed at spawn()` is the `--secure-mode` wording of the same stage. That wording also covers a handshake or an authentication that outlived `--timeout`, as a slow AAA server can cause, and both end in `i/o timeout` too. A channel open that did ends in `unexpected packet in response to channel open: <nil>` instead, and a pty or shell request in `EOF`.
 
-The second line names the cause: `no such host` is resolution, `connection refused` is a closed port, and `i/o timeout` is a filtered path, reported once `--timeout` has elapsed. For the latter two, check that the completed port is the one the device listens on — `0` completes to 23 without `--secure-mode` and to 22 with it.
+The second line names the cause: `no such host` is resolution, `connection refused` is a closed port, and `i/o timeout` is a filtered path, reported once `--timeout` has elapsed. For the latter two, check that the completed port is the one the device listens on – `0` completes to 23 without `--secure-mode` and to 22 with it.
 
 Host key failure is a separate shape. A `known_hosts` refusal reaches this banner with its own message above rather than below, and a `--host-key-path` mismatch reaches it with none. A missing `known_hosts` and an unreadable `--host-key-path` are refused before any dial, so neither prints a banner at all.
 
@@ -94,13 +94,13 @@ Two further causes produce the same failure. A wrong `--exec-platform` waits for
 
 Eight distinct messages come from the SSH host key check, and none of them sends anything:
 
-- **`~/.ssh/known_hosts not found`** — no `--host-key-path` was given and the file does not exist. The message carries the `ssh` line that creates it, which `ssh-keyscan` cannot on a device this old.
-- **`[ERROR] Host key verification failed for <host>`** — the file exists and holds no key for the host. Four remedies follow the message, including the legacy `HostKeyAlgorithms` and `KexAlgorithms` options older IOS devices need, and the `spawn()` banner prints after them.
-- **`[ERROR] Host key for <host> does not match known_hosts: it holds TYPE at FILE:LINE …`** — another type is on record for the host, and no remedy follows because another device could present it too. The case is common, as `ssh` records the ed25519 key it prefers while this client negotiates ECDSA or RSA first. The presented type is added, or pinned with `--host-key-path`, only once `ssh-keygen -lf` gives its fingerprint for the key the device itself prints, as IOS does under `show ip ssh`.
-- **`[ERROR] Host key for <host> has changed: SHA256:…`** — the file holds a key of the same type for the host and the device presented another, and the recorded line is named. The fingerprint is the device's and no remedy follows, because a changed key is what the file exists to catch. The stale line is removed only once the change is explained.
-- **`[ERROR] Host key for <host> is revoked at FILE:LINE`** — an `@revoked` line in the file names the key the device presented, so no remedy follows.
-- **`failed to read host key file`** — `--host-key-path` named a path that does not exist or cannot be opened.
-- **`failed to parse host key: ssh: no key found`** — `--host-key-path` named a file holding no key line. A `.pub` line and a `known_hosts` line both parse, and `#` comments are skipped, so the file is neither.
-- **`ssh: handshake failed: ssh: host key mismatch`** — `--host-key-path` parsed, and the key it pins is not the one the device presented. It follows the `spawn()` banner without a guidance block, which belongs to the `known_hosts` path alone.
+- **`~/.ssh/known_hosts not found`** – no `--host-key-path` was given and the file does not exist. The message carries the `ssh` line that creates it, which `ssh-keyscan` cannot on a device this old.
+- **`[ERROR] Host key verification failed for <host>`** – the file exists and holds no key for the host. Four remedies follow the message, including the legacy `HostKeyAlgorithms` and `KexAlgorithms` options older IOS devices need, and the `spawn()` banner prints after them.
+- **`[ERROR] Host key for <host> does not match known_hosts: it holds TYPE at FILE:LINE …`** – another type is on record for the host, and no remedy follows because another device could present it too. The case is common, as `ssh` records the ed25519 key it prefers while this client negotiates ECDSA or RSA first. The presented type is added, or pinned with `--host-key-path`, only once `ssh-keygen -lf` gives its fingerprint for the key the device itself prints, as IOS does under `show ip ssh`.
+- **`[ERROR] Host key for <host> has changed: SHA256:…`** – the file holds a key of the same type for the host and the device presented another, and the recorded line is named. The fingerprint is the device's and no remedy follows, because a changed key is what the file exists to catch. The stale line is removed only once the change is explained.
+- **`[ERROR] Host key for <host> is revoked at FILE:LINE`** – an `@revoked` line in the file names the key the device presented, so no remedy follows.
+- **`failed to read host key file`** – `--host-key-path` named a path that does not exist or cannot be opened.
+- **`failed to parse host key: ssh: no key found`** – `--host-key-path` named a file holding no key line. A `.pub` line and a `known_hosts` line both parse, and `#` comments are skipped, so the file is neither.
+- **`ssh: handshake failed: ssh: host key mismatch`** – `--host-key-path` parsed, and the key it pins is not the one the device presented. It follows the `spawn()` banner without a guidance block, which belongs to the `known_hosts` path alone.
 
 There is no flag that skips verification, by design. [`configuration.md`](configuration.md) covers `--host-key-path` in full.

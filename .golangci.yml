@@ -97,7 +97,7 @@ linters:
         - name: error-naming
         - name: var-naming
           arguments:
-            # Argument one is revive's allowlist — these spellings are left as written;
+            # Argument one is revive's allowlist – these spellings are left as written;
             # argument two is its blocklist, which adds initialisms revive then requires in
             # upper case.
             - [
