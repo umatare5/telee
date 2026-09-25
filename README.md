@@ -84,7 +84,7 @@ telee -H HOSTNAME -C COMMAND [options...]
 | `--command`, `-C`                | The single command line sent to the device                |
 | `--exec-platform`, `-x`          | Platform dialect, `ios` unless set                        |
 | `--port`, `-P`                   | TCP port, completed to 22 under `-s` and to 23 otherwise  |
-| `--timeout`, `-t`                | Seconds one expect step may wait, 5 unless set            |
+| `--timeout`, `-t`                | Seconds per dial and per expect step, 5 unless set        |
 | `--secure-mode`, `-s`            | Use SSH in place of telnet                                |
 | `--enable-mode`, `-e`            | Send the escalation command and the privileged password   |
 | `--default-privilege-mode`, `-d` | Expect a privileged prompt at login and escalate nothing  |
@@ -335,7 +335,7 @@ Each version below is the OS that path was exercised against. "⚠ Not Verified"
 | asa                  | ✅ 9.0(4)       | ⚠ Not Verified   | ⚠ Not Verified          |
 | asa (redundant-mode) | ✅ 9.10(1)      | ⚠ Not Verified   | ⚠ Not Verified          |
 | foundry              | ✅ 07.2.02aT7e1 | Not Supported    | Not Supported           |
-| ios                  | ✅ 15.2(5c)E    | ✅ 15.2(5c)E     | ✅ 15.2(5c)E            |
+| ios                  | ✅ 15.2(7)E3    | ✅ 15.2(7)E3     | ✅ 15.2(5c)E            |
 | nxos                 | ✅ 6.2(14)      | ⚠ Not Verified   | ✅ 6.2(14)              |
 | srx                  | Not Supported   | ✅ 15.1X49-D90.7 | Not Supported           |
 | ssg                  | ✅ 6.3.0r21.0   | ⚠ Not Verified   | Not Supported           |

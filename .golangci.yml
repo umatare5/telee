@@ -78,8 +78,8 @@ linters:
         - rangeValCopy
         - commentedOutCode
         - whyNoLint
-        # Two parameters shadow their own package: cli in internal/config/config.go
-        # and x in pkg/telnet/client.go, and renaming either is out of scope.
+        # One parameter shadows its own package: cli in internal/config/config.go, and
+        # renaming it is out of scope.
         - importShadow
 
     mnd:

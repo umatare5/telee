@@ -4,10 +4,9 @@ package repository
 import (
 	"time"
 
-	x "github.com/google/goexpect"
-
 	"github.com/umatare5/telee/internal/config"
 	"github.com/umatare5/telee/internal/domain"
+	x "github.com/umatare5/telee/pkg/expect"
 	"github.com/umatare5/telee/pkg/telnet"
 )
 

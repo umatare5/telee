@@ -4,11 +4,11 @@ package repository
 import (
 	"time"
 
-	x "github.com/google/goexpect"
 	cryptossh "golang.org/x/crypto/ssh"
 
 	"github.com/umatare5/telee/internal/config"
 	"github.com/umatare5/telee/internal/domain"
+	x "github.com/umatare5/telee/pkg/expect"
 	"github.com/umatare5/telee/pkg/ssh"
 	"github.com/umatare5/telee/pkg/telnet"
 )
