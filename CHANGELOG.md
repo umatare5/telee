@@ -27,6 +27,7 @@ Each release from [v1.8.0] on also carries notes GoReleaser generates from the c
 
 - The expect loop and the Telnet client are in-house on the standard library, in `pkg/expect` and `pkg/telnet`, and the SSH shell is opened directly on `x/crypto/ssh`
 - `--timeout` also bounds the dial and, under `--secure-mode`, the handshake, the authentication and the shell request, where a non-routable address previously hung for the operating system's 75 s
+- `--password` and `--priv-password` have no default, so a run without `TELEE_PASSWORD` stops before dialing instead of sending `cisco`, and an enable password of `enable` is accepted
 - The container build moved to GoReleaser's `dockers_v2`
 - The pre-commit hooks are wired through the Makefile, and `make clean` no longer reaches the worktrees under `./tmp`
 - The build and the tests also run weekly ([#107])

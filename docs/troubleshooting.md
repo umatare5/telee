@@ -49,8 +49,8 @@ The checks run in a fixed order and the first failure returns, so an invocation 
 - **`hostname must be set`** — `-H` or `TELEE_HOSTNAME` was set to an empty string, which clears the parser's required check and fails here.
 - **`command must be set`** — the same, for `-C` or `TELEE_COMMAND`.
 - **`TELEE_USERNAME must be set`** — `-u` or `TELEE_USERNAME` was set to an empty string; the flag's own default is `admin`, so this cannot fire unless something overwrote it.
-- **`TELEE_PASSWORD must be set`** — the same, for `-p` or `TELEE_PASSWORD`, whose default is `cisco`.
-- **`TELEE_PRIVPASSWORD must be set`** — `-e` was set while `--priv-password` still held its default literal `enable`. The guard compares against that literal rather than against emptiness, so an enable password that genuinely is `enable` is indistinguishable from an unset one and must be changed on the device.
+- **`TELEE_PASSWORD must be set`** — neither `-p` nor `TELEE_PASSWORD` was set, or one of them was set to an empty string. The password has no default, so this is the refusal a run with no credentials meets before it dials.
+- **`TELEE_PRIVPASSWORD must be set`** — `-e` was set while neither `--pp` nor `TELEE_PRIVPASSWORD` was, or the value was empty. The privileged password has no default either, so `enable` itself is sent as given.
 
 ## The enable-mode notice
 

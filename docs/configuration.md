@@ -8,21 +8,21 @@ One invocation runs one command on one device, so there are no subcommands, no c
 
 `--hostname` and `--command` are required; everything else carries a default the table names.
 
-| Flag                             | Default  | Sets                              |
-| :------------------------------- | :------- | :-------------------------------- |
-| `--hostname`, `-H`               | —        | Target address and prompt literal |
-| `--command`, `-C`                | —        | The command the session runs      |
-| `--exec-platform`, `-x`          | `ios`    | The session script to drive       |
-| `--port`, `-P`                   | `0`      | TCP port, `0` meaning complete it |
-| `--timeout`, `-t`                | `5`      | Seconds per dial and per step     |
-| `--secure-mode`, `-s`            | `false`  | SSH in place of telnet            |
-| `--enable-mode`, `-e`            | `false`  | Escalation to privileged EXEC     |
-| `--default-privilege-mode`, `-d` | `false`  | Login is already privileged       |
-| `--redundant-mode`, `-r`         | `false`  | Failover suffix on the prompt     |
-| `--username`, `-u`               | `admin`  | Login user                        |
-| `--password`, `-p`               | `cisco`  | Login password                    |
-| `--priv-password`, `--pp`        | `enable` | Password the `enable` step sends  |
-| `--host-key-path`, `--hkp`       | —        | SSH host key file, in text form   |
+| Flag                             | Default | Sets                              |
+| :------------------------------- | :------ | :-------------------------------- |
+| `--hostname`, `-H`               | —       | Target address and prompt literal |
+| `--command`, `-C`                | —       | The command the session runs      |
+| `--exec-platform`, `-x`          | `ios`   | The session script to drive       |
+| `--port`, `-P`                   | `0`     | TCP port, `0` meaning complete it |
+| `--timeout`, `-t`                | `5`     | Seconds per dial and per step     |
+| `--secure-mode`, `-s`            | `false` | SSH in place of telnet            |
+| `--enable-mode`, `-e`            | `false` | Escalation to privileged EXEC     |
+| `--default-privilege-mode`, `-d` | `false` | Login is already privileged       |
+| `--redundant-mode`, `-r`         | `false` | Failover suffix on the prompt     |
+| `--username`, `-u`               | `admin` | Login user                        |
+| `--password`, `-p`               | —       | Login password                    |
+| `--priv-password`, `--pp`        | —       | Password the `enable` step sends  |
+| `--host-key-path`, `--hkp`       | —       | SSH host key file, in text form   |
 
 Three boolean flags carry long aliases as well: `--ena` and `--enable` for `--enable-mode`, `--redundant` for `--redundant-mode`, and `--sec` and `--secure` for `--secure-mode`.
 
@@ -31,7 +31,6 @@ What the flags that hold a mechanism actually do:
 - **`--port` at `0` is completed, not defaulted.** Zero becomes 22 under `--secure-mode` and 23 without it, and any non-zero value is dialed as given with no validation.
 - **`--timeout` bounds each stage of a session, not the whole of it.** The dial gets the value, the SSH handshake with its authentication and shell request gets it once more, and every expect step gets it again. An expect step's timer restarts on every byte received, so a device that keeps sending is never cut off and one that goes silent is dropped after that many seconds. `0` or less is not refused: a dial at `0` has no limit on either transport, and every stage after it ends at once.
 - **`--hostname` is also the prompt pattern.** Eight of the nine scripts expect the value verbatim inside the device prompt, so anything but the device's own hostname matches nothing.
-- **`--priv-password` left at `enable` counts as unset.** The guard compares the value against that default literal, so `--enable-mode` without an explicit password is refused rather than sent.
 - **`--host-key-path` takes an OpenSSH text key and pins the first one in the file.** `ssh.ParseAuthorizedKey` takes a `.pub` line and a `known_hosts` line alike, reading the latter's leading host field as an options field. It skips the `#` comment `ssh-keygen -F` writes, and never compares a later line, so a multi-key capture pins the first.
 - **`--redundant-mode` only widens the expected prompt.** It appends `/pri/act` on `asa` and `(M)` on `ssg`, and every other platform refuses the flag outright.
 
@@ -57,14 +56,14 @@ The `asa` entry is required because paging is disabled with `terminal pager 0`, 
 
 Six variables reach the flags they name, and the CLI reads no others:
 
-| Variable             | Flag              | Default  |
-| :------------------- | :---------------- | :------- |
-| `TELEE_HOSTNAME`     | `--hostname`      | —        |
-| `TELEE_COMMAND`      | `--command`       | —        |
-| `TELEE_USERNAME`     | `--username`      | `admin`  |
-| `TELEE_PASSWORD`     | `--password`      | `cisco`  |
-| `TELEE_PRIVPASSWORD` | `--priv-password` | `enable` |
-| `TELEE_HOSTKEYPATH`  | `--host-key-path` | —        |
+| Variable             | Flag              | Default |
+| :------------------- | :---------------- | :------ |
+| `TELEE_HOSTNAME`     | `--hostname`      | —       |
+| `TELEE_COMMAND`      | `--command`       | —       |
+| `TELEE_USERNAME`     | `--username`      | `admin` |
+| `TELEE_PASSWORD`     | `--password`      | —       |
+| `TELEE_PRIVPASSWORD` | `--priv-password` | —       |
+| `TELEE_HOSTKEYPATH`  | `--host-key-path` | —       |
 
 The other seven flags have no environment source: `--port`, `--timeout`, `--exec-platform` and the four mode booleans are set on the command line or left at their defaults.
 
@@ -92,6 +91,8 @@ export TELEE_PASSWORD='<password>'
 export TELEE_PRIVPASSWORD='<enable password>'
 telee -H sw01 -C "show version" --secure --enable
 ```
+
+`TELEE_USERNAME` is exported as well because `--username` keeps its `admin` default, so a run that omits it spends a failed login on that account.
 
 Host key verification fails closed and has no bypass. With `--host-key-path` unset the session verifies against `~/.ssh/known_hosts`; a missing file and a key that does not match are both errors that send nothing. No flag and no environment variable disables the check.
 
