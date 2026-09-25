@@ -10,6 +10,8 @@ Each release from [v1.8.0] on also carries notes GoReleaser generates from the c
 
 ### Added
 
+- A `known_hosts` key of the same type that differs from the one presented is refused with the fingerprint and the recorded line, a revoked key likewise, and neither gets the onboarding steps
+- A `known_hosts` record of another key type is refused the same way, naming both types, the recorded line and the presented fingerprint
 - Unit tests for `pkg/expect`, `pkg/telnet` and `pkg/ssh`
 
 ### Fixed

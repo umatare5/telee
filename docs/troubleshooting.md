@@ -73,7 +73,7 @@ The banner is the transport's, the line under it is the operating system's, and 
 
 The second line names the cause: `no such host` is resolution, `connection refused` is a closed port, and `i/o timeout` is a filtered path, reported once `--timeout` has elapsed. For the latter two, check that the completed port is the one the device listens on — `0` completes to 23 without `--secure-mode` and to 22 with it.
 
-Host key failure is a separate shape. A `known_hosts` mismatch reaches this banner with its guidance block above rather than below, and a `--host-key-path` mismatch reaches it with none. A missing `known_hosts` and an unreadable `--host-key-path` are refused before any dial, so neither prints a banner at all.
+Host key failure is a separate shape. A `known_hosts` refusal reaches this banner with its own message above rather than below, and a `--host-key-path` mismatch reaches it with none. A missing `known_hosts` and an unreadable `--host-key-path` are refused before any dial, so neither prints a banner at all.
 
 ## The session failed at ExpectBatch()
 
@@ -92,10 +92,13 @@ Two further causes produce the same failure. A wrong `--exec-platform` waits for
 
 ## Host key verification failed
 
-Five distinct messages come from the SSH host key check, and none of them sends anything:
+Eight distinct messages come from the SSH host key check, and none of them sends anything:
 
 - **`~/.ssh/known_hosts not found`** — no `--host-key-path` was given and the file does not exist. The message carries the `ssh` line that creates it, which `ssh-keyscan` cannot on a device this old.
-- **`[ERROR] Host key verification failed for <host>`** — the file exists and the key does not match or is absent from it. Four remedies follow the message, including the legacy `HostKeyAlgorithms` and `KexAlgorithms` options older IOS devices need, and the `spawn()` banner prints after them.
+- **`[ERROR] Host key verification failed for <host>`** — the file exists and holds no key for the host. Four remedies follow the message, including the legacy `HostKeyAlgorithms` and `KexAlgorithms` options older IOS devices need, and the `spawn()` banner prints after them.
+- **`[ERROR] Host key for <host> does not match known_hosts: it holds TYPE at FILE:LINE …`** — another type is on record for the host, and no remedy follows because another device could present it too. The case is common, as `ssh` records the ed25519 key it prefers while this client negotiates ECDSA or RSA first. The presented type is added, or pinned with `--host-key-path`, only once `ssh-keygen -lf` gives its fingerprint for the key the device itself prints, as IOS does under `show ip ssh`.
+- **`[ERROR] Host key for <host> has changed: SHA256:…`** — the file holds a key of the same type for the host and the device presented another, and the recorded line is named. The fingerprint is the device's and no remedy follows, because a changed key is what the file exists to catch. The stale line is removed only once the change is explained.
+- **`[ERROR] Host key for <host> is revoked at FILE:LINE`** — an `@revoked` line in the file names the key the device presented, so no remedy follows.
 - **`failed to read host key file`** — `--host-key-path` named a path that does not exist or cannot be opened.
 - **`failed to parse host key: ssh: no key found`** — `--host-key-path` named a file holding no key line. A `.pub` line and a `known_hosts` line both parse, and `#` comments are skipped, so the file is neither.
 - **`ssh: handshake failed: ssh: host key mismatch`** — `--host-key-path` parsed, and the key it pins is not the one the device presented. It follows the `spawn()` banner without a guidance block, which belongs to the `known_hosts` path alone.
