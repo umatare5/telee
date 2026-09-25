@@ -59,7 +59,6 @@ func (r *Repository) buildPrivilegedRequest() (login, commands []x.Batcher) {
 		&x.BSnd{S: "enable\r\n"},
 		&x.BExp{R: "Password:"},
 		&x.BSnd{S: r.Config.PrivPassword + "\r\n"},
-		&x.BExp{R: "telnet@" + r.Config.Hostname + "#"},
 		&x.BSnd{S: "skip-page-display\r\n"},
 		&x.BExp{R: "telnet@" + r.Config.Hostname + "#"},
 	}, x.Commands("telnet@"+r.Config.Hostname+"#", "\r\n", r.Config.Commands)
