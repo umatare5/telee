@@ -39,13 +39,13 @@
       "filter": ["CHANGELOG.md"],
       "combine": "merge",
       "config": {
-        // Release headings accrue, this file opens with `## [Unreleased]` and each
-        // release groups its entries under `### Added`, `### Changed` and the rest,
-        // so only the title is pinned
+        // Release headings accrue and this repository opens each one directly as
+        // `## [vX.Y.Z]`, so the title and `## [Unreleased]` are the only pinned headings
         "MD043": {
           "match_case": true,
           "headings": [
             "# Changelog",
+            "## [Unreleased]",
             "*"
           ]
         }
