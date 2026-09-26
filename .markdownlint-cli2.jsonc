@@ -100,9 +100,9 @@
       }
     },
     {
-      // The policy sections the OSS corpus settles on, pinned exactly: this file states
-      // what is reported and how, and never how to operate the CLI. Hardening guidance
-      // belongs to docs/configuration.md and docs/troubleshooting.md.
+      // The policy sections the OSS corpus settles on, plus the one operational rule
+      // that is about the credential rather than about the CLI. Everything else on how
+      // to operate belongs to README.md and docs/troubleshooting.md.
       "filter": ["SECURITY.md"],
       "combine": "merge",
       "config": {
@@ -113,7 +113,9 @@
             "## Supported Versions",
             "## Reporting a Vulnerability",
             "## What to Include",
-            "## Scope"
+            "## Exposure",
+            "## In Scope",
+            "## Out of Scope"
           ]
         }
       }
