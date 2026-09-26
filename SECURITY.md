@@ -41,8 +41,8 @@ Keep them out of the places another person can read, in order of preference.
 3. **`--password` and `--priv-password`.** Visible in the process list and the shell history.
 
 - **Posture** – each exposure is documented, not accidental, so keep the passwords on a controlled path.
-- **Transport** – telnet is the default, and `--secure-mode` moves the session to SSH, whose host key check fails closed.
-- **Output** – nothing is logged, but a redirect of `show run` writes a running configuration, so treat that file as a backup.
+- **Transport** – telnet is the default, and `--secure-mode` switches to SSH, whose host key check fails closed.
+- **Output** – nothing is logged, but a redirect of `show run` writes a running configuration, so treat it as a backup.
 
 > [!IMPORTANT]
 > A leaked password is a leaked device login. Rotating it requires changing the password on the device or its AAA server.
