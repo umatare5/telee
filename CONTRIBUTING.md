@@ -53,7 +53,7 @@ Note the following as well.
 ## Fixture Identities
 
 A fixture copies the shape of a real device dialogue, with every identity replaced.
-Every value below is synthetic, and this section is the source for the samples in the documentation as well as for the test files.
+Every value below is synthetic, and this section is the source for the samples in the docs and the tests.
 
 ### Reserved ranges
 
@@ -76,7 +76,7 @@ The rest have no standard to draw on, so this CLI defines them:
 These categories are deliberately outside the scheme.
 
 - **A test server is local** – the `pkg/ssh` tests listen on `127.0.0.1`, because the client dials a real socket
-- **A captured transcript keeps its device** – the README's examples keep the `lab*` hostnames and output they were captured with
+- **A captured transcript keeps its device** – the README's examples keep the `lab*` hostnames and output
 
 > [!IMPORTANT]
 > Never paste a captured hostname, address, username or password into a fixture or a sample transcript.
@@ -105,7 +105,7 @@ A release is prepared in one pull request, and merging it drafts the release.
 2. List the pull requests it carries, and add that version's link at the foot.
 3. Update the version in the [`VERSION`](VERSION) file.
 
-A push to `main` touching `VERSION` runs the [release workflow](https://github.com/umatare5/telee/actions/workflows/go-release.yml), which tags the commit, pushes the images and drafts the release in the same run.
+A push to `main` touching `VERSION` runs the [release workflow](https://github.com/umatare5/telee/actions/workflows/go-release.yml), to tag, push the images and draft the release.
 
 - **There is no manual trigger** – the push runs it, and the weekly snapshot build tags nothing.
 - **A maintainer publishes the draft** – a rerun replaces the draft until then.
