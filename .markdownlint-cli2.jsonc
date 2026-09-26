@@ -72,13 +72,10 @@
       "filter": ["README.md"],
       "combine": "merge",
       "config": {
-        // The logo, badges and title block are HTML and the heading they carry is an
-        // <h1>; `details`, `summary` and `u` are the collapsed examples under Usage
+        // The logo, badges and title block are HTML; the heading they carry is an <h1>
+        // `code`, `details` and `summary` are the collapsed examples under Usage
         "MD033": {
-          "allowed_elements": [
-            "a", "br", "details", "div", "h1",
-            "img", "p", "picture", "source", "summary", "u"
-          ]
+          "allowed_elements": ["a", "br", "code", "details", "div", "h1", "img", "p", "picture", "source", "summary"]
         },
         "MD041": { "allow_preamble": true },
         "MD043": {
@@ -86,12 +83,13 @@
           "headings": [
             "## Overview", "*",
             "## Supported Environment", "*",
+            "## Installation", "*",
             "## Quick Start", "*",
-            "## Syntax", "*",
+            "## CLI Reference", "*",
+            "## Customization", "*",
             "## Usage", "*",
             "## Exec Platform", "*",
-            "## Configuration", "*",
-            "## Troubleshooting", "*",
+            "## Documentation", "*",
             "## Contributing", "*",
             "## License"
           ]
@@ -118,29 +116,32 @@
       }
     },
     {
-      // An index, then the contracts no single page owns. A section beyond those
-      // two would be a fact the page it points at already carries.
+      // An index and nothing else, split by who reads a page. A fact stated here
+      // would be one the page it links to already carries, and the contracts no
+      // single page owns live in docs/architecture.md.
       "filter": ["docs/README.md"],
       "combine": "merge",
       "config": {
         "MD043": {
           "match_case": true,
-          "headings": ["# Documentation", "## Technical Information", "*"]
+          "headings": [
+            "# Documentation",
+            "## For Users Docs",
+            "## For Developers Docs"
+          ]
         }
       }
     },
     {
-      "filter": ["docs/configuration.md"],
+      "filter": ["docs/architecture.md"],
       "combine": "merge",
       "config": {
         "MD043": {
           "match_case": true,
           "headings": [
-            "# Configuration",
-            "## Flags", "*",
-            "## Environment Variables", "*",
-            "## Precedence", "*",
-            "## Hardening"
+            "# Architecture",
+            "## Output",
+            "## Exit Codes"
           ]
         }
       }
@@ -165,12 +166,20 @@
       }
     },
     {
-      // One section per symptom, so the file grows a heading whenever a new failure
-      // becomes worth naming. Only the title is pinned.
+      // The cause tokens and the questions are `###` children that grow with the CLI,
+      // so this pins the three sections above them and leaves the children open.
       "filter": ["docs/troubleshooting.md"],
       "combine": "merge",
       "config": {
-        "MD043": { "match_case": true, "headings": ["# Troubleshooting", "*"] }
+        "MD043": {
+          "match_case": true,
+          "headings": [
+            "# Troubleshooting",
+            "## Reading a Failure", "*",
+            "## Error Causes", "*",
+            "## FAQ", "*"
+          ]
+        }
       }
     }
   ],
