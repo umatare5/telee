@@ -35,7 +35,7 @@ func TestRunLogin(t *testing.T) {
 			return
 		}
 		c.Write([]byte("Password: "))
-		if line, _ := r.ReadString('\n'); line != "secret\n" {
+		if line, _ := r.ReadString('\n'); line != "user-password\n" {
 			return
 		}
 		c.Write([]byte("\r\nsw01> "))
@@ -44,7 +44,7 @@ func TestRunLogin(t *testing.T) {
 		&x.BExp{R: "Username:"},
 		&x.BSnd{S: "admin\n"},
 		&x.BExp{R: "Password:"},
-		&x.BSnd{S: "secret\n"},
+		&x.BSnd{S: "user-password\n"},
 		&x.BExp{R: "sw01>"},
 	}
 	out, err := x.Run(conn, batch, nil, timeout)

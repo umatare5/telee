@@ -40,14 +40,14 @@ func serve(t *testing.T, handler func(ch cryptossh.Channel)) (int, *cryptossh.Cl
 	if err := os.WriteFile(path, cryptossh.MarshalAuthorizedKey(hostKey), 0o600); err != nil {
 		t.Fatal(err)
 	}
-	config, err := ssh.GenerateClientConfig("operator", "secret", path, "127.0.0.1")
+	config, err := ssh.GenerateClientConfig("admin", "user-password", path, "127.0.0.1")
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	serverConfig := &cryptossh.ServerConfig{
 		PasswordCallback: func(_ cryptossh.ConnMetadata, password []byte) (*cryptossh.Permissions, error) {
-			if string(password) != "secret" {
+			if string(password) != "user-password" {
 				return nil, errors.New("denied")
 			}
 			return nil, nil
@@ -95,12 +95,12 @@ func TestFetchDialogue(t *testing.T) {
 	port, config := serve(t, func(ch cryptossh.Channel) {
 		r := bufio.NewReader(ch)
 		ch.Write([]byte("Username: "))
-		if line, _ := r.ReadString('\n'); line != "operator\n" {
+		if line, _ := r.ReadString('\n'); line != "admin\n" {
 			return
 		}
 		ch.Write([]byte("\r\nsw01>"))
 	})
-	batch := []x.Batcher{&x.BExp{R: "Username:"}, &x.BSnd{S: "operator\n"}, &x.BExp{R: "sw01>"}}
+	batch := []x.Batcher{&x.BExp{R: "Username:"}, &x.BSnd{S: "admin\n"}, &x.BExp{R: "sw01>"}}
 	out, err := ssh.New("127.0.0.1", port, "tcp", timeout).Fetch(batch, nil, config)
 	if err != nil {
 		t.Fatalf("Fetch() error = %v", err)
@@ -140,7 +140,7 @@ func TestGenerateClientConfig(t *testing.T) {
 	if err := os.WriteFile(path, cryptossh.MarshalAuthorizedKey(key), 0o600); err != nil {
 		t.Fatal(err)
 	}
-	config, err := ssh.GenerateClientConfig("operator", "secret", path, "sw01")
+	config, err := ssh.GenerateClientConfig("admin", "user-password", path, "sw01")
 	if err != nil {
 		t.Fatalf("GenerateClientConfig() error = %v", err)
 	}

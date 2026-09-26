@@ -59,11 +59,14 @@
           "match_case": true,
           "headings": [
             "# Contributing",
+            "## Development", "*",
             "## Commands", "*",
             "## Build", "*",
+            "## Testing", "*",
+            "## Code Style", "*",
+            "## Documentation", "*",
             "## Release", "*",
-            "## Sample identities", "*",
-            "## Pull requests"
+            "## Pull Requests"
           ]
         }
       }

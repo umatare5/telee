@@ -2,82 +2,124 @@
 
 Thank you for considering a contribution.
 
+## Development
+
+Install [`gotestsum`](https://github.com/gotestyourself/gotestsum), [`golangci-lint`](https://golangci-lint.run/docs/welcome/install/local/), [`pre-commit`](https://pre-commit.com/#install) and [`gitleaks`](https://github.com/gitleaks/gitleaks#installing), then run `make pre-commit-install`.
+
+- **Hook order** – the branch guard, `golangci-lint`, `actionlint`, `gitleaks`, then `markdownlint-cli2`.
+- **The guard carries `fail_fast`** – a commit on `main` stops there, so work on a branch.
+- **Only `gitleaks` comes from `PATH`** – pre-commit builds the rest at the versions it pins.
+- **The markdown hook runs `--fix`** – it rewrites files, so reach it with `make pre-commit-test`.
+- **One install arms every worktree** – the hook path is shared, so it passes `--allow-missing-config`.
+
 ## Commands
 
-The following `make` commands are available for development and testing:
+`make help` prints this list together with the tools each target needs.
 
 | Command                     | Description                                              |
 | :-------------------------- | :------------------------------------------------------- |
 | `make help`                 | Display available targets and requirements               |
-| `make build`                | Build the binary to `./tmp/telee`                        |
+| `make build`                | Build the binary into `./tmp/telee`                      |
 | `make lint`                 | Verify the lint config, run golangci-lint, tidy `go.mod` |
 | `make test-unit`            | Run unit tests with coverage using gotestsum             |
-| `make test-unit-coverage`   | Generate HTML coverage report                            |
+| `make test-unit-coverage`   | Generate the HTML coverage report                        |
 | `make snapshot`             | Build a GoReleaser snapshot                              |
-| `make clean`                | Remove build artifacts and backup files                  |
+| `make clean`                | Remove the build and coverage artifacts                  |
 | `make pre-commit-install`   | Install the pre-commit hooks                             |
 | `make pre-commit-test`      | Run every hook across the tree                           |
 | `make pre-commit-uninstall` | Remove the pre-commit hooks                              |
 
-`make test-unit` clears the `TELEE_*` environment variables before running, because urfave reads them at flag-parse time and a developer's own shell would otherwise decide what the CLI tests see. Add any new variable the CLI reads to that list.
-
-[`NOTICE`](NOTICE) reproduces the license of every module the binary links, so a change to the linked module set updates it.
-
-Markdown style is enforced by the `markdownlint-cli2` hook that `make pre-commit-install` wires in, and again in CI. Links are checked in CI only, because that run reaches third-party hosts. Run `lychee .` to reproduce a link failure locally.
-
-The hook path is the shared git common directory, so `make pre-commit-install` also arms every other worktree and the `main` checkout. It passes `--allow-missing-config` for that reason.
-
 ## Build
 
-`make build` stamps `cli.version` from [`VERSION`](VERSION). That variable is initialized to `dev`, so a plain `go build ./cmd` still produces a working binary.
+`make build` stamps `cli.version` from [`VERSION`](VERSION), and a plain `go build ./cmd` leaves it at `dev`.
 
-There is no target for the container image. GoReleaser builds it during a release and pushes it to `ghcr.io/umatare5/telee`, where a prerelease is excluded from the `latest`, `vX` and `vX.Y` tags.
+- **No image target** – GoReleaser builds the image during a release and pushes it to `ghcr.io/umatare5/telee`.
+- **Prereleases stay off the moving tags** – a prerelease skips the `latest`, `vX` and `vX.Y` tags.
+
+## Testing
+
+Ship a test with the change it covers, and run the suite before every commit.
+
+1. Add the test beside the code it covers, in the `_test` package `testpackage` enforces.
+2. Use identities from [Fixture Identities](#fixture-identities), never a real device.
+3. Run `make test-unit` – every package under `gotestsum`, with `-race` and a coverage profile.
+4. Run `make test-unit-coverage` for the HTML report under `./coverage`.
+
+Note the following as well.
+
+- **Coverage floor** – [CI](.github/workflows/go-test-coverage.yml) enforces `coverage_threshold`.
+- **The environment is cleared** – `make test-unit` drops `TELEE_*`; add a new one to its list in the [`Makefile`](Makefile).
+
+## Fixture Identities
+
+A fixture copies the shape of a real device dialogue, with every identity replaced.
+Every value below is synthetic, and this section is the source for the samples in the documentation as well as for the test files.
+
+### Reserved ranges
+
+An IPv4 address draws on `192.0.2.0/24`, which [RFC 5737][rfc5737] reserves, so none is invented.
+
+### Defined values
+
+The rest have no standard to draw on, so this CLI defines them:
+
+| Kind            | Value             |
+| :-------------- | :---------------- |
+| Switch name     | `sw01`            |
+| Serial number   | `FOC0000X0XX`     |
+| Username        | `admin`           |
+| Password        | `user-password`   |
+| Enable password | `enable-password` |
+
+### Exceptions
+
+These categories are deliberately outside the scheme.
+
+- **A test server is local** – the `pkg/ssh` tests listen on `127.0.0.1`, because the client dials a real socket
+- **A captured transcript keeps its device** – the README's examples keep the `lab*` hostnames and output they were captured with
+
+> [!IMPORTANT]
+> Never paste a captured hostname, address, username or password into a fixture or a sample transcript.
+> Nothing in this CLI redacts one, so a value pasted by hand reaches the tree unchanged.
+
+## Code Style
+
+`golangci-lint` enforces what [`.golangci.yml`](.golangci.yml) configures, and `make lint` verifies that config before running it.
+
+## Documentation
+
+Every fact has one page that owns it, and the other pages link to it rather than restating it.
+
+- **Headings are pinned** – [`.markdownlint-cli2.jsonc`](.markdownlint-cli2.jsonc) sets the order via `MD043`.
+- **Contracts travel** – a heading change ships with its contract in the same pull request.
+- **Verbatim transcript** – [`README.md`](README.md#cli-reference) carries `--help`; usage changes update it.
+- **Version reads `dev`** – `make build` stamps it, so the transcript comes from `go build`.
+- **[`NOTICE`](NOTICE) tracks the module set** – a change to what the binary links updates it.
+- **CI checks links** – it reaches third-party hosts. Use `lychee .` to test locally.
 
 ## Release
 
-To release a new version, follow these steps:
+A release is prepared in one pull request, and merging it publishes everything.
 
-1. Rename `## [Unreleased]` in [`CHANGELOG.md`](CHANGELOG.md) to `## [vX.Y.Z]`, add that version's release link at the foot, and repoint the `[Unreleased]` compare link at the new tag.
-2. Update the version in the [`VERSION`](VERSION) file.
-3. Submit a pull request with both files.
+1. Rename `## [Unreleased]` in [`CHANGELOG.md`](CHANGELOG.md) to `## [vX.Y.Z]`.
+2. List the pull requests it carries, and add that version's link at the foot.
+3. Update the version in the [`VERSION`](VERSION) file.
 
-Merging that pull request is the whole release. A push to `main` touching `VERSION` runs the [release workflow](https://github.com/umatare5/telee/actions/workflows/go-release.yml), which tags the commit and publishes the release in the same run. The workflow has no manual trigger, so there is no step to perform by hand.
+A push to `main` touching `VERSION` runs the [release workflow](https://github.com/umatare5/telee/actions/workflows/go-release.yml), which tags the commit and publishes the release in the same run.
 
-## Sample identities
+- **There is no manual trigger** – the push runs it, and the weekly snapshot build tags nothing.
+- **The release links 404 until the merge** – [`lychee.toml`](lychee.toml) excludes the release-tag pattern.
 
-Every transcript in this repository is device output with its identities replaced, and this section is the canon those replacements come from. It covers [`README.md`](README.md) and the reference pages under `docs/` equally.
+## Pull Requests
 
-Three kinds have a range reserved for exactly this:
+Open a pull request against `main`, as a draft by default.
 
-| Kind         | Range                                     | Reserved by           |
-| :----------- | :---------------------------------------- | :-------------------- |
-| IPv4 address | `192.0.2.0/24`                            | RFC 5737              |
-| MAC address  | `00:00:5e:00:53:00` – `00:00:5e:00:53:ff` | RFC 7042 §2.1.2       |
-| Domain name  | `example.internal`                        | ICANN private-use TLD |
+1. Fork the repository and create a feature branch.
+2. Write [Conventional Commits](https://www.conventionalcommits.org/) and add `Signed-off-by:`.
+3. Add tests and update the documentation beside the code.
+4. Run `make lint` and `make test-unit`, then rebase against `main`.
+5. Open the pull request.
 
-RFC 1918 space is excluded, because every address here sits on a `-H` a reader can paste and `192.168.0.0/16` may be live on that reader's own LAN. A transcript keeps the separator and case its device prints, which is why the same address reads `00-00-5E-00-53-01` under AlliedWare.
+Nothing in a commit carries a credential.
 
-The rest have no standard behind them, so they are this repository's own:
-
-| Kind         | Value           |
-| :----------- | :-------------- |
-| Switch       | `sw01` – `sw03` |
-| Firewall     | `fw01`          |
-| Controller   | `wlc01`         |
-| Account name | `operator`      |
-
-A password is never a literal. `<password>` and `<enable password>` stand in wherever a sample exports `TELEE_PASSWORD` or `TELEE_PRIVPASSWORD`, because a value that looks like it works is the one a reader copies. A vendor's own factory default is not an identity, so the AlliedWare sample keeps `-u manager`.
-
-> [!IMPORTANT]
-> Never paste a hostname, username, serial number or password from a capture into a sample transcript. Nothing in this repository redacts one, so a value pasted by hand reaches the tree unchanged.
-
-## Pull requests
-
-1. [Fork](https://github.com/umatare5/telee/fork) the repository
-2. Create a feature branch
-3. Commit your changes, using [Conventional Commits](https://www.conventionalcommits.org/) and signing off with `Signed-off-by:`
-4. Add tests beside the code under test as `*_test.go`, and update the documentation alongside the code
-5. Take every sample identity from [Sample identities](#sample-identities), never a value read off a device
-6. Run `make lint` and `make test-unit`
-7. Rebase your local changes against the `main` branch
-8. Create a new Pull Request
+[rfc5737]: https://datatracker.ietf.org/doc/html/rfc5737
