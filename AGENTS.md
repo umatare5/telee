@@ -1,84 +1,76 @@
 # Repository Instructions
 
 > [!IMPORTANT]
-> Read [`README.md`](README.md) for the project overview, and [`docs/README.md`](docs/README.md) for the reference pages behind it.
+> Read [`README.md`](README.md) for project overview.
 
 ## Tech Stack
 
+The list below covers the toolchain, the modules the binary links, and the release builder.
+
 - Go 1.27+ (see [`go.mod`](go.mod))
-- [`urfave/cli/v3`](https://github.com/urfave/cli) v3.11+ – the single command, its thirteen flags, their aliases and their `TELEE_*` sources
-- [`golang.org/x/crypto`](https://pkg.go.dev/golang.org/x/crypto) v0.56+ – `ssh` and `ssh/knownhosts`, the host-key path behind `pkg/ssh`
-- [`goreleaser`](https://goreleaser.com/) v2.18.0 – cross-platform release builds (see [`.goreleaser.yml`](.goreleaser.yml))
+- [`urfave/cli/v3`](https://github.com/urfave/cli) – flags, their `TELEE_*` sources and application lifecycle
+- [`golang.org/x/crypto`](https://pkg.go.dev/golang.org/x/crypto) – `ssh` and `ssh/knownhosts`, the host-key path behind `pkg/ssh`
+- [`goreleaser`](https://goreleaser.com/) – cross-platform release builds, configured by [`.goreleaser.yml`](.goreleaser.yml)
 
 ## Repository Structure
 
-- `cmd/` – Entry point; `main()` calls `cli.Start()` and carries nothing else
-- `cli/` – The one `cli.Command` and no subcommands, every flag declaration, and the `version` string ldflags stamps
-- `internal/config/` – Reads the flags into `Config` and runs `checkArguments`; a rejected set exits 1 before a socket opens
-- `internal/domain/` – Flag names, aliases, defaults and env var names, the nine platform tokens, ports 22 and 23, the stderr hint
-- `internal/application/` – One `Usecase` per platform, each forwarding to its repository so the router stays free of transport code
-- `internal/infrastructure/` – One repository per platform, owning the whole wire dialogue and the Telnet-or-SSH choice
-- `internal/framework/` – Routes `--exec-platform` to a usecase, writes device output to stdout and the error plus hint to stderr
-- `pkg/expect/` – The `BExp` and `BSnd` step types, `Commands`, and `Run`, which drives a login batch then a command batch over any transport with a per-step silence timeout and returns the commands' transcript
-- `pkg/telnet/`, `pkg/ssh/` – Dial under `--timeout`, hand the connection to `expect.Run` and return the transcript of the commands; the Telnet side also answers the option negotiation
-- `pkg/errors/` – The sentinel validation errors `checkArguments` returns, quoted verbatim below
+Read from [`cmd/main.go`](cmd/main.go) – each package is named for what it owns.
+
+- [`cmd/`](cmd) – entry point, calling `cli.Start()` and nothing else
+- [`cli/`](cli) – the one `cli.Command` and no subcommands, every flag declaration, and the `version` string ldflags sets
+- [`internal/config/`](internal/config) – reads the flags into `Config`, and refuses a bad set before a socket opens
+- [`internal/domain/`](internal/domain) – flag names, aliases, defaults and variables, the platform tokens, ports 22 and 23
+- [`internal/application/`](internal/application) – one usecase per platform, forwarding to its repository
+- [`internal/infrastructure/`](internal/infrastructure) – one repository per platform, owning the dialogue and the transport choice
+- [`internal/framework/`](internal/framework) – routes `-x` to a usecase, and writes the transcript to stdout and a failure to stderr
+- [`pkg/expect/`](pkg/expect) – the `BExp` and `BSnd` steps, and `Run`, which drives the login batch then the command batch
+- [`pkg/telnet/`](pkg/telnet), [`pkg/ssh/`](pkg/ssh) – dial under `--timeout` and hand the connection to `expect.Run`
+- [`pkg/errors/`](pkg/errors) – the sentinel errors the argument check returns
+- [`docs/`](docs) – reference pages behind the README, indexed by [`docs/README.md`](docs/README.md)
+- [`scripts/`](scripts) – helper scripts the pre-commit hooks run
 
 ## Setup and Commands
 
-Install required tools (one-time):
+Run `make pre-commit-install` first.
 
-- `go install gotest.tools/gotestsum@latest`
-- `golangci-lint` – See <https://golangci-lint.run/docs/welcome/install/>
-- `gitleaks` – See <https://github.com/gitleaks/gitleaks#installing>
-- `pre-commit` – See <https://pre-commit.com/#install>, then `make pre-commit-install` wires every hook in [`.pre-commit-config.yaml`](.pre-commit-config.yaml)
-
-Make targets ([`Makefile`](Makefile)):
-
-- `make build` – Build `tmp/telee` under `-trimpath` as the release build does, stamping `cli.version` from [`VERSION`](VERSION)
-- `make lint` – `golangci-lint config verify` + `golangci-lint run` + `go mod tidy`
-- `make test-unit` – Run unit tests via `gotestsum` with coverage
-- `make test-unit-coverage` – Generate HTML report at `coverage/report.html`
-- `make snapshot` – Build a `goreleaser` snapshot
-- `make clean` – Remove build artifacts and `.bak*` files
-- `make pre-commit-install` / `pre-commit-test` / `pre-commit-uninstall` – Manage the hooks
-
-The install passes `--allow-missing-config` because the hook path is the shared git common directory, so a hook installed from one worktree also fires in every other one and on `main`.
+- Read [`Makefile`](Makefile) for every make target and its requirements.
+- Read [`CONTRIBUTING.md`](CONTRIBUTING.md) for the contribution rules.
 
 ## Code Style
 
-- [`.golangci.yml`](.golangci.yml) enables an explicit linter list over `default: none`, and `revive` caps a function at 80 statements
-- Its `formatters` block runs `gci` and `gofumpt`, so `golangci-lint run --fix` rewrites formatting as well as logic
-- A comment carries what the code cannot – a value another file must match, an order the device rejects
-- One or two sentences, English, no emoji, and nothing a reader can derive from the code beside it
+Follow [Effective Go](https://go.dev/doc/effective_go) conventions and the software development principles DRY/YAGNI/SRP.
+
+- Keep code simple and readable, avoiding clever tricks that obscure intent.
+- Keep every change minimal, in code, tests, comments and documentation.
+- Write simple comments that explain the reasoning behind the code, not just what it does.
 
 ## Testing
 
-- Run `make test-unit` before committing.
-- Place tests next to code under test (`*_test.go`), in the `_test` package `testpackage` enforces.
-- Tests cover `pkg/expect`, `pkg/telnet` and the pure functions of `pkg/ssh`; the platform batches and the CLI have none, and both gates still accept `0%`.
-- Raise both gates as tests land.
+Follow [`CONTRIBUTING.md`](CONTRIBUTING.md).
+
+- Run `make lint` and `make test-unit` before creating a commit.
+- Take every fixture and sample identity from [`CONTRIBUTING.md`](CONTRIBUTING.md#fixture-identities), never a value read off a device.
+- Place a test beside the code under test, in the `_test` package `testpackage` enforces.
+- Tests cover `pkg/expect`, `pkg/telnet` and the pure functions of `pkg/ssh`, so raise the CI coverage threshold as tests land.
 
 ## Commits and PRs
 
-- Use [Conventional Commits](https://www.conventionalcommits.org/) (`feat:`, `fix:`, `chore(deps):`, etc.).
-- Sign off commits with `Signed-off-by:` (DCO).
-- Committing on `main` is blocked by the `no-commit-to-main` hook, so branch first.
-- Open PRs against `main`. CI runs the build and tests, lint, coverage, CodeQL, govulncheck, actionlint, markdownlint and the link check.
-- A merged change to [`VERSION`](VERSION) tags and releases; nothing else triggers the release workflow.
+Follow [Conventional Commits](https://www.conventionalcommits.org/) (`feat:`, `fix:`, `chore(deps):`, etc.).
+
+- Sign off every commit with `Signed-off-by:` (DCO).
+- Open PRs against `main`. Create Draft PR as default.
 
 ## Domain Knowledge
 
-Each platform is one usecase and one repository named for the OS rather than the `-x` token, and that repository holds the entire session. Nothing above it compensates for a prompt that fails to match.
+Learn the constraints outside the CLI, because they decide what a batch has to absorb.
 
-What the devices do that a batch has to absorb:
-
-- **`BExp` is a regular expression, `BSnd` is not.** AireOS and ScreenOS print brackets, so an unescaped one never matches.
-- **JunOS composes `username@hostname>`**, so `--username` reaches the prompt match as well.
-- **IronWare alone needs `\r\n`.** Every other platform takes `\n`.
-- **NX-OS alone prints a trailing space** after the prompt character.
-- **ScreenOS alone prompts in lower case**, printing `password:` where the rest print `Password:`.
-- **YAMAHA asks for no username.** Its login opens on the password, so `--username` reaches it over SSH only.
-- **JunOS has no paging command.** It takes `| no-more` on the command, so one already piped gains a second pipe.
-- **Paging is disabled by a different command on every OS**, and on ASA that command needs a privileged session.
-
-Read `internal/application/usecases/` and `internal/infrastructure/repositories/` before changing any of the above. [`README.md`](README.md) carries the platform matrix, [`docs/configuration.md`](docs/configuration.md) the flag surface, and [`docs/troubleshooting.md`](docs/troubleshooting.md) every refusal by its message.
+- Each platform is one usecase and one repository, named for the OS rather than the `-x` token, holding the whole session.
+- `BExp` is a regular expression and `BSnd` is not, so the brackets AireOS and ScreenOS print need escaping.
+- JunOS composes `username@hostname>`, so `--username` reaches the prompt match as well.
+- IronWare alone needs `\r\n`, and every other platform takes `\n`.
+- NX-OS alone prints a trailing space after the prompt character.
+- ScreenOS alone prompts in lower case, printing `password:` where the rest print `Password:`.
+- YAMAHA asks for no username, so `--username` reaches it over SSH only.
+- JunOS has no paging command and takes `| no-more` on the command, so one already piped gains a second pipe.
+- Every OS disables paging with a different command, and ASA needs a privileged session for it.
+- See [`README.md`](README.md) for the platform matrix, and [`docs/troubleshooting.md`](docs/troubleshooting.md) for every refusal.
