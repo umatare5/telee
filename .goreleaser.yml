@@ -28,33 +28,33 @@ builds:
       - -s -w -X 'github.com/umatare5/telee/cli.version={{ .Version }}'
     hooks:
       post:
-        # The setting is recorded in the binary, so this fails the release if cgo crept
-        # back in. It has to stay a single command with no pipe: goreleaser runs a hook
-        # without a shell, so a pipeline would be passed as arguments and assert nothing.
+        # The setting is recorded in the binary, so this fails the release if cgo returns
         - cmd: grep -q CGO_ENABLED=0 {{ .Path }}
 
 archives:
-  - name_template: "{{ .ProjectName }}-v{{ .Version }}_{{ .Os }}_{{ .Arch }}"
-    # SECURITY.md is named on its own because the list replaces goreleaser's own
-    # defaults, and no glob here reaches a root file.
+  - name_template: "{{ .ProjectName }}-v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
+    # Only what a downloaded binary needs beside it: the license notices its
+    # statically linked dependencies require on redistribution.
     files:
-      - "README.md"
-      - "SECURITY.md"
       - "LICENSE"
       - "NOTICE"
-      - "docs/*.md"
 
-# A prerelease must not move latest, the major tag or the minor tag.
 dockers_v2:
   - id: exact
-    images: ["ghcr.io/umatare5/telee"]
-    tags: ["{{ .Tag }}"]
-    platforms: ["linux/amd64", "linux/arm64"]
+    images:
+      - "ghcr.io/umatare5/telee"
+    tags:
+      - "{{ .Tag }}"
+    platforms:
+      - linux/amd64
+      - linux/arm64
     dockerfile: Dockerfile
-    ids: [telee]
-    extra_files:
-      - "LICENSE"
-      - "NOTICE"
+    ids:
+      - telee
+    # A prerelease must not move latest or the version tags. buildx builds and
+    # pushes in one step, so the whole configuration is disabled instead of
+    # skipping the push; snapshot builds stay enabled for local verification.
+    disable: '{{ and (not .IsSnapshot) (ne .Prerelease "") }}'
     labels:
       org.opencontainers.image.title: "{{ .ProjectName }}"
       org.opencontainers.image.description: "CLI for executing commands on network devices"
@@ -64,19 +64,28 @@ dockers_v2:
       org.opencontainers.image.created: "{{ .Date }}"
       org.opencontainers.image.revision: "{{ .FullCommit }}"
       org.opencontainers.image.licenses: "MIT"
+    extra_files:
+      - "LICENSE"
+      - "NOTICE"
+
   - id: moving
-    disable: '{{ if .Prerelease }}true{{ end }}'
-    images: ["ghcr.io/umatare5/telee"]
+    images:
+      - "ghcr.io/umatare5/telee"
     tags:
       - "latest"
-      - "v{{ .Major }}"
       - "v{{ .Major }}.{{ .Minor }}"
-    platforms: ["linux/amd64", "linux/arm64"]
+    platforms:
+      - linux/amd64
+      - linux/arm64
     dockerfile: Dockerfile
     ids: [telee]
     extra_files:
       - "LICENSE"
       - "NOTICE"
+    # A prerelease must not move latest or the version tags. buildx builds and
+    # pushes in one step, so the whole configuration is disabled instead of
+    # skipping the push; snapshot builds stay enabled for local verification.
+    disable: '{{ if .Prerelease }}true{{ end }}'
     labels:
       org.opencontainers.image.title: "{{ .ProjectName }}"
       org.opencontainers.image.description: "CLI for executing commands on network devices"
@@ -89,27 +98,29 @@ dockers_v2:
 
 release:
   prerelease: auto
-  draft: false
+  draft: true
+  replace_existing_draft: true
   header: |
     ## {{ .ProjectName }} v{{ .Version }}
 
-    This release contains the CLI for executing commands on network devices.
+    A command-line interface that logs in to one network device and runs commands on it.
 
-    ### Container images
+    ### 🐳 Container Images
 
     ```bash
     docker run --rm ghcr.io/umatare5/telee:{{ .Tag }} --help
     ```
 
-    ### Binaries
+    ### 📦 Binary Installation
 
-    Download a prebuilt binary for your platform from the assets below.
+    Download a prebuilt binary for your platform from the release assets below.
   footer: |
     **Full Changelog**: https://github.com/umatare5/telee/compare/{{ .PreviousTag }}...{{ .Tag }}
 
-    ### Documentation
+    ### 📚 Documentation
 
     - [README](https://github.com/umatare5/telee/blob/{{ .Tag }}/README.md)
+    - [CHANGELOG](https://github.com/umatare5/telee/blob/{{ .Tag }}/CHANGELOG.md)
     - [Container Registry](https://github.com/umatare5/telee/pkgs/container/telee)
 
 checksum:

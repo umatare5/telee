@@ -23,86 +23,46 @@
 
 ## Overview
 
-This CLI opens one telnet or SSH session, logs in, disables paging, runs each command in turn and prints the transcript.
+This CLI opens a telnet or SSH session, logs in, turns off paging, runs each command and prints the output.
 
-- 🔑 **One login**: Credentials arrive from `TELEE_*` variables and every `-C` runs in the same session, so a loop over many devices logs in once per device
-- 🧭 **Nine platforms**: `-x` picks the prompt, paging and escalation dialect, from Cisco IOS to YAMAHA RT
-- 🚿 **Shell-friendly**: Device output is the only thing on stdout, so a pipe or a redirect needs no filtering
-- ⚡ **Fast**: 6 to 72 times faster than napalm on one Catalyst 2960L, measured on telee 1.6.5
+- ⚡ **One-Line Execution**: Runs every `-C` in one session instead of `expect` or TeraTerm macros
+- 🧭 **Vendor Dialects**: Handles login, paging and enable steps per OS, from Cisco IOS to YAMAHA RT
+- 🔐 **Dual Transport**: Uses telnet for legacy devices and SSH with host key checks for the rest
+- 💻️ **Shell Friendly**: Puts only device output on stdout, so pipes and redirects need no filtering
 
-Where a fleet is driven by `expect` scripts or TeraTerm macros, telee replaces the script with a single invocation. [`docs/measurements.md`](docs/measurements.md) carries the timings behind the figure above, and [umatare5/my-infra-network](https://github.com/umatare5/my-infra-network) is one repository that uses the CLI.
-
-![telee demonstration](https://raw.githubusercontent.com/umatare5/telee/images/promo.gif)
+<div align="center">
+  <img alt="telee demonstration" src="./docs/demo/promo.gif" width="800px" />
+</div>
 
 ## Supported Environment
 
-telee ships as a static binary and as a `scratch`-based image:
+A network device on a platform under [Exec Platform](#exec-platform), reached over telnet or SSH as that platform allows.
 
-- **Binaries** – `linux_amd64`, `linux_arm64`, `darwin_amd64` and `darwin_arm64`
-- **Images** – `ghcr.io/umatare5/telee` for `linux/amd64` and `linux/arm64`, running as UID 65534
+## Installation
 
-The [Exec Platform](#exec-platform) matrix names the OS version each path was verified on.
+This CLI supports container images and OS-specific binaries.
+
+```bash
+docker pull ghcr.io/umatare5/telee
+```
+
+Or, download the binaries from [Releases](https://github.com/umatare5/telee/releases). `(linux|darwin)_(amd64|arm64)` are supported.
 
 ## Quick Start
 
-### 1. Install the CLI
+### 1. Set the environment variables
 
 ```bash
-docker run --rm ghcr.io/umatare5/telee:latest --help
+export TELEE_USERNAME="admin"
+read -rs TELEE_PASSWORD && export TELEE_PASSWORD # < user-password
+read -rs TELEE_PRIVPASSWORD && export TELEE_PRIVPASSWORD # < enable-password
 ```
 
-> [!TIP]
-> If you prefer using binaries, download them from the [Release](https://github.com/umatare5/telee/releases) page.
-
-### 2. Export the credentials
-
-```bash
-export TELEE_USERNAME="operator"
-read -rs TELEE_PASSWORD && export TELEE_PASSWORD
-```
-
-### 3. Run a command
-
-```bash
-telee -H sw01.example.internal -C "show interfaces description"
-```
-
-> [!NOTE]
-> Every platform but AireOS builds the prompt it waits for out of the value of `-H`, so that value has to match the hostname the device prints rather than merely resolve to its address.
-
-## Syntax
-
-One invocation runs one or more commands on one device, and there are no subcommands.
-
-```bash
-telee -H HOSTNAME -C COMMAND [-C COMMAND...] [options...]
-```
-
-| Flag                             | What it sets                                              |
-| :------------------------------- | :-------------------------------------------------------- |
-| `--hostname`, `-H`               | Target host, which also builds the prompt telee expects   |
-| `--command`, `-C`                | A command line to send, repeatable and run in order       |
-| `--exec-platform`, `-x`          | Platform dialect, `ios` unless set                        |
-| `--port`, `-P`                   | TCP port, completed to 22 under `-s` and to 23 otherwise  |
-| `--timeout`, `-t`                | Seconds per dial and per expect step, 5 unless set        |
-| `--secure-mode`, `-s`            | Use SSH in place of telnet                                |
-| `--enable-mode`, `-e`            | Send the escalation command and the privileged password   |
-| `--default-privilege-mode`, `-d` | Expect a privileged prompt at login and escalate nothing  |
-| `--redundant-mode`, `-r`         | Append the failover suffix to every expected prompt       |
-| `--username`, `-u`               | Account name, `admin` unless set                          |
-| `--password`, `-p`               | Account password, which has no default                    |
-| `--priv-password`, `--pp`        | Privileged password, which has no default                 |
-| `--host-key-path`, `--hkp`       | Public key file replacing `~/.ssh/known_hosts` under `-s` |
-
-`telee --help` prints the same flags with their aliases, [`docs/configuration.md`](docs/configuration.md) carries every default and environment variable, and [`docs/README.md`](docs/README.md) indexes the reference pages.
-
-## Usage
-
-- **Default platform** – `ios` over telnet needs nothing but a hostname and a command.
+### 2. Run a command
 
 ```console
-$ telee --hostname sw01 --command "show int descr"
-sw01>show int descr
+$ telee --hostname lab1-cat29l-02f99-01 --command "show int descr"
+lab1-cat29l-02f99-01>show int descr
 Load for five secs: 2%/0%; one minute: 1%; five minutes: 1%
 Time source is NTP, 23:16:54.302 JST Sat May 8 2021
 
@@ -119,13 +79,13 @@ Gi0/7                          down           down     CLIENT_DEVICE
 Gi0/8                          up             up       GATEWAY_ROUTER
 Gi0/9                          admin down     down
 Gi0/10                         admin down     down
-sw01>
+lab1-cat29l-02f99-01>
 ```
 
-- **Only device output on stdout** – a pipe sees exactly what the device printed.
+### 3. Pipe or redirect the output
 
 ```console
-$ telee --hostname sw01 --command "show int descr" | grep "Interface\|down"
+$ telee --hostname lab1-cat29l-02f99-01 --command "show int descr" | grep "Interface\|down"
 Interface                      Status         Protocol Description
 Vl1                            admin down     down
 Gi0/1                          down           down     CLIENT_DEVICE_LONG_DESCR
@@ -135,12 +95,10 @@ Gi0/9                          admin down     down
 Gi0/10                         admin down     down
 ```
 
-- **Redirect** – the same bytes land in a file, and `-e` raises the session first once `TELEE_PRIVPASSWORD` is exported.
-
 ```console
-$ telee --hostname sw01 --command "show run" --enable > telee.log
+$ telee --hostname lab1-cat29l-02f99-01 --command "show run" --enable > telee.log
 $ head -n 10 telee.log
-sw01#show run
+lab1-cat29l-02f99-01#show run
 Load for five secs: 1%/0%; one minute: 1%; five minutes: 1%
 Time source is NTP, 23:21:34.501 JST Sat May 8 2021
 
@@ -152,235 +110,267 @@ Current configuration : 18687 bytes
 !
 ```
 
-- **Several commands** – each `-C` runs in the same session, in order, and the prompt separates the answers.
+## CLI Reference
+
+This CLI has no subcommands, and the flags below run one or more commands on one device:
+
+```text
+NAME:
+   telee - One-line command executor
+
+USAGE:
+   telee -H HOSTNAME -C COMMAND [-C COMMAND...] [options...]
+
+VERSION:
+   dev
+
+GLOBAL OPTIONS:
+   --hostname string, -H string                                 Set hostname or IP address. [$TELEE_HOSTNAME]
+   --port int, -P int                                           Set port number. (default: 0)
+   --timeout int, -t int                                        Set timeout seconds. (default: 5)
+   --command string, -C string [ --command string, -C string ]  Set a command. Repeat it to run more in the same session. [$TELEE_COMMAND]
+   --exec-platform string, -x string                            Set exec-platform. Refer to README.md what to be set. (default: "ios")
+   --enable-mode, -e, --ena, --enable                           Raise to privileged EXEC mode.
+   --redundant-mode, -r, --redundant                            Use redundant prompt mode.
+   --secure-mode, -s, --sec, --secure                           Use ssh mode.
+   --default-privilege-mode, -d                                 Use default privileged mode assinged by RADIUS attribute.
+   --username string, -u string                                 Set username. (default: "admin") [$TELEE_USERNAME]
+   --password string, -p string                                 Set password. [$TELEE_PASSWORD]
+   --priv-password string, --pp string                          Set password to raise to privileged EXEC mode. [$TELEE_PRIVPASSWORD]
+   --host-key-path string, --hkp string                         Set path to host key file for SSH host key verification. [$TELEE_HOSTKEYPATH]
+   --help, -h                                                   show help
+   --version, -v                                                print the version
+```
+
+## Customization
+
+This CLI reads its settings from flags and environment variables, and a flag takes precedence over its variable.
+
+| Variable             | Description                              |
+| :------------------- | :--------------------------------------- |
+| `TELEE_HOSTNAME`     | Hostname or IP address, as `--hostname`  |
+| `TELEE_COMMAND`      | One command, as `--command`              |
+| `TELEE_USERNAME`     | Login username, as `--username`          |
+| `TELEE_PASSWORD`     | Login password, as `--password`          |
+| `TELEE_PRIVPASSWORD` | Enable password, as `--priv-password`    |
+| `TELEE_HOSTKEYPATH`  | Host key file path, as `--host-key-path` |
+
+## Usage
+
+The usage below adds the flag each case beyond the Quick Start needs.
+
+<details><summary>SSH – <code>--secure-mode</code></summary><p>
 
 ```console
-$ telee --hostname sw01 --command "show version" --command "show inventory"
-sw01>show version
+$ telee -H lab1-cat29l-02f99-01 -C "show run" --enable --secure
+lab1-cat29l-02f99-01#show run
+Load for five secs: 8%/0%; one minute: 2%; five minutes: 1%
+Time source is NTP, 02:25:22.496 JST Fri May 14 2021
+
+Building configuration...
+
+Current configuration : 18716 bytes
+!
+! Last configuration change at 01:46:41 JST Fri May 14 2021 by raciadev
+!
+version 15.2
+no service pad
+service tcp-keepalives-in
+service timestamps debug datetime msec localtime show-timezone
+service timestamps log datetime msec localtime show-timezone
+service password-encryption
+!
+hostname lab1-cat29l-02f99-01
+<snip>
+```
+
+</p></details>
+
+<details><summary>Several commands in one session – <code>--command</code></summary><p>
+
+```console
+$ telee --hostname lab2-cat29c-06f-01 --command "show version" --command "show inventory"
+lab2-cat29c-06f-01>show version
 Cisco IOS Software, C2960CX Software (C2960CX-UNIVERSALK9-M), Version 15.2(7)E3, RELEASE SOFTWARE (fc3)
 <snip>
-sw01>show inventory
+lab2-cat29c-06f-01>show inventory
 NAME: "1", DESCR: "WS-C2960CX-8PC-L"
 PID: WS-C2960CX-8PC-L  , VID: V03  , SN: FOC0000X0XX
 
 
-sw01>
+lab2-cat29c-06f-01>
 ```
 
-- **Other platforms** – `-x` selects the dialect for anything that is not IOS.
+</p></details>
 
-  <details><summary><u>Click to show example</u></summary><p>
+<details><summary>A platform other than IOS – <code>--exec-platform</code></summary><p>
 
-  ```console
-  $ telee -H 192.0.2.250 -C "show sysinfo" -x aireos
-  <snip>
+```console
+$ telee -H 192.168.0.250 -C "show sysinfo" -x aireos
+(Cisco Controller) >show sysinfo
 
-  Manufacturer's Name.............................. Cisco Systems Inc.
-  Product Name..................................... Cisco Controller
-  Product Version.................................. 8.5.120.0
-  Bootloader Version............................... 1.0.20
-  Field Recovery Image Version..................... 7.6.101.1
-  Firmware Version................................. PIC 19.0
+Manufacturer's Name.............................. Cisco Systems Inc.
+Product Name..................................... Cisco Controller
+Product Version.................................. 8.5.120.0
+Bootloader Version............................... 1.0.20
+Field Recovery Image Version..................... 7.6.101.1
+Firmware Version................................. PIC 19.0
 
-  OUI File Last Update Time........................ Sun Sep 07 10:44:07 IST 2014
+OUI File Last Update Time........................ Sun Sep 07 10:44:07 IST 2014
 
-  Build Type....................................... DATA + WPS
+Build Type....................................... DATA + WPS
 
-  System Name...................................... wlc01
-  System Location..................................
-  System Contact...................................
-  System ObjectID.................................. 1.3.6.1.4.1.9.1.1279
-  IP Address....................................... 192.0.2.250
-  <snip>
-  ```
+System Name...................................... lab1-wlc-01f01-01a
+System Location..................................
+System Contact...................................
+System ObjectID.................................. 1.3.6.1.4.1.9.1.1279
+IP Address....................................... 192.168.0.250
+<snip>
+```
 
-  </p></details>
+</p></details>
 
-- **ASA** – `terminal pager 0` is refused from a user-level session, so an `asa` run has to start privileged through either `-e` or `-d`.
+<details><summary>Privilege granted by RADIUS – <code>--default-privilege-mode</code></summary><p>
 
-  <details><summary><u>Click to show example</u></summary><p>
+```console
+$ telee -H lab1-nx70-02f01-01 -C "show version" -x nxos --default-privilege-mode
+lab1-nx70-02f01-01# show version
+Cisco Nexus Operating System (NX-OS) Software
+TAC support: http://www.cisco.com/tac
+Documents: http://www.cisco.com/en/US/products/ps9372/tsd_products_support_series_home.html
+Copyright (c) 2002-2015, Cisco Systems, Inc. All rights reserved.
+The copyrights to certain works contained in this software are
+owned by other third parties and used and distributed under
+license. Certain components of this software are licensed under
+the GNU General Public License (GPL) version 2.0 or the GNU
+Lesser General Public License (LGPL) Version 2.1. A copy of each
+such license is available at
+http://www.opensource.org/licenses/gpl-2.0.php and
+http://www.opensource.org/licenses/lgpl-2.1.php
 
-  ```console
-  $ export TELEE_PRIVPASSWORD='<enable password>'
-  $ telee -H fw01 -C "show version" -x asa --enable-mode
-  <snip>
+Software
+BIOS:      version N/A
+kickstart: version 6.2(14)
+system:    version 6.2(14)
+BIOS compile time:
+kickstart image file is: bootflash:///n7000-s1-kickstart.6.2.14.bin
+<snip>
+```
 
-  Cisco Adaptive Security Appliance Software Version 9.0(4)
-  Device Manager Version 7.1(5)100
+</p></details>
 
-  Compiled on Wed 04-Dec-13 08:33 by builders
-  System image file is "disk0:/asa904-k8.bin"
-  Config file at boot was "startup-config"
+<details><summary>ASA, whose paging command needs privilege – <code>--enable-mode</code></summary><p>
 
-  fw01 up 70 days 2 hours
+```console
+$ telee -H lab1-asa5505-02f01-01 -C "show version" -x asa --enable-mode --pp enable-password
+lab1-asa5505-02f01-01#show version
 
-  Hardware:   ASA5505, 512 MB RAM, CPU Geode 500 MHz,
-  Internal ATA Compact Flash, 128MB
-  BIOS Flash M50FW016 @ 0xfff00000, 2048KB
+Cisco Adaptive Security Appliance Software Version 9.0(4)
+Device Manager Version 7.1(5)100
 
-  Encryption hardware device : Cisco ASA-5505 on-board accelerator (revision 0x0)
-                               Boot microcode        : CN1000-MC-BOOT-2.00
-                               SSL/IKE microcode     : CNLite-MC-SSLm-PLUS-2.03
-  <snip>
-  ```
+Compiled on Wed 04-Dec-13 08:33 by builders
+System image file is "disk0:/asa904-k8.bin"
+Config file at boot was "startup-config"
 
-  </p></details>
+lab1-asa5505-02f01-01 up 70 days 2 hours
 
-- **SSH** – `-s` replaces telnet, and its aliases `--sec` and `--secure` name the same flag.
+Hardware:   ASA5505, 512 MB RAM, CPU Geode 500 MHz,
+Internal ATA Compact Flash, 128MB
+BIOS Flash M50FW016 @ 0xfff00000, 2048KB
 
-  <details><summary><u>Click to show example</u></summary><p>
+Encryption hardware device : Cisco ASA-5505 on-board accelerator (revision 0x0)
+                             Boot microcode        : CN1000-MC-BOOT-2.00
+                             SSL/IKE microcode     : CNLite-MC-SSLm-PLUS-2.03
+<snip>
+```
 
-  ```console
-  $ telee -H sw01 -C "show run" --enable --secure
-  sw01#show run
-  Load for five secs: 8%/0%; one minute: 2%; five minutes: 1%
-  Time source is NTP, 02:25:22.496 JST Fri May 14 2021
+</p></details>
 
-  Building configuration...
+<details><summary>A slow legacy device – <code>--timeout</code></summary><p>
 
-  Current configuration : 18716 bytes
-  !
-  ! Last configuration change at 01:46:41 JST Fri May 14 2021 by operator
-  !
-  version 15.2
-  no service pad
-  service tcp-keepalives-in
-  service timestamps debug datetime msec localtime show-timezone
-  service timestamps log datetime msec localtime show-timezone
-  service password-encryption
-  !
-  hostname sw01
-  <snip>
-  ```
+```console
+$ telee -H lab1-fs909-02f01-01 -C "show system" -x allied -u manager --timeout 10
+Manager lab1-fs909-02f01-01>show system
+Switch System Status                     Date 2021-05-09 Time 01:04:54
+Board     Bay      Board Name
+----------------------------------------------------------------------
+Base      -        FS909M
+----------------------------------------------------------------------
+Memory -  DRAM : 32768 kB  FLASH : 8192 kB   MAC : 00-1A-EB-93-1C-95
+----------------------------------------------------------------------
+SysDescription  : CentreCOM FS909M Ver 1.6.14 B02
+SysContact      :
+SysLocation     : LAB
+SysName         : lab1-fs909-02f01-01
+SysUpTime       : 1267989237(146days, 18:11:32)
+Release Version : 1.6.14
+Release built   : B02 (Nov 23 2010 at 14:29:56)
+Flash PROM      : Good
+RAM             : Good
+SW chip         : Good
+<snip>
+```
 
-  </p></details>
+</p></details>
 
-- **RADIUS privilege** – `-d` expects the privileged prompt straight after login, so nothing is escalated and no privileged password is read.
-
-  <details><summary><u>Click to show example</u></summary><p>
-
-  ```console
-  $ telee -H sw02 -C "show version" -x nxos --default-privilege-mode
-  sw02# show version
-  Cisco Nexus Operating System (NX-OS) Software
-  TAC support: http://www.cisco.com/tac
-  Documents: http://www.cisco.com/en/US/products/ps9372/tsd_products_support_series_home.html
-  Copyright (c) 2002-2015, Cisco Systems, Inc. All rights reserved.
-  The copyrights to certain works contained in this software are
-  owned by other third parties and used and distributed under
-  license. Certain components of this software are licensed under
-  the GNU General Public License (GPL) version 2.0 or the GNU
-  Lesser General Public License (LGPL) Version 2.1. A copy of each
-  such license is available at
-  http://www.opensource.org/licenses/gpl-2.0.php and
-  http://www.opensource.org/licenses/lgpl-2.1.php
-
-  Software
-  BIOS:      version N/A
-  kickstart: version 6.2(14)
-  system:    version 6.2(14)
-  BIOS compile time:
-  kickstart image file is: bootflash:///n7000-s1-kickstart.6.2.14.bin
-  <snip>
-  ```
-
-  </p></details>
-
-- **Slow devices** – `-t` widens the window each expect step waits in.
-
-  <details><summary><u>Click to show example</u></summary><p>
-
-  ```console
-  $ telee -H sw03 -C "show system" -x allied -u manager --timeout 10
-  <snip>
-  Switch System Status                     Date 2021-05-09 Time 01:04:54
-  Board     Bay      Board Name
-  ----------------------------------------------------------------------
-  Base      -        FS909M
-  ----------------------------------------------------------------------
-  Memory -  DRAM : 32768 kB  FLASH : 8192 kB   MAC : 00-00-5E-00-53-01
-  ----------------------------------------------------------------------
-  SysDescription  : CentreCOM FS909M Ver 1.6.14 B02
-  SysContact      :
-  SysLocation     : LAB
-  SysName         : sw03
-  SysUpTime       : 1267989237(146days, 18:11:32)
-  Release Version : 1.6.14
-  Release built   : B02 (Nov 23 2010 at 14:29:56)
-  Flash PROM      : Good
-  RAM             : Good
-  SW chip         : Good
-  <snip>
-  ```
-
-  </p></details>
+> [!TIP]
+> [umatare5/my-infra-network](https://github.com/umatare5/my-infra-network) calls this CLI from shell scripts to collect device state and save configurations.
 
 ## Exec Platform
 
-telee speaks nine platform dialects, and `-x` selects one. Each decides the prompt telee waits for and the command that disables paging, and five of the nine add an escalation path on top.
+The tables below list the modes each platform accepts, and the OS version each path was verified on.
+
+- telee works for several operating systems. These are called exec-platform.
+- The following table shows each exec-platform was verified on which OS version.
 
 ### Matrix
 
-| Name (`-x`) | Description              | Enable Mode (`-e`)  | Redundant Mode (`-r`) |
-| :---------- | :----------------------- | :------------------ | :-------------------- |
-| aireos      | Cisco AireOS             | Not Available       | Not Available         |
-| allied      | AlliedTelesis AlliedWare | Not Available       | Not Available         |
-| asa         | Cisco ASA Software       | Either `-e` or `-d` | Optional              |
-| foundry     | Brocade IronWare         | Optional            | Not Available         |
-| ios         | Cisco IOS/IOS-XE         | Optional            | Not Available         |
-| nxos        | Cisco NX-OS              | Optional            | Not Available         |
-| srx         | Juniper JunOS            | Not Available       | Not Available         |
-| ssg         | Juniper ScreenOS         | Not Available       | Optional              |
-| yamaha      | YAMAHA RT                | Optional            | Not Available         |
+Each platform accepts the modes below.
 
-Under Enable Mode, "Not Available" means the platform builds no privileged batch, so `-e` is taken, noticed on stderr and then ignored. Under Redundant Mode it means `-r` is refused before the session opens.
-
-`asa` is the one platform whose paging command needs a privileged session, so a run setting neither `-e` nor `-d` is refused before the dial
-
-`-r` appends the suffix a redundant pair prints – `/pri/act` on ASA, `(M)` on ScreenOS – to every prompt telee expects, which is why the two platforms that accept it are the two that print one.
+| Name (`-x`) | Description              | Enable Mode (`-e`) | Redundant Mode (`-r`) |
+| :---------- | :----------------------- | ------------------ | --------------------- |
+| `aireos`    | Cisco AireOS             | Optional           | Not Available         |
+| `allied`    | AlliedTelesis AlliedWare | Not Available      | Not Available         |
+| `asa`       | Cisco ASA Software       | **REQUIRED**       | Optional              |
+| `foundry`   | Brocade IronWare         | Optional           | Not Available         |
+| `ios`       | Cisco IOS, IOS-XE        | Optional           | Not Available         |
+| `nxos`      | Cisco NX-OS              | Optional           | Not Available         |
+| `srx`       | JuniperNetworks JunOS    | Not Available      | Not Available         |
+| `ssg`       | JuniperNetworks ScreenOS | Not Available      | Optional              |
+| `yamaha`    | YAMAHA RT OS             | Optional           | Not Available         |
 
 ### Verified On
 
-Each version below is the OS that path was exercised against. "⚠ Not Verified" marks a path that is implemented and reachable but never run on hardware.
+Each path was verified on the OS version below.
 
-| Name (`-x`)          | Telnet          | SSH (`-s`)       | Default PrivMode (`-d`) |
-| :------------------- | :-------------- | :--------------- | :---------------------- |
-| aireos               | ✅ 8.5.120.0    | ✅ 8.5.120.0     | Not Supported           |
-| allied               | ✅ 1.6.14B02    | Not Supported    | Not Supported           |
-| asa                  | ✅ 9.0(4)       | ⚠ Not Verified   | ⚠ Not Verified          |
-| asa (redundant-mode) | ✅ 9.10(1)      | ⚠ Not Verified   | ⚠ Not Verified          |
-| foundry              | ✅ 07.2.02aT7e1 | Not Supported    | Not Supported           |
-| ios                  | ✅ 15.2(7)E3    | ✅ 15.2(7)E3     | ✅ 15.2(5c)E            |
-| nxos                 | ✅ 6.2(14)      | ⚠ Not Verified   | ✅ 6.2(14)              |
-| srx                  | Not Supported   | ✅ 15.1X49-D90.7 | Not Supported           |
-| ssg                  | ✅ 6.3.0r21.0   | ⚠ Not Verified   | Not Supported           |
-| ssg (redundant-mode) | ✅ 6.3.0r22.0   | ⚠ Not Verified   | Not Supported           |
-| yamaha               | ✅ Rev.8.03.94  | ✅ Rev.10.01.78  | Not Supported           |
+| Name (`-x`)            | Telnet          | SSH (`--secure`) | Default PrivMode (`-d`) |
+| :--------------------- | :-------------- | :--------------- | ----------------------- |
+| `aireos`               | ✅ 8.5.120.0    | ✅ 8.5.120.0     | Not Supported           |
+| `allied`               | ✅ 1.6.14B02    | Not Supported    | Not Supported           |
+| `asa`                  | ✅ 9.0(4)       | ⚠ Not Verified   | ⚠ Not Verified          |
+| `asa` (redundant-mode) | ✅ 9.10(1)      | ⚠ Not Verified   | ⚠ Not Verified          |
+| `foundry`              | ✅ 07.2.02aT7e1 | Not Supported    | Not Supported           |
+| `ios`                  | ✅ 15.2(7)E3    | ✅ 15.2(7)E3     | ✅ 15.2(5c)E            |
+| `nxos`                 | ✅ 6.2(14)      | ⚠ Not Verified   | ✅ 6.2(14)              |
+| `srx`                  | Not Supported   | ✅ 15.1X49-D90.7 | Not Supported           |
+| `ssg`                  | ✅ 6.3.0r21.0   | ⚠ Not Verified   | Not Supported           |
+| `ssg` (redundant-mode) | ✅ 6.3.0r22.0   | ⚠ Not Verified   | Not Supported           |
+| `yamaha`               | ✅ Rev.8.03.94  | ✅ Rev.10.01.78  | Not Supported           |
 
-## Configuration
+> [!NOTE]
+> "⚠ Not Verified" means "implemented but not checked". I'm waiting your report!
 
-Six environment variables reach the flags below, and nothing else in the environment is read.
+## Documentation
 
-| Variable             | Flag                       | Default |
-| :------------------- | :------------------------- | :------ |
-| `TELEE_HOSTNAME`     | `--hostname`, `-H`         | –       |
-| `TELEE_COMMAND`      | `--command`, `-C`          | –       |
-| `TELEE_USERNAME`     | `--username`, `-u`         | `admin` |
-| `TELEE_PASSWORD`     | `--password`, `-p`         | –       |
-| `TELEE_PRIVPASSWORD` | `--priv-password`, `--pp`  | –       |
-| `TELEE_HOSTKEYPATH`  | `--host-key-path`, `--hkp` | –       |
+Troubleshooting is written for an operator, and the other two pages for a contributor.
 
-Under `-s` the host key is checked against `~/.ssh/known_hosts`, and `--host-key-path` narrows that to one public key file. No flag disables the check. [`docs/configuration.md`](docs/configuration.md) carries the precedence between a flag and its variable, and which flags each platform accepts.
-
-## Troubleshooting
-
-A rejected argument prints one `ERROR failed to validate arguments error="…"` line and exits 1, and a failed session prints the transport error followed by a `[Hint]` block. Both go to stderr, so a redirect that would have captured device output holds nothing after a failure.
-
-[`docs/troubleshooting.md`](docs/troubleshooting.md) maps each message to the condition that produced it.
+- **[Troubleshooting](docs/troubleshooting.md)** – every error message this CLI prints, and what each one means
+- **[Architecture](docs/architecture.md)** – the output contract and the exit codes
+- **[Measurements](docs/measurements.md)** – every timing taken against the lab switch, and its scripts
 
 ## Contributing
 
-[`CONTRIBUTING.md`](CONTRIBUTING.md) carries the `make` targets, the container build and the release process.
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the development setup, the test conventions and the release steps.
 
 ## License
 

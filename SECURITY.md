@@ -1,54 +1,67 @@
 # Security Policy
 
+This policy covers `telee` and the container image published for it.
+
 ## Supported Versions
 
-Only the most recent tagged release carries fixes – reproduce a finding against it before reporting.
-
-Releases are tags cut from `main` with no maintenance branch behind them, so a fix reaches an operator only in the next tag. The [releases page](https://github.com/umatare5/telee/releases) names the current one.
+Only the most recent tagged release carries fixes, because no older tag gets a patch branch.
+Reproduce a finding against that release before reporting it.
 
 ## Reporting a Vulnerability
 
-Private vulnerability reporting is **not enabled** on this repository, so GitHub's "Report a vulnerability" form is unavailable to anyone but a maintainer and there is no published security address. Two steps reach a private channel:
+Report privately through [GitHub Security Advisories](https://github.com/umatare5/telee/security/advisories/new).
 
-1. **Open an issue** on the [issue tracker](https://github.com/umatare5/telee/issues) naming the affected version, the `--exec-platform` value and the class of the fault, and asking for a private channel.
-2. **Wait for the draft advisory.** A maintainer can open one and add a reporter to it, and that is where the reproduction, the captured output and the impact belong.
-
-The response is best effort, with no promised window.
-
-> [!WARNING]
-> An issue is world readable from the moment it is filed. Keep the reproduction, the device output and every credential out of it until the advisory exists.
+Never report through an issue or a pull request. The response is best effort, and no reply time is promised.
 
 ## What to Include
 
-**Redact these first.** None of them belongs in a report, public or private.
+**Redact these first.** Everyone invited to an advisory thread can read it, so none of them belongs in a report.
 
 - The login or enable password, from `--password`, `--priv-password` or either environment variable
 - The device hostname and its management address, both of which the invocation carries
 - The captured output, which is a running configuration whenever the command asked for one
 
-Then include the following:
+Then include the following.
 
-- **Affected version** (required): The `telee --version` string, and the device OS version it was seen on
-- **Exec platform** (required): The `--exec-platform` value, because each one drives a separate session script
-- **Invocation** (required): The flags, with every value above removed
-- **Transport** (required): Whether it reproduces over telnet, under `--secure-mode`, or both
-- **Impact assessment** (required): What the fault reaches, and from where
-- **Suggested fix** (optional): Proposed remediation, if any
-- **Disclosure status** (required): Whether it is shared elsewhere, and the plan for sharing it
+- **Affected versions** – the release or image tag reproduced against, and the device's OS version.
+- **Exec platform** – the `--exec-platform` value, because each one drives a separate session script.
+- **Reproduction steps** – the command and its flags, with every value above removed.
+- **Transport** – whether it reproduces over telnet, under `--secure-mode`, or both.
+- **Impact** – state the exploit scenario, and what it reaches.
+- **Suggested fix** – propose a remediation where you have one; this one is optional.
+- **Disclosure status** – say whether it is shared elsewhere, and give your plan for sharing it.
 
-## Scope
+## Exposure
 
-In scope:
+The login and enable passwords are the device's own, and telnet carries both in clear text.
+Keep them out of the places another person can read, in order of preference.
+
+1. **`$TELEE_PASSWORD`, `$TELEE_PRIVPASSWORD` from `read -rs`.** Visible in the process environment.
+2. **The same variables exported inline.** Visible in the shell history as well.
+3. **`--password` and `--priv-password`.** Visible in the process list and the shell history.
+
+- **Posture** – each exposure is documented, not accidental, so keep the passwords on a controlled path.
+- **Transport** – telnet is the default, and `--secure-mode` switches to SSH, whose host key check fails closed.
+- **Output** – nothing is logged, but a redirect of `show run` writes a running configuration, so treat it as a backup.
+
+> [!IMPORTANT]
+> A leaked password is a leaked device login. Rotating it requires changing the password on the device or its AAA server.
+
+## In Scope
+
+The following fall within this policy.
 
 - A credential reaching stdout, stderr or a log line, none of which this CLI masks
 - Host key verification weakened by anything but an operator's own `--host-key-path`
 - A session reaching a host the invocation did not name
-- The published container image, `ghcr.io/umatare5/telee`
+- The published container image, because a defect in the image `ghcr.io` serves may not exist in the source
 
-Out of scope:
+## Out of Scope
+
+The following fall outside this policy.
 
 - Telnet carrying the credential in clear text, which is the protocol and which `--secure-mode` answers
-- A credential visible in the process list after `--password` or `--priv-password`, whose cost [`docs/configuration.md`](docs/configuration.md) sets out
+- A credential visible in the process list after `--password` or `--priv-password`, which [Exposure](#exposure) ranks last
 - A device-side or vendor-OS defect, which belongs to that vendor's PSIRT
-- A dependency advisory with no path reachable from `./cmd` – show the path, or a `govulncheck` finding
-- An operator's own configuration, which [`docs/configuration.md`](docs/configuration.md) covers
+- A dependency advisory with no code path reachable from `./cmd`, unless you show the reachable path
+- An operator's own configuration, which [Customization](README.md#customization) covers
