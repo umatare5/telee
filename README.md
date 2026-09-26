@@ -23,12 +23,12 @@
 
 ## Overview
 
-This CLI opens one telnet or SSH session, logs in, disables paging, runs each command in turn and prints the transcript.
+This CLI opens a telnet or SSH session, logs in, turns off paging, runs each command and prints the output.
 
-- ⚡ **One-Line Execution**: Runs every `-C` in one session instead of an `expect` script or a TeraTerm macro
-- 🧭 **Vendor Dialects**: Handles the login, paging and escalation steps of each OS, from Cisco IOS to YAMAHA RT
-- 🔐 **Dual Transport**: Reaches legacy devices over telnet, and the rest over SSH with host key verification
-- 💻️ **Shell Friendly**: Keeps stdout for device output alone, so `grep`, redirects and loops need no filtering
+- ⚡ **One-Line Execution**: Runs every `-C` in one session instead of `expect` or TeraTerm macros
+- 🧭 **Vendor Dialects**: Handles login, paging and enable steps per OS, from Cisco IOS to YAMAHA RT
+- 🔐 **Dual Transport**: Uses telnet for legacy devices and SSH with host key checks for the rest
+- 💻️ **Shell Friendly**: Puts only device output on stdout, so pipes and redirects need no filtering
 
 <div align="center">
   <img alt="telee demonstration" src="./docs/demo/promo.gif" width="800px" />
