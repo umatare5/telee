@@ -101,7 +101,7 @@ Every fact has one page that owns it, and the other pages link to it rather than
 
 A release is prepared in one pull request, and merging it drafts the release.
 
-1. Rename `## [Unreleased]` in [`CHANGELOG.md`](CHANGELOG.md) to `## [vX.Y.Z]`.
+1. Move the entries under `## [Unreleased]` in [`CHANGELOG.md`](CHANGELOG.md) to a new `## [vX.Y.Z]`.
 2. List the pull requests it carries, and add that version's link at the foot.
 3. Update the version in the [`VERSION`](VERSION) file.
 
