@@ -31,7 +31,7 @@ This CLI opens a telnet or SSH session, logs in, turns off paging, runs each com
 - 💻️ **Shell Friendly**: Puts only device output on stdout, so pipes and redirects need no filtering
 
 <div align="center">
-  <img alt="telee demonstration" src="./docs/demo/promo.gif" width="800px" />
+  <img alt="telee demonstration" src="https://raw.githubusercontent.com/umatare5/telee/main/docs/demo/promo.gif" width="800px" />
 </div>
 
 ## Supported Environment
