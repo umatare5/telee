@@ -4,6 +4,8 @@ Each section covers one release and lists the pull requests it carries.
 
 ## [Unreleased]
 
+## [v1.11.0]
+
 - [#107](https://github.com/umatare5/telee/pull/107) – Run the build and tests weekly
 - [#108](https://github.com/umatare5/telee/pull/108) – Update google.golang.org/grpc to v1.83.1
 - [#109](https://github.com/umatare5/telee/pull/109) – Remove what is unmaintained, unify the build, and fix four defects
@@ -21,6 +23,7 @@ Each section covers one release and lists the pull requests it carries.
 - [#123](https://github.com/umatare5/telee/pull/123) – Move the expect loop in-house and drop the default passwords
 - [#124](https://github.com/umatare5/telee/pull/124) – Consolidate with other repos
 - [#125](https://github.com/umatare5/telee/pull/125) – Run every --command in one session and print the transcript
+- [#126](https://github.com/umatare5/telee/pull/126) – Restore README sections and align docs and configs with the siblings
 
 ## [v1.10.2]
 
@@ -122,6 +125,7 @@ v1.10.0 was tagged without a release, so this release also carries its pull requ
 - [#22](https://github.com/umatare5/telee/pull/22) – Bump `VERSION` to 1.7.9
 - [#23](https://github.com/umatare5/telee/pull/23) – Bump `VERSION` to 1.8.0
 
+[v1.11.0]: https://github.com/umatare5/telee/releases/tag/v1.11.0
 [v1.10.2]: https://github.com/umatare5/telee/releases/tag/v1.10.2
 [v1.10.1]: https://github.com/umatare5/telee/releases/tag/v1.10.1
 [v1.9.0]: https://github.com/umatare5/telee/releases/tag/v1.9.0
