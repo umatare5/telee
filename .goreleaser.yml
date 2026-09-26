@@ -33,14 +33,11 @@ builds:
 
 archives:
   - name_template: "{{ .ProjectName }}-v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
-    # SECURITY.md is named on its own because the list replaces goreleaser's own
-    # defaults, and no glob here reaches a root file.
+    # Only what a downloaded binary needs beside it: the license notices its
+    # statically linked dependencies require on redistribution.
     files:
-      - "README.md"
-      - "SECURITY.md"
       - "LICENSE"
       - "NOTICE"
-      - "docs/*.md"
 
 dockers_v2:
   - id: exact
@@ -54,6 +51,10 @@ dockers_v2:
     dockerfile: Dockerfile
     ids:
       - telee
+    # A prerelease must not move latest or the version tags. buildx builds and
+    # pushes in one step, so the whole configuration is disabled instead of
+    # skipping the push; snapshot builds stay enabled for local verification.
+    disable: '{{ and (not .IsSnapshot) (ne .Prerelease "") }}'
     labels:
       org.opencontainers.image.title: "{{ .ProjectName }}"
       org.opencontainers.image.description: "CLI for executing commands on network devices"
@@ -72,7 +73,6 @@ dockers_v2:
       - "ghcr.io/umatare5/telee"
     tags:
       - "latest"
-      - "v{{ .Major }}"
       - "v{{ .Major }}.{{ .Minor }}"
     platforms:
       - linux/amd64
@@ -98,7 +98,8 @@ dockers_v2:
 
 release:
   prerelease: auto
-  draft: false
+  draft: true
+  replace_existing_draft: true
   header: |
     ## {{ .ProjectName }} v{{ .Version }}
 

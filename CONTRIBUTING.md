@@ -34,7 +34,7 @@ Install [`gotestsum`](https://github.com/gotestyourself/gotestsum), [`golangci-l
 `make build` stamps `cli.version` from [`VERSION`](VERSION), and a plain `go build ./cmd` leaves it at `dev`.
 
 - **No image target** – GoReleaser builds the image during a release and pushes it to `ghcr.io/umatare5/telee`.
-- **Prereleases stay off the moving tags** – a prerelease skips the `latest`, `vX` and `vX.Y` tags.
+- **Prereleases publish no image** – a prerelease skips the exact, `latest` and `vX.Y` tags alike.
 
 ## Testing
 
@@ -99,15 +99,16 @@ Every fact has one page that owns it, and the other pages link to it rather than
 
 ## Release
 
-A release is prepared in one pull request, and merging it publishes everything.
+A release is prepared in one pull request, and merging it drafts the release.
 
 1. Rename `## [Unreleased]` in [`CHANGELOG.md`](CHANGELOG.md) to `## [vX.Y.Z]`.
 2. List the pull requests it carries, and add that version's link at the foot.
 3. Update the version in the [`VERSION`](VERSION) file.
 
-A push to `main` touching `VERSION` runs the [release workflow](https://github.com/umatare5/telee/actions/workflows/go-release.yml), which tags the commit and publishes the release in the same run.
+A push to `main` touching `VERSION` runs the [release workflow](https://github.com/umatare5/telee/actions/workflows/go-release.yml), which tags the commit, pushes the images and drafts the release in the same run.
 
 - **There is no manual trigger** – the push runs it, and the weekly snapshot build tags nothing.
+- **A maintainer publishes the draft** – a rerun replaces the draft until then.
 - **The release links 404 until the merge** – [`lychee.toml`](lychee.toml) excludes the release-tag pattern.
 
 ## Pull Requests
