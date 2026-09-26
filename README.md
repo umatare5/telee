@@ -364,9 +364,9 @@ Each path was verified on the OS version below.
 
 Troubleshooting is written for an operator, and the other two pages for a contributor.
 
-- **[Troubleshooting](docs/troubleshooting.md)** – every error message this CLI prints, and what each one means
 - **[Architecture](docs/architecture.md)** – the output contract and the exit codes
 - **[Measurements](docs/measurements.md)** – every timing taken against the lab switch, and its scripts
+- **[Troubleshooting](docs/troubleshooting.md)** – every error message this CLI prints, and what each one means
 
 ## Contributing
 
