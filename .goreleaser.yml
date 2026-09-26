@@ -105,6 +105,9 @@ release:
 
     A command-line interface that logs in to one network device and runs commands on it.
 
+    > [!IMPORTANT]
+    > A minor release may change the transcript, the exit status or a default. Read the [CHANGELOG](https://github.com/umatare5/telee/blob/{{ .Tag }}/CHANGELOG.md) before upgrading.
+
     ### 🐳 Container Images
 
     ```bash
