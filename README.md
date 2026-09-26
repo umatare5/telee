@@ -1,9 +1,9 @@
 <div align="center">
 
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/umatare5/telee/main/docs/assets/logo_dark.png" width="115px" />
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/umatare5/telee/main/docs/assets/logo.png" width="115px" />
-    <img alt="telee" src="https://raw.githubusercontent.com/umatare5/telee/main/docs/assets/logo.png" width="115px" />
+    <source media="(prefers-color-scheme: dark)" srcset="./docs/assets/logo_dark.png" width="115px" />
+    <source media="(prefers-color-scheme: light)" srcset="./docs/assets/logo.png" width="115px" />
+    <img alt="telee" src="./docs/assets/logo.png" width="115px" />
   </picture>
 
   <h1>telee</h1>
@@ -31,7 +31,7 @@ This CLI opens a telnet or SSH session, logs in, turns off paging, runs each com
 - 💻️ **Shell Friendly**: Puts only device output on stdout, so pipes and redirects need no filtering
 
 <div align="center">
-  <img alt="telee demonstration" src="https://raw.githubusercontent.com/umatare5/telee/main/docs/demo/promo.gif" width="800px" />
+  <img alt="telee demonstration" src="./docs/demo/promo.gif" width="800px" />
 </div>
 
 ## Supported Environment
