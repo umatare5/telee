@@ -6,6 +6,9 @@ Each section covers one release and lists the pull requests it carries.
 
 ## [v1.11.0]
 
+This release exits 1 on a failed session (#109), drops the default passwords (#123) and starts the transcript at the prompt (#125), so check a script that relies on any of them before upgrading.
+The `v1` image tag stays on v1.10.2, so pull `v1.11` or `latest` instead (#126).
+
 - [#107](https://github.com/umatare5/telee/pull/107) – Run the build and tests weekly
 - [#108](https://github.com/umatare5/telee/pull/108) – Update google.golang.org/grpc to v1.83.1
 - [#109](https://github.com/umatare5/telee/pull/109) – Remove what is unmaintained, unify the build, and fix four defects
