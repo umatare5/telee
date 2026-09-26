@@ -36,8 +36,5 @@ repos:
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: v0.23.2
     hooks:
-      # markdownlint-cli2 unions handed filenames with the globs in
-      # .markdownlint-cli2.jsonc, so passing them re-lints the whole tree per batch
       - id: markdownlint-cli2
         args: ["--fix"]
-        pass_filenames: false

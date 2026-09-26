@@ -6,7 +6,6 @@
     "MD004": { "style": "dash" },
     "MD013": false,
     "MD024": { "siblings_only": true },
-    // Two adjacent GitHub alerts cannot be written without a blank line between them
     "MD028": false,
     "MD029": { "style": "ordered" },
     "MD046": { "style": "fenced" },
@@ -16,9 +15,6 @@
     "MD055": { "style": "leading_and_trailing" },
     "MD060": { "style": "aligned", "aligned_delimiter": true }
   },
-  // `overrides` is honoured from markdownlint-cli2 v0.23.0. v0.22.x ignores the key
-  // silently, so every heading contract below is inert there: check headings with the
-  // version .pre-commit-config.yaml pins, not with whatever is on PATH.
   "overrides": [
     {
       "filter": ["AGENTS.md"],
@@ -179,11 +175,7 @@
     }
   ],
   "globs": ["**/*.md"],
-  // "gitignore": true is deliberately not set: it would cover only the tmp/ and
-  // vendor/ half of this list, leaving the two tracked symlinks linted twice, and
-  // would tie the lint surface to a file maintained for build artifacts.
   "ignores": [
-    // BUILD_DIR, and the root of every worktree `git wt` creates
     "tmp/**",
     "vendor/**",
     // Both are symlinks to AGENTS.md; linting the target once is enough.
