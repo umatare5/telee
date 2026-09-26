@@ -9,9 +9,9 @@ Reproduce a finding against that release before reporting it.
 
 ## Reporting a Vulnerability
 
-Report privately through [GitHub Security Advisories](https://github.com/umatare5/telee/security/advisories/new), never through an issue or a pull request.
+Report privately through [GitHub Security Advisories](https://github.com/umatare5/telee/security/advisories/new).
 
-The response is best effort, and no reply time is promised.
+Never report through an issue or a pull request. The response is best effort, and no reply time is promised.
 
 ## What to Include
 
