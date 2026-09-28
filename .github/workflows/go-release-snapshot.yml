@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   snapshot:
-    uses: umatare5/common/.github/workflows/go-release-snapshot.yml@8044b3c0ce0dce6411ec179c3ec0e675219c117f # v0.21.0
+    uses: umatare5/common/.github/workflows/go-release-snapshot.yml@9056df6d56f55ebb1866ecb9cd24b6153e5a19f8 # v0.21.1
     with:
       go_version: "1.27.1"
-      goreleaser_version: "v2.18.1"
+      goreleaser_version: "v2.18.2"
