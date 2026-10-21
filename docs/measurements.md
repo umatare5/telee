@@ -15,7 +15,7 @@ The two clients, the device they were pointed at, and how the runs were driven.
 The device is a `WS-C2960L-8TS-LL` running `C2960L-UNIVERSALK9-M` version `15.2(5c)E`, and a LAN cable connected the client to it directly, so nothing switched sits between them. Each case ran its command 100 times with a 3-second sleep between runs, and the comparison reads the 95th percentile of those 100 samples. Every run is a whole process, so each figure covers the login, the paging command and the teardown as well as the command itself.
 
 > [!NOTE]
-> Nothing here has been re-measured since. [`VERSION`](../VERSION) now reads 1.10.2, so every figure below describes telee 1.6.5 rather than the release in the tree.
+> Nothing here has been re-measured since. [`VERSION`](../VERSION) now reads 1.11.1, so every figure below describes telee 1.6.5 rather than the release in the tree.
 
 ## Cases
 

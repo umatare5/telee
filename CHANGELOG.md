@@ -4,6 +4,18 @@ Each section covers one release and lists the pull requests it carries.
 
 ## [Unreleased]
 
+## [v1.11.1]
+
+- [#128](https://github.com/umatare5/telee/pull/128) – Replace relative paths with absolute paths
+- [#129](https://github.com/umatare5/telee/pull/129) – Replace relative paths in README.md with absolute paths
+- [#130](https://github.com/umatare5/telee/pull/130) – Replace absolute paths with relative paths
+- [#131](https://github.com/umatare5/telee/pull/131) – Update all patch dependencies
+- [#132](https://github.com/umatare5/telee/pull/132) – Update all minor dependencies
+- [#133](https://github.com/umatare5/telee/pull/133) – Update module github.com/urfave/cli/v3 to v3.14.0
+- [#134](https://github.com/umatare5/telee/pull/134) – Update all patch dependencies
+- [#135](https://github.com/umatare5/telee/pull/135) – Update module golang.org/x/crypto to v0.58.0
+- [#136](https://github.com/umatare5/telee/pull/136) – Raise the toolchain to Go 1.27.3 and release v1.11.1
+
 ## [v1.11.0]
 
 This release exits 1 on a failed session (#109), drops the default passwords (#123) and starts the transcript at the prompt (#125), so check a script that relies on any of them before upgrading.
@@ -128,6 +140,7 @@ v1.10.0 was tagged without a release, so this release also carries its pull requ
 - [#22](https://github.com/umatare5/telee/pull/22) – Bump `VERSION` to 1.7.9
 - [#23](https://github.com/umatare5/telee/pull/23) – Bump `VERSION` to 1.8.0
 
+[v1.11.1]: https://github.com/umatare5/telee/releases/tag/v1.11.1
 [v1.11.0]: https://github.com/umatare5/telee/releases/tag/v1.11.0
 [v1.10.2]: https://github.com/umatare5/telee/releases/tag/v1.10.2
 [v1.10.1]: https://github.com/umatare5/telee/releases/tag/v1.10.1
