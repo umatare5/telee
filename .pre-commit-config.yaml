@@ -14,7 +14,7 @@ repos:
         fail_fast: true
 
   - repo: https://github.com/golangci/golangci-lint
-    rev: v2.14.0
+    rev: v2.15.0
     hooks:
       # The full variant runs on the whole module, so the linters that need to
       # see every file – unused above all – report what they actually would.
@@ -34,7 +34,7 @@ repos:
         pass_filenames: false
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.23.3
+    rev: v0.24.0
     hooks:
       - id: markdownlint-cli2
         args: ["--fix"]
