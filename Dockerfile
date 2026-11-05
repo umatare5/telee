@@ -8,7 +8,7 @@ ARG TARGETPLATFORM
 
 # The trust store comes from a pinned image rather than the build context, which carries
 # only the binary and the license notices.
-COPY --from=alpine:3.24.2@sha256:294b683cb724975bec92580e1e685676bd4b50bda910ddb8c51d4cabeaec77e6 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=alpine:3.24.3@sha256:be2656061b536c1883c4034790e21d0a09c5aaaf51968b89368a3c0371ea2c9a /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY LICENSE NOTICE /
 COPY $TARGETPLATFORM/telee /telee
 
